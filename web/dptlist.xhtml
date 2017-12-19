@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h2>登録済み学科一覧</h2>
+        <h:form>
+            <h:dataTable value="#{adminBean.allDpt}" var="d">
+            <h:column>
+                <f:facet name="header">
+                    <h:outputLabel value="番号"/>
+                </f:facet>
+                #{d.departmentId}
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputLabel value="学科名"/>
+                </f:facet>
+                #{d.departmentName}
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputLabel value="学科コード"/>
+                </f:facet>
+                #{d.departmentCode}
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputLabel value="クラスコード"/>
+                </f:facet>
+                #{d.classCode}
+            </h:column>
+            <h:column>
+                <f:facet name="header">
+                    <h:outputLabel value="修了年数"/>
+                </f:facet>
+                #{d.years}
+            </h:column>
+            <h:column>
+                <h:commandButton value="削除" action="#{adminBean.dptDelete(d)}"/>
+            </h:column>
+        </h:dataTable>
+        </h:form>
+        <h:link outcome="datalist.xhtml" value="戻る"/>
+    </h:body>
+</html>
+

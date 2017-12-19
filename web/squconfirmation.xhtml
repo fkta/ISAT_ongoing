@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h2>登録内容確認画面</h2>
+        <h:form>
+            <h:commandButton value="登録する" action="#{adminBean.squCreate()}"/><br/>
+            <h:link outcome="adminmenu.xhtml" value="戻る"/>
+            <h:dataTable value="#{adminBean.squList}" var="s" border="1" cellpadding="0" cellspacing="0">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="質問" />
+                    </f:facet>
+                    <h:inputText value="#{s.question}" size="50"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
+

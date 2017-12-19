@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <h:form>
+            <h:link outcome="datalist.xhtml" value="戻る"/>
+            <h:dataTable value="#{adminBean.allUd}" var="u" border="1" cellpadding="0" cellspacing="0">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="ユーザid" />
+                    </f:facet>
+                    <h:inputText value="#{u.userId}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="入学年度" />
+                    </f:facet>
+                    <h:inputText value="#{u.entranceYear}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="卒業予定年度" />
+                    </f:facet>
+                    <h:inputText value="#{u.guraduationYear}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="学科コード" />
+                    </f:facet>
+                    <h:inputText value="#{u.departmentId}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="名前" />
+                    </f:facet>
+                    <h:inputText value="#{u.name}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="性別" />
+                    </f:facet>
+                    <h:inputText value="#{u.gender}"/>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputFormat value="ユーザ種別" />
+                    </f:facet>
+                    <h:inputText value="#{u.usertype}"/>
+                </h:column>
+                <h:column>
+                    <h:commandButton value="削除" action="#{adminBean.udDelete(u)}"/>
+                </h:column>
+            </h:dataTable>
+        </h:form>
+    </h:body>
+</html>
+
