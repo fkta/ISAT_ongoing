@@ -24,6 +24,7 @@ public class AdminBean {
     private List<Department> dptList;
     private List<SecretQuestion> squList;
     private List<UserData> udList;
+    private List<UserData> filteredUd;
 
     @EJB
     UserDataFacade udf;
@@ -148,7 +149,7 @@ public class AdminBean {
         return null;
     }
     
-    /* 登録済みデータのゲッター */
+    /* 登録済みデータのゲッター */    
     public List<Department> getAllDpt(){
         return df.findAll();
     }
@@ -195,7 +196,13 @@ public class AdminBean {
     public void setUdList(List<UserData> udList) {
         this.udList = udList;
     }
-    
-    
+
+    public List<UserData> getFilteredUd() {
+        return filteredUd;
+    }
+
+    public void setFilteredUd(List<UserData> filteredUd) {
+        this.filteredUd = filteredUd;
+    }
     
 }
