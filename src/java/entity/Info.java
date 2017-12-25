@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Info.findByContent", query = "SELECT i FROM Info i WHERE i.content = :content")
     , @NamedQuery(name = "Info.findByTerm", query = "SELECT i FROM Info i WHERE i.term = :term")
     , @NamedQuery(name = "Info.findByPriority", query = "SELECT i FROM Info i WHERE i.priority = :priority")
-    , @NamedQuery(name = "Info.findByInfotype", query = "SELECT i FROM Info i WHERE i.infotype = :infotype")})
+    , @NamedQuery(name = "Info.findByInfotype", query = "SELECT i FROM Info i WHERE i.infotype = :infotype")
+    , @NamedQuery(name = "Info.findInfo", query = "SELECT i FROM Info i WHERE i.term >= :now and i.infotype = 'display'")})
 public class Info implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -63,6 +64,11 @@ public class Info implements Serializable {
     private Date term;
     @Basic(optional = false)
     @NotNull
+    @Column(name = "create_date")
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createDate;
+    @Basic(optional = false)
+    @NotNull
     @Size(min = 1, max = 10)
     @Column(name = "priority")
     private String priority;
@@ -74,6 +80,9 @@ public class Info implements Serializable {
     @JoinColumn(name = "category_id", referencedColumnName = "category_id")
     @ManyToOne(optional = false)
     private Category categoryId;
+    @JoinColumn(name = "user_id", referencedColumnName = "user_id")
+    @ManyToOne(optional = false)
+    private UserData userId;
 
     public Info() {
     }
@@ -147,6 +156,16 @@ public class Info implements Serializable {
         this.categoryId = categoryId;
     }
 
+    public UserData getUserId() {
+        return userId;
+    }
+
+    public void setUserId(UserData userId) {
+        this.userId = userId;
+    }
+    
+    
+
     @Override
     public int hashCode() {
         int hash = 0;
@@ -170,6 +189,14 @@ public class Info implements Serializable {
     @Override
     public String toString() {
         return "entity.Info[ infoId=" + infoId + " ]";
+    }
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
     }
     
 }

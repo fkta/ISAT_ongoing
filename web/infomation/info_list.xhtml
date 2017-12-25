@@ -19,10 +19,27 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,20,30">
                         <f:facet name="header">
+                            <p:outputLabel value="掲示一覧"/>
                             <p:commandButton value="新規登録" onclick="PF('create_dlg').show();"/>
                         </f:facet>
-                        <p:column headerText="">
-                            
+                        <p:column headerText="タイトル">
+                            <h:outputText value="#{d.title}"/>
+                        </p:column>
+                        
+                        <p:column headerText="カテゴリ">
+                            <h:outputText value="#{d.categoryId.categoryName}"/>
+                        </p:column>
+                        
+                        <p:column headerText="掲載日">
+                            <h:outputText value="#{d.createDate}"/>
+                        </p:column>
+                        
+                        <p:column headerText="作成者">
+                            <h:outputText value="#{d.userId.name}"/>
+                        </p:column>
+                        
+                        <p:column headerText="掲載終了日">
+                            <h:outputText value="#{d.term}"/>
                         </p:column>
                     
                     </p:dataTable>
@@ -30,10 +47,17 @@
                 
                 <!--だいあろぐ-->
                 <p:dialog header="新規登録" widgetVar="create_dlg" modal="true" id="info_dlg">
-                    <div id="info_create_dlg_left">
+                    <h:form>
+                        <div id="info_create_dlg_left">
                         <h:outputText value="登録内容を入力してください。" /><br/>
                         <p:outputLabel for="info_title" value="タイトル : "/>
                         <p:inputText id="info_title" value="#{infomationBean.title}"/><br/>
+                        
+                        <h:outputLabel for="info_term" value="掲載期間 : "/>
+                        <p:selectOneMenu id="info_term" value="#{infomationBean.selectedTerm}">
+                            <f:selectItem itemLabel="掲載期間を選択" itemValue=""/>
+                            <f:selectItems value="#{infomationBean.term}"/>
+                        </p:selectOneMenu>
                     </div>
                     
                     <div id="info_create_dlg_right">
@@ -52,10 +76,12 @@
                     
                     <div id="info_create_dlg_bottom">
                         <p:outputLabel value="内容 : "/><br/>
-                        <p:inputTextarea id="info_content" value="#{infomationBean.content}" autoResize="false" maxlength="1000" scrollHeight="100"/><br/>
+                        <p:inputTextarea id="info_content" value="#{infomationBean.content}" autoResize="false" maxlength="1000"
+                                         scrollHeight="100" style="width: 900px;height: 300px"/><br/>
                         
                         <p:commandButton value="登録" action="#{infomationBean.addInfo()}"/>
                     </div>
+                    </h:form>
                 </p:dialog> 
             </ui:define>
         </ui:composition>
