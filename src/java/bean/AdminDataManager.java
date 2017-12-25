@@ -1,7 +1,9 @@
 package bean;
 
+import entity.Category;
 import entity.Department;
 import entity.SecretQuestion;
+import entity.Service;
 import entity.UserData;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
@@ -18,6 +20,8 @@ public class AdminDataManager implements Serializable {
     private List<UserData> userList;
     private List<Department> dptList;
     private List<SecretQuestion> squList;
+    private List<Category> catList;
+    private List<Service> srvList;
 
     public void clear(){
         file = null;
@@ -66,7 +70,21 @@ public class AdminDataManager implements Serializable {
     public void setSquList(List<SecretQuestion> squList) {
         this.squList = squList;
     }
-    
-    
+
+    public List<Category> getCatList() {
+        return catList;
+    }
+
+    public void setCatList(List<Category> catList) {
+        this.catList = catList;
+    }
+
+    public List<Service> getSrvList() {
+        return srvList;
+    }
+
+    public void setSrvList(List<Service> srvList) {
+        this.srvList = srvList;
+    }
     
 }

@@ -1,0 +1,56 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <div class="head">
+                <div class="top-head">
+                    <div class="left-head">
+                        <h:graphicImage url="/resources/image/wintosh_logo.png"/>
+                    </div>
+
+                    <div class="center-head">
+                        <h1 class="title">スレッド作成</h1>
+                    </div>
+
+                    <div class="right-head">
+                        <form action="" method="post">
+                            <input type="submit" name="done" value="プロフィール設定" />
+                            <input type="submit" name="to_correct" value="ログアウト"/>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="nav">
+                    <ul>
+                        <li><h:link><h:graphicImage url="/resources/image/bulletinboard.png"/>掲示板</h:link></li>
+                        <li><h:graphicImage url="/resources/image/schedule.png"/>スケジュール</li>
+                        <li><a href="#"><p><h:graphicImage url="/resources/image/questionnaire.png"/></p>アンケート</a></li>
+                        <li><a href="#"><p><h:graphicImage url="/resources/image/transmit.png"/></p>伝達</a></li>
+                        <li><a href="#"><p><h:graphicImage url="/resources/image/todo.jpg"/></p>ToDo</a></li>
+                        <li><a href="#"><p><h:graphicImage url="/resources/image/notice.png"/></p>受信BOX</a></li>
+                        <li><h:link outcome="/infomation/info_list.xhtml"><h:graphicImage url="/resources/image/info.png"/>info</h:link></li>
+                        <li><h:link outcome="/adminmenu/adminmenu.xhtml">管理者メニュー</h:link></li>
+                    </ul>
+                </div>
+
+                <div class="notice">
+                    <div class="box1">
+                        <p>お知らせ</p>
+                    </div>
+
+                    <div class="box2">
+                        <p>お知らせ</p>
+                    </div>
+                </div>
+            </div>
+        </ui:composition>
+        
+    </h:body>
+</html>
+

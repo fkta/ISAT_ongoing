@@ -2,72 +2,63 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
         <link rel="stylesheet" type="text/css" href="../css/mystyle.css"/>
     </h:head>
     <h:body>
-        <!--ここからhead-->
-        <div class="head">
-            <div class="top-head">
-                <div class="left-head">
-                    <img src="../image/ロゴ.png" alt="[写真]"></img>
-                </div>
-        
-                <div class="center-head">
-                    <h1 class="title">スレッド作成</h1>
-                </div>
+        <ui:composition template="/templates/info_template.xhtml">
+            <ui:define name="title">ISAT - インフォメーション 一覧</ui:define>
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable value="#{infomationBean.allInfo}" var="d" rows="10" styleClass="datatable"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,20,30">
+                        <f:facet name="header">
+                            <p:commandButton value="新規登録" onclick="PF('create_dlg').show();"/>
+                        </f:facet>
+                        <p:column headerText="">
+                            
+                        </p:column>
+                    
+                    </p:dataTable>
+                </h:form>
                 
-                <div class="right-head">
-                    <form action="" method="post">
-                        <input type="submit" name="done" value="プロフィール設定" />
-                        <input type="submit" name="to_correct" value="ログアウト"/>
-                    </form>
-                </div>
-            </div>
-        
-            <div class="nav">
-                <ul>
-                    <li><a href="#"><p><img src="../image/掲示板.png" alt="[写真]" ></img></p>掲示板</a></li>
-                    <li><a href="#"><p><img src="../image/スケジュール.png" alt="[写真]" ></img></p>スケジュール</a></li>
-                    <li><a href="#"><p><img src="../image/アンケート.png" alt="[写真]" ></img></p>アンケート</a></li>
-                    <li><a href="#"><p><img src="../image/伝達.png" alt="[写真]" ></img></p>伝達</a></li>
-                    <li><a href="#"><p><img src="../image/todo.jpg" alt="[写真]" ></img></p>ToDo</a></li>
-                    <li><a href="#"><p><img src="../image/キャビネット.png" alt="[写真]" ></img></p>キャビネット</a></li>
-                    <li><a href="#"><p><img src="../image/info.png" alt="[写真]" ></img></p>info</a></li>
-                </ul>
-            </div>
-        
-            <div class="notice">
-                <div class="box1">
-                    <p>お知らせ</p>
-                </div>
-        
-                <div class="box2">
-                    <p>お知らせ</p>
-                </div>
-            </div>
-        </div>
-        <!--ここまでhead-->
-        
-        <h:form>
-            <p:dataTable value="#{adminBean.allSqu}" var="s" rows="10"
-                         paginator="true"
-                         paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                         rowsPerPageTemplate="10,20,30">
-                <p:column headerText="質問id">
-                    <h:outputText value="#{s.questionId}"/>
-                </p:column>
-                
-                <p:column headerText="質問">
-                    <h:outputText value="#{s.question}"/>
-                </p:column>
-                <p:column>
-                    <h:commandButton value="削除" action="#{adminBean.squDelete(s)}"/>
-                </p:column>
-            </p:dataTable>
-        </h:form>
+                <!--だいあろぐ-->
+                <p:dialog header="新規登録" widgetVar="create_dlg" modal="true" id="info_dlg">
+                    <div id="info_create_dlg_left">
+                        <h:outputText value="登録内容を入力してください。" /><br/>
+                        <p:outputLabel for="info_title" value="タイトル : "/>
+                        <p:inputText id="info_title" value="#{infomationBean.title}"/><br/>
+                    </div>
+                    
+                    <div id="info_create_dlg_right">
+                        <h:outputLabel for="info_priority" value="重要度 : "/>
+                        <p:selectOneMenu id="info_priority" value="#{infomationBean.priority}">
+                            <f:selectItem itemLabel="普" itemValue="normal" />
+                            <f:selectItem itemLabel="高" itemValue="high" />
+                        </p:selectOneMenu><br/>
+                        <h:outputLabel for="info_category" value="カテゴリ : "/>
+                        <p:selectOneMenu id="info_category" value="#{infomationBean.catItem}">
+                            <f:selectItem itemLabel="カテゴリを選択" itemValue=""/>
+                            <f:selectItems value="#{infomationBean.category}"/>
+                        </p:selectOneMenu>
+                        
+                    </div>
+                    
+                    <div id="info_create_dlg_bottom">
+                        <p:outputLabel value="内容 : "/><br/>
+                        <p:inputTextarea id="info_content" value="#{infomationBean.content}" autoResize="false" maxlength="1000" scrollHeight="100"/><br/>
+                        
+                        <p:commandButton value="登録" action="#{infomationBean.addInfo()}"/>
+                    </div>
+                </p:dialog> 
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
 

@@ -1,61 +1,24 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>Facelet Title</title>
         <link rel="stylesheet" type="text/css" href="../css/mystyle.css"/>
     </h:head>
     <h:body>
-        <!--ここからhead-->
-        <div class="head">
-            <div class="top-head">
-                <div class="left-head">
-                    <img src="../image/ロゴ.png" alt="[写真]"></img>
-                </div>
-        
-                <div class="center-head">
-                    <h1 class="title">スレッド作成</h1>
-                </div>
-                
-                <div class="right-head">
-                    <form action="" method="post">
-                        <input type="submit" name="done" value="プロフィール設定" />
-                        <input type="submit" name="to_correct" value="ログアウト"/>
-                    </form>
-                </div>
-            </div>
-        
-            <div class="nav">
-                <ul>
-                    <li><a href="#"><p><img src="../image/掲示板.png" alt="[写真]" ></img></p>掲示板</a></li>
-                    <li><a href="#"><p><img src="../image/スケジュール.png" alt="[写真]" ></img></p>スケジュール</a></li>
-                    <li><a href="#"><p><img src="../image/アンケート.png" alt="[写真]" ></img></p>アンケート</a></li>
-                    <li><a href="#"><p><img src="../image/伝達.png" alt="[写真]" ></img></p>伝達</a></li>
-                    <li><a href="#"><p><img src="../image/todo.jpg" alt="[写真]" ></img></p>ToDo</a></li>
-                    <li><a href="#"><p><img src="../image/キャビネット.png" alt="[写真]" ></img></p>キャビネット</a></li>
-                    <li><a href="#"><p><img src="../image/info.png" alt="[写真]" ></img></p>info</a></li>
-                </ul>
-            </div>
-        
-            <div class="notice">
-                <div class="box1">
-                    <p>お知らせ</p>
-                </div>
-        
-                <div class="box2">
-                    <p>お知らせ</p>
-                </div>
-            </div>
-        </div>
-        <!--ここまでhead-->
-        
-        <h2>学科追加</h2>
+        <ui:composition template="/templates/template.xhtml">
+            <ui:define name="title">ISAT - 学科登録</ui:define>
+            <ui:define name="content">
+                <h2>学科追加</h2>
         <h:form enctype="multipart/form-data">
             <h:outputLabel value="ファイルをアップロード"/><br/>
             <h:inputFile value="#{adminBean.file}"/><br/>
             <h:commandButton value="アップロード" action="#{adminBean.addDpt()}"/><br/>
         </h:form>
+            </ui:define>
+        </ui:composition>
     </h:body>
 </html>
 

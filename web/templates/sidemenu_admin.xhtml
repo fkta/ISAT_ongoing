@@ -1,0 +1,31 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <p:menu id="sidebar">
+                    <p:submenu label="データ一覧" icon="ui-icon-plusthick" styleClass="submenu">
+                        <p:menuitem value="学科" outcome="dptlist.xhtml"/>
+                        <p:menuitem value="秘密の質問" outcome="squlist.xhtml"/>
+                        <p:menuitem value="学生" outcome="udlist.xhtml"/>
+                        <p:menuitem value="カテゴリ" outcome="catlist.xhtml"/>
+                        <p:menuitem value="機能" outcome="srvlist.xhtml"/>
+                    </p:submenu>
+                    <p:submenu label="データ追加" icon="ui-icon-plusthick" styleClass="submenu">
+                        <p:menuitem value="学科" outcome="dptadd.xhtml"/>
+                        <p:menuitem value="秘密の質問" outcome="squadd.xhtml"/>
+                        <p:menuitem value="学生" outcome="udadd.xhtml"/>
+                        <p:menuitem value="カテゴリ" outcome="catadd.xhtml"/>
+                        <p:menuitem value="機能" outcome="srvadd.xhtml"/>
+                    </p:submenu>
+                </p:menu>
+        </ui:composition>
+    </h:body>
+</html>
+

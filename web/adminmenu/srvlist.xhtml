@@ -2,37 +2,36 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
-        <link rel="stylesheet" type="text/css" href="../css/mystyle.css"/>
     </h:head>
     <h:body>
         <ui:composition template="/templates/template.xhtml">
-            <ui:define name="title">ISAT - 秘密の質問 一覧</ui:define>
+            <ui:define name="title">ISAT - 機能 一覧</ui:define>
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable value="#{adminBean.allSqu}" var="s" rows="10"
+                    <p:dataTable value="#{adminBean.allSrv}" var="s" rows="10"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,20,30">
                         <f:facet name="header">
                             <p:outputPanel>
-                                <h:outputText value="秘密の質問" />
+                                <h:outputText value="機能" />
                             </p:outputPanel>
                         </f:facet>
                         
-                        <p:column headerText="質問id">
-                            <h:outputText value="#{s.questionId}"/>
+                        <p:column headerText="機能id">
+                            <h:outputText value="#{s.serviceId}"/>
                         </p:column>
 
-                        <p:column headerText="質問">
-                            <h:outputText value="#{s.question}"/>
+                        <p:column headerText="機能名">
+                            <h:outputText value="#{s.serviceName}"/>
                         </p:column>
                         <p:column>
-                            <h:commandButton value="削除" action="#{adminBean.squDelete(s)}"/>
+                            <h:commandButton value="削除" action="#{adminBean.srvDelete(s)}"/>
                         </p:column>
                     </p:dataTable>
                 </h:form>

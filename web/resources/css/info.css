@@ -1,0 +1,30 @@
+#info_dlg{
+    height: 1000px;
+    width: 500px;
+}
+
+#info_create_dlg_left{
+    float: left;
+    background-color: #ff4343;
+    width: 500px;
+    height: 100px;
+}
+
+#info_create_dlg_right{
+    float: left;
+    background-color: #2ec950;
+    width: 500px;
+    height: 100px;
+}
+
+#info_create_dlg_bottom{
+    width: 1000px;
+    height: 400px;
+    clear: both;
+    background-color: #2e5fc9;
+}
+
+#info_content{
+    width: 700px;
+    height: 200px;
+}

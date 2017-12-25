@@ -2,25 +2,23 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
-        <link rel="stylesheet" type="text/css" href="../css/mystyle.css"/>
     </h:head>
     <h:body>
         <ui:composition template="/templates/template.xhtml">
-            <ui:define name="title">ISAT - ユーザ 登録</ui:define>
+            <ui:define name="title">ISAT - カテゴリ追加</ui:define>
             <ui:define name="content">
-                <h2>ユーザ追加</h2>
+                <h2>カテゴリ追加</h2>
                 <h:form enctype="multipart/form-data">
-                    <h:outputLabel value="ファイルをアップロード"/><br/>
+                    <h:outputLabel value="csvファイルを選択してください。"/><br/>
                     <h:inputFile value="#{adminBean.file}"/><br/>
-                    <h:commandButton value="アップロード" action="#{adminBean.addUd()}"/><br/>
+                    <h:commandButton value="アップロード" action="#{adminBean.addCat()}"/><br/>
                 </h:form>
             </ui:define>
         </ui:composition>
-        
-        
     </h:body>
 </html>
 

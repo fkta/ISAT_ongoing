@@ -1,11 +1,15 @@
 package bean;
 
+import ejb.CategoryFacade;
 import ejb.DepartmentFacade;
 import ejb.SecretQuestionFacade;
+import ejb.ServiceFacade;
 import function.FileUpload;
 import ejb.UserDataFacade;
+import entity.Category;
 import entity.Department;
 import entity.SecretQuestion;
+import entity.Service;
 import entity.UserData;
 import function.CsvReader;
 import java.nio.file.Path;
@@ -24,7 +28,8 @@ public class AdminBean {
     private List<Department> dptList;
     private List<SecretQuestion> squList;
     private List<UserData> udList;
-    private List<UserData> filteredUd;
+    private List<Category> catList;
+    private List<Service> srvList;
 
     @EJB
     UserDataFacade udf;
@@ -32,6 +37,10 @@ public class AdminBean {
     DepartmentFacade df;
     @EJB
     SecretQuestionFacade sqf;
+    @EJB
+    CategoryFacade cf;
+    @EJB
+    ServiceFacade sf;
     
     @Inject
     AdminDataManager adm;
@@ -149,6 +158,74 @@ public class AdminBean {
         return null;
     }
     
+    /*Category関連 */
+    public String addCat(){
+        if(file != null){
+            if(file.getSubmittedFileName().endsWith(".csv")){
+                System.out.println("csvファイルを認識しました。");
+                upload();
+                CsvReader cr = new CsvReader();
+                adm.setCatList(cr.readCat(adm.getPath().toString()));
+                catList = adm.getCatList();
+                return "catconfirmation.xhtml";
+            }else{
+                System.out.println("csvファイルではありません。");
+                return null;
+            }
+        }else{
+            System.out.println("ファイルがありません");
+            return null;
+        }
+    }
+    
+    public String catCreate(){
+        catList = adm.getCatList();
+        for(int i = 0; i < catList.size(); i++){
+            Category cat = catList.get(i);
+            cf.create(cat);
+        }
+        return "dataaddmenu.xhtml";
+    }
+    
+    public String catDelete(Category cat){
+        cf.remove(cat);
+        return null;
+    }
+    
+    /* Service関連 */
+    public String addSrv(){
+        if(file != null){
+            if(file.getSubmittedFileName().endsWith(".csv")){
+                System.out.println("csvファイルを認識しました。");
+                upload();
+                CsvReader cr = new CsvReader();
+                adm.setSrvList(cr.readSrv(adm.getPath().toString()));
+                srvList = adm.getSrvList();
+                return "srvconfirmation.xhtml";
+            }else{
+                System.out.println("csvファイルではありません。");
+                return null;
+            }
+        }else{
+            System.out.println("ファイルがありません");
+            return null;
+        }
+    }
+    
+    public String srvCreate(){
+        srvList = adm.getSrvList();
+        for(int i = 0; i < srvList.size(); i++){
+            Service srv = srvList.get(i);
+            sf.create(srv);
+        }
+        return "dataaddmenu.xhtml";
+    }
+    
+    public String srvDelete(Service srv){
+        sf.remove(srv);
+        return null;
+    }
+    
     /* 登録済みデータのゲッター */    
     public List<Department> getAllDpt(){
         return df.findAll();
@@ -160,6 +237,14 @@ public class AdminBean {
     
     public List<UserData> getAllUd(){
         return udf.findAll();
+    }
+    
+    public List<Category> getAllCat(){
+        return cf.findAll();
+    }
+    
+    public List<Service> getAllSrv(){
+        return sf.findAll();
     }
         
     /* セッターゲッター */
@@ -197,12 +282,21 @@ public class AdminBean {
         this.udList = udList;
     }
 
-    public List<UserData> getFilteredUd() {
-        return filteredUd;
+    public List<Category> getCatList() {
+        return catList;
     }
 
-    public void setFilteredUd(List<UserData> filteredUd) {
-        this.filteredUd = filteredUd;
+    public void setCatList(List<Category> catList) {
+        this.catList = catList;
     }
+
+    public List<Service> getSrvList() {
+        return srvList;
+    }
+
+    public void setSrvList(List<Service> srvList) {
+        this.srvList = srvList;
+    }
+    
     
 }

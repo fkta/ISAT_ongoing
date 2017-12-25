@@ -6,6 +6,8 @@
     <h:head>
         <title>Facelet Title</title>
         <link rel="stylesheet" type="text/css" href="../css/mystyle.css"/>
+        <link rel="stylesheet" type="text/css" href="../css/general.css"/>
+        <h:outputStylesheet library="awesome" name="css/font-awesome.css"/>
     </h:head>
     <h:body>
         <!--ここからhead-->
@@ -51,8 +53,12 @@
         </div>
         <!--ここまでhead-->
         
-        <h2>データ一覧確認画面</h2>
-        <p:button  outcome="adminmenu.xhtml" icon="fa-star-half-o"/><br/>
+        <div id="content-header">
+            <p:button  outcome="adminmenu.xhtml" icon="fa fa-chevron-left" id="back-button"/>
+            <h2>データ一覧確認画面</h2>
+        </div>
+        
+        
         <h:link outcome="dptlist.xhtml" value="学科一覧"/><br/>
         <h:link outcome="squlist.xhtml" value="秘密の質問一覧"/><br/>
         <h:link outcome="udlist.xhtml" value="学生一覧"/><br/>

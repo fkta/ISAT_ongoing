@@ -1,17 +1,16 @@
 package function;
 
+import entity.Category;
 import entity.Department;
 import entity.SecretQuestion;
+import entity.Service;
 import entity.UserData;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
-import java.text.ParseException;
 
 public class CsvReader {
     public List<Department> readDpt(String path){
@@ -107,6 +106,56 @@ public class CsvReader {
                     ud.setPassword(token.nextToken());
                     list.add(ud);
                     System.out.println("point5");
+                }
+            }
+            br.close();
+            
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    /*Category*/
+    public List<Category> readCat(String path){
+        List<Category> list = new ArrayList<Category>();
+        try{
+            FileReader fr = new FileReader(path);
+            BufferedReader br = new BufferedReader(fr);
+            
+            String line;
+            StringTokenizer token;
+            while((line = br.readLine()) != null){
+                token = new StringTokenizer(line,",");
+                while(token.hasMoreTokens()){
+                    Category cat = new Category();
+                    cat.setCategoryName(token.nextToken());
+                    list.add(cat);
+                }
+            }
+            br.close();
+            
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+        return list;
+    }
+    
+    /*Service*/
+    public List<Service> readSrv(String path){
+        List<Service> list = new ArrayList<Service>();
+        try{
+            FileReader fr = new FileReader(path);
+            BufferedReader br = new BufferedReader(fr);
+            
+            String line;
+            StringTokenizer token;
+            while((line = br.readLine()) != null){
+                token = new StringTokenizer(line,",");
+                while(token.hasMoreTokens()){
+                    Service srv = new Service();
+                    srv.setServiceName(token.nextToken());
+                    list.add(srv);
                 }
             }
             br.close();
