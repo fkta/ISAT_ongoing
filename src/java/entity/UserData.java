@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -19,10 +14,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author glowo
- */
 @Entity
 @Table(name = "user_data")
 @XmlRootElement
@@ -37,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "UserData.findByUsertype", query = "SELECT u FROM UserData u WHERE u.usertype = :usertype")
     , @NamedQuery(name = "UserData.findByPassword", query = "SELECT u FROM UserData u WHERE u.password = :password")
     , @NamedQuery(name = "UserData.findByQanswer", query = "SELECT u FROM UserData u WHERE u.qanswer = :qanswer")
-    , @NamedQuery(name = "UserData.findByQanswer2", query = "SELECT u FROM UserData u WHERE u.qanswer2 = :qanswer2")})
+    , @NamedQuery(name = "UserData.findByQanswer2", query = "SELECT u FROM UserData u WHERE u.qanswer2 = :qanswer2")
+    , @NamedQuery(name = "UserData.authUser", query = "SELECT u FROM UserData u WHERE u.userId = :userId and u.password = :password")})
 public class UserData implements Serializable {
 
     private static final long serialVersionUID = 1L;

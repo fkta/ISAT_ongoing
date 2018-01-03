@@ -9,6 +9,7 @@ import entity.UserData;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -27,6 +28,11 @@ public class UserDataFacade extends AbstractFacade<UserData> {
 
     public UserDataFacade() {
         super(UserData.class);
+    }
+    
+    public UserData userAuth(String userId,String password){
+        TypedQuery<UserData> query = em.createNamedQuery("UserData.authUser",UserData.class).setParameter("userId", userId).setParameter("password", password);
+        return query.getSingleResult();
     }
     
 }

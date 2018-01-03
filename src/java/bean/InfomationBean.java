@@ -5,18 +5,21 @@ import ejb.InfoFacade;
 import entity.Category;
 import entity.Info;
 import entity.UserData;
+import function.ConvertedInfo;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.faces.model.SelectItemGroup;
+import javax.inject.Inject;
 
 @Named(value = "infomationBean")
 @RequestScoped
@@ -27,12 +30,15 @@ public class InfomationBean{
     private String priority;
     private String catItem;
     private List<SelectItem> term;
-    private String selectedTerm;
+    private Date selectedTerm;
+    private Boolean endDate;
     
     @EJB
     InfoFacade inf;
     @EJB
     CategoryFacade cf;
+    @Inject
+    InfoDataManager idm;
     
     @PostConstruct
     public void init(){
@@ -64,50 +70,70 @@ public class InfomationBean{
         this.content = null;
     }
     
+    public String transToDetail(){
+        getDetail();
+        return "infodetail.xhtml?faces-redirect=true";
+    }
+    
     public String addInfo() throws ParseException{
-        System.out.println("1 selectedTerm : "+selectedTerm);
-        System.out.println("1 content : "+content);
+        
+        /*System.out.println("1 content : "+content);
         System.out.println("1 catItem : "+catItem);
-        System.out.println("1 priority : "+priority);
+        System.out.println("1 priority : "+priority);*/
         
-        /* カレンダーの初期化 */
-        Calendar cal = termDecision();
+        // カレンダーの初期化
+        //Calendar cal = termDecision();
         
-        /* 日付書式の変換 */
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd hh:mm:ss");
+        // 日付書式の変換
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String timeManager;
+        System.out.println("selectedTerm : "+sdf.format(selectedTerm));
         
         //日付加算後の日時を代入
-        Date date = cal.getTime();
+//        Date date = cal.getTime();
+        if(endDate != false){
+            //終日
+            String convert = sdf.format(selectedTerm);
+            convert = convert.substring(0, 11);
+            selectedTerm = sdf.parse(convert.concat("23:59:59"));
+            System.out.println("終日term : "+convert.concat("23:59:59"));
+        }
         
         //変換処理開始
-        timeManager = sdf.format(date);
-        date = sdf.parse(timeManager);
-        
-        System.out.println("書式変更後のdate → "+date);
+        /*timeManager = sdf.format(date);
+        date = sdf.parse(timeManager);*/
         
         //現在時刻の取得 書式変換
         Date nowTime = new Date();
         timeManager = sdf.format(nowTime);
         nowTime = sdf.parse(timeManager);
         
+        //主キー作成用に書式を変更
+        sdf.applyPattern("yyyyMMddHHmmss");
         
-        /* カテゴリの設定 */
+        
+        // カテゴリの設定
         Category cat = new Category();
         cat.setCategoryId(Integer.parseInt(catItem));
         
-        /* 作成者の設定 */
+        // 作成者の設定
         Info info = new Info();
         UserData ud = new UserData();
         ud.setUserId("ad99999999");
         
         /* インスタンスの生成 */
-        info.setInfoId("inf"+"20171222162812");
+        info.setInfoId("inf"+sdf.format(new Date()));
         info.setTitle(title);
         info.setContent(content);
         info.setCategoryId(cat);
-        info.setInfotype("display");
-        info.setTerm(date);
+        if(ud.getUserId().startsWith("ad")){
+            //管理者ならinfotypeをdisplayにする
+            info.setInfotype("display");
+        }else if(ud.getUserId().startsWith("tc")){
+            //教師なら申請中にする
+            info.setInfotype("pending");
+        }
+        info.setTerm(selectedTerm);
         info.setCreateDate(nowTime);
         info.setPriority(priority);
         info.setUserId(ud);
@@ -115,7 +141,13 @@ public class InfomationBean{
         return null;
     }
     
-    public Calendar termDecision(){
+    public String deleteInfo(){
+        inf.remove(idm.getDetailData());
+        idm.clear();
+        return "info_list.xhtml?faces-redirect=true";
+    }
+    
+    /*public Calendar termDecision(){
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         System.out.println("2 selectedTerm : "+selectedTerm);
@@ -124,20 +156,50 @@ public class InfomationBean{
         if(selectedTerm.endsWith("w")){
             int time = Integer.parseInt(selectedTerm.substring(0, 1));
             cal.add(Calendar.WEEK_OF_YEAR, time);
+            System.out.println("time : "+time);
         }else if(selectedTerm.endsWith("m")){
             int time = Integer.parseInt(selectedTerm.substring(0, 1));
             cal.add(Calendar.MONTH, time);
+            System.out.println(time);
         }else{
             System.out.println("期間取得エラー");
         }
         
+        
         return cal;
         
-    }
+    }*/
     
     /* データの取得 */
-    public List<Info> getAllInfo() throws ParseException{;
-        return inf.findAllInfo();
+    public List<ConvertedInfo> getAllInfo() throws ParseException{
+        List<ConvertedInfo> convInfoList = new ArrayList<ConvertedInfo>();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        for(Info data : inf.findAllInfo()){
+            ConvertedInfo cInfo = new ConvertedInfo(
+                    data.getInfoId(),data.getTitle(),data.getContent(),
+                    sdf.format(data.getTerm()),sdf.format(data.getCreateDate()),
+                    data.getPriority(),data.getInfotype(),data.getCategoryId(),
+                    data.getUserId());
+            
+            convInfoList.add(cInfo);
+        }
+        return convInfoList;
+    }
+    
+    public void getDetail(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+        String param = params.get("detailId");
+        System.out.println("param : "+param);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+        Info dd = inf.findDetail(param);
+        ConvertedInfo convInfo = new ConvertedInfo(
+                dd.getInfoId(),dd.getTitle(),dd.getContent(),sdf.format(dd.getTerm()),
+                sdf.format(dd.getCreateDate()),dd.getPriority(),dd.getInfotype(),
+                dd.getCategoryId(),dd.getUserId());
+        
+        idm.setDetailData(inf.findDetail(param));
+        idm.setConvData(convInfo);
     }
     
     public List<Category> getAllCat(){
@@ -159,6 +221,7 @@ public class InfomationBean{
     }
 
     public void setContent(String content) {
+        content = content.replaceAll("\n","<br/>");
         this.content = content;
     }
 
@@ -194,13 +257,20 @@ public class InfomationBean{
         this.term = term;
     }
 
-    public String getSelectedTerm() {
+    public Date getSelectedTerm() {
         return selectedTerm;
     }
 
-    public void setSelectedTerm(String selectedTerm) {
+    public void setSelectedTerm(Date selectedTerm) {
         this.selectedTerm = selectedTerm;
     }
-    
-    
+
+    public Boolean getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Boolean endDate) {
+        this.endDate = endDate;
+    }
+
 }

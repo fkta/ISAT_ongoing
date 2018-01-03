@@ -36,13 +36,19 @@ public class InfoFacade extends AbstractFacade<Info> {
     
     public List<Info> findAllInfo() throws ParseException{
         Date dt = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/mm/dd hh:mm:ss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd hh:mm:ss");
         String fmt = sdf.format(dt);
         dt = sdf.parse(fmt);
+        
         TypedQuery<Info> query = em.createNamedQuery("Info.findInfo",Info.class).setParameter("now", dt);
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
         return query.getResultList();
+    }
+    
+    public Info findDetail(String infoId){
+        TypedQuery<Info> query = em.createNamedQuery("Info.findByInfoId",Info.class).setParameter("infoId", infoId);
+        return query.getSingleResult();
     }
     
 }

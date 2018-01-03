@@ -1,4 +1,9 @@
-#info_dlg{
+/*コンテンツを改行表示する*/
+.preformatted{
+    white-space: pre;
+}
+
+#info_createdlg{
     height: 1000px;
     width: 500px;
 }
