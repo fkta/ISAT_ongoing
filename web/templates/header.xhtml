@@ -21,9 +21,10 @@
 
                     <div class="right-head">
                         <h:form>
-                            <h:outputText value="#{userDataManager.user.name}"/><br/>
-                            <p:link outcome="/profile/profile.xhtml?faces-redirect=true">ProfileEdit</p:link><br/>
-                            <p:commandLink>Logout</p:commandLink>
+                            <p:menuButton value="#{userDataManager.user.name}">
+                                <p:menuitem value="Profile" action="#{managedBean.transProfilePage()}"/>
+                                <p:menuitem value="Logout" action="#{managedBean.logout()}"/>
+                            </p:menuButton>
                         </h:form>
                     </div>
                 </div>

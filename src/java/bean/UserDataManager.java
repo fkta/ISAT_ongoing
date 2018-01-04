@@ -9,6 +9,7 @@ import java.io.Serializable;
 @SessionScoped
 public class UserDataManager implements Serializable {
     private UserData user;
+    private String errorMessage;
     
     public void clear(){
         this.user = null;
@@ -21,5 +22,14 @@ public class UserDataManager implements Serializable {
     public void setUser(UserData user) {
         this.user = user;
     }
+
+    public String getErrorMessage() {
+        return errorMessage;
+    }
+
+    public void setErrorMessage(String errorMessage) {
+        this.errorMessage = errorMessage;
+    }
+    
     
 }

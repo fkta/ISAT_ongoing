@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package entity;
 
 import java.io.Serializable;
@@ -22,10 +17,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author glowo
- */
 @Entity
 @Table(name = "info")
 @XmlRootElement
@@ -37,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Info.findByTerm", query = "SELECT i FROM Info i WHERE i.term = :term")
     , @NamedQuery(name = "Info.findByPriority", query = "SELECT i FROM Info i WHERE i.priority = :priority")
     , @NamedQuery(name = "Info.findByInfotype", query = "SELECT i FROM Info i WHERE i.infotype = :infotype")
-    , @NamedQuery(name = "Info.findInfo", query = "SELECT i FROM Info i WHERE i.term >= :now and i.infotype = 'display'")})
+    , @NamedQuery(name = "Info.findInfo", query = "SELECT i FROM Info i WHERE i.term >= :now and i.infotype = 'display' or i.infotype = 'delete_pending'")})
 public class Info implements Serializable {
 
     private static final long serialVersionUID = 1L;

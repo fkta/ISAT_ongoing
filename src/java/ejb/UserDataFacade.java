@@ -6,6 +6,8 @@
 package ejb;
 
 import entity.UserData;
+import java.util.List;
+import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,9 +32,12 @@ public class UserDataFacade extends AbstractFacade<UserData> {
         super(UserData.class);
     }
     
-    public UserData userAuth(String userId,String password){
-        TypedQuery<UserData> query = em.createNamedQuery("UserData.authUser",UserData.class).setParameter("userId", userId).setParameter("password", password);
-        return query.getSingleResult();
+    public List<UserData> userAuth(String userId,String password){
+            TypedQuery<UserData> query = em.createNamedQuery("UserData.authUser",UserData.class).setParameter("userId", userId).setParameter("password", password);
+            query.setFirstResult(query.getFirstResult());
+            query.setMaxResults(query.getMaxResults());
+            return query.getResultList();
+        
     }
     
 }
