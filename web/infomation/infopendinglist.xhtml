@@ -12,34 +12,37 @@
         <ui:composition template="/templates/info_template.xhtml">
             <ui:define name="title">ISAT - info PendingList</ui:define>
             <ui:define name="content">
-                <p:dataTable value="#{infoDataManager.convPendData}" var="p" rows="10" styleClass="datatable"
-                                 paginator="true"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10,20,30">
-                    <f:facet name="header">
-                        <h:outputText value="申請一覧"/>
-                    </f:facet>
-                    
-                    <p:column headerText="インフォ名">
-                        <p:commandLink value="#{p.infTitle}" action="#{infomationBean.transToPendingDetail()}">
-                                <f:param name="detailId" value="#{p.infoId}"/>
-                                <f:param name="userId" value="#"
-                        </p:commandLink>
-                    </p:column>
-                    
-                    <p:column headerText="申請種別">
-                        <h:outputText value="#{p.pendCat}"/>
-                    </p:column>
-                    
-                    <p:column headerText="申請者">
-                        <h:outputText value="#{p.name}"/>
-                    </p:column>
-                    
-                    <p:column headerText="申請日時">
-                        <h:outputText value="#{p.postDate}"/>
-                    </p:column>
-                
-                </p:dataTable>
+                <h:form>
+                    <p:dataTable value="#{infomationBean.pendingData}" var="p" rows="10" styleClass="datatable"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,20,30">
+                        <f:facet name="header">
+                            <p:commandButton value="戻る" action="#{infomationBean.transToList()}" style="font-size: 14px;"/>
+                            <h:outputText value="申請一覧" style=""/>
+                        </f:facet>
+
+                        <p:column headerText="インフォ名">
+                            <p:commandLink value="#{p.infTitle}" action="#{infomationBean.transToPendingDetail()}">
+                                    <f:param name="detailId" value="#{p.infoId}"/>
+                                    <f:param name="userId" value="#{p.userId}"/>
+                            </p:commandLink>
+                        </p:column>
+
+                        <p:column headerText="申請種別">
+                            <h:outputText value="#{p.pendCat}"/>
+                        </p:column>
+
+                        <p:column headerText="申請者">
+                            <h:outputText value="#{p.name}"/>
+                        </p:column>
+
+                        <p:column headerText="申請日時">
+                            <h:outputText value="#{p.postDate}"/>
+                        </p:column>
+
+                    </p:dataTable>
+                </h:form>
             </ui:define>
         </ui:composition>
         

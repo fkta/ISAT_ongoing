@@ -82,14 +82,18 @@ public class InfomationBean{
     
     /* ページ遷移処理 */
     public String transToDetail(){
-        getDetail();
+        getDetail(paramGetInfoId());
         // ユーザ種別で遷移先を振り分ける
         if(udm.getUser().getUsertype().equals("admin")||
                 (udm.getUser().getUsertype().equals("teacher")&&
-                idm.getConvData().getUserId().equals(udm.getUser().getUserId()))){
-            return "infodetail.xhtml?faces-redirect=true";
+                idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId()))){
+            System.out.println("info_detail usertype : "+udm.getUser().getUsertype());
+            System.out.println("info_detail auth : "+idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId()));
+            return "infodetail_upper.xhtml?faces-redirect=true";
         }else if(udm.getUser().getUsertype().equals("teacher")||
                 udm.getUser().getUsertype().equals("student")){
+            System.out.println("info_detail usertype : "+udm.getUser().getUsertype());
+            System.out.println("info_detail auth : "+idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId()));
             return "infodetail.xhtml?faces-redirect=true";
         }else{
             System.out.println("ユーザ種別が不正です。");
@@ -101,8 +105,10 @@ public class InfomationBean{
     
     public String transToList(){
         if(udm.getUser().getUsertype().equals("admin")||udm.getUser().getUsertype().equals("teacher")){
+            System.out.println("インフォ一覧 userId : "+udm.getUser().getUsertype());
             return "infolist_upper.xhtml?faces-redirect=true";
         }else if(udm.getUser().getUsertype().equals("student")){
+            System.out.println("インフォ一覧 userId : "+udm.getUser().getUsertype());
             return "info_list.xhtml?faces-redirect=true";
         }else{
             System.out.println("ユーザ種別が不正です。");
@@ -112,26 +118,11 @@ public class InfomationBean{
     }
     
     public String transToPendList(){
-        System.out.println("識別ユーザタイプ : "+udm.getUser().getUsertype());
         switch (udm.getUser().getUsertype()) {
             case "admin":
-                System.out.println("申請リストへ遷移");
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-                List<Pending> pnd = getAllPend();
-                List<ConvertedPending> cPnd = new ArrayList<ConvertedPending>();
-                for(Pending d : pnd){
-                    Info info = inf.findDetail(d.getPendingPK().getInfoId());
-                    ConvertedPending cp = new ConvertedPending(info.getTitle(),
-                            udf.findUserId(d.getPendingPK().getUserId()).getName(),d.getPendingCategory(),
-                            sdf.format(d.getPostDate()),d.getPendingPK().getInfoId());
-                    cPnd.add(cp);
-                }
-                idm.setConvPendData(cPnd);
                 return "infopendinglist.xhtml?faces-redirect=true";
                 
             case "teacher":
-                System.out.println("申請リストへ遷移");
-                idm.setPendData(pf.findData(udm.getUser().getUserId()));
                 return "infopendinglist.xhtml?faces-redirect=true";
                 
             case "student":
@@ -146,13 +137,22 @@ public class InfomationBean{
     }
     
     public String transToPendingDetail(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+        String pendUserId = params.get("userId");
+        System.out.println("申請者id : "+pendUserId);
+        
+        String infoId = paramGetInfoId();
+        idm.setPendPK(new PendingPK(infoId,pendUserId));
+        idm.setPend(pf.findPKData(idm.getPendPK()).get(0));
+        
         switch(udm.getUser().getUsertype()){
             case "admin":
-                getDetail();
-                return "infopendingdetail_upper.xhtml?faces-redirect=true";
+                getDetail(infoId);
+               return "infopendingdetail_upper.xhtml?faces-redirect=true";
                 
             case "teacher":
-                getDetail();
+                getDetail(infoId);
                 return "infopendingdetail.xhtml?faces-redirect=true";
                 
             default:
@@ -223,15 +223,7 @@ public class InfomationBean{
             //教師なら申請中にする
             info.setInfotype("create_pending");
             
-            //申請情報の作成
-            PendingPK pndPK = new PendingPK(idm.getDetailData().getInfoId(),udm.getUser().getUserId());
-            Pending pnd = new Pending();
-            pnd.setPendingPK(pndPK);
-            pnd.setPendingCategory("create");
-            pnd.setPostDate(nowTime);
-            pnd.setReason("新規作成の申請です。");
-            pf.create(pnd);
-            System.out.println("create pending succesful");
+            
             
         }
         
@@ -240,6 +232,19 @@ public class InfomationBean{
         info.setPriority(priority);
         info.setUserId(ud);
         inf.create(info);
+        
+        if(ud.getUserId().startsWith("tc")){
+            //申請情報の作成
+            PendingPK pndPK = new PendingPK(info.getInfoId(),udm.getUser().getUserId());
+            Pending pnd = new Pending();
+            pnd.setPendingPK(pndPK);
+            pnd.setPendingCategory("create");
+            pnd.setPostDate(nowTime);
+            pnd.setReason("新規作成の申請です。");
+            pf.create(pnd);
+            System.out.println("create pending succesful");
+        }
+        
         return null;
     }
     
@@ -249,22 +254,59 @@ public class InfomationBean{
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         String param = params.get("decision");
         System.out.println("param : "+param);
-        
-        switch (param) {
+        List<Pending> pending = pf.findPKData(idm.getPendPK());
+        if(pending.size() > 0 && pending.get(0).getPendingCategory().startsWith("create")){
+            switch (param) {
             case "permit":
                 Info info = idm.getDetailData();
                 info.setInfotype("display");
                 inf.edit(info);
                 System.out.println("インフォ種別情報変更処理完了");
-                Pending pnd = new Pending(idm.getPendPK());
-                pf.remove(pnd);
+                //関連する申請データを削除する処理
+                for(Pending d : pending){
+                    pf.remove(d);
+                }
                 break;
-            case "rejectiton":
+                
+            case "rejection":
+                for(Pending d : pending){
+                    pf.remove(d);
+                }
                 break;
+                
             default:
                 System.out.println("値が不正です。");
                 break;
+            }
+            
+        }else if(pending.size() > 0 && pending.get(0).getPendingCategory().startsWith("delete")){
+            switch(param){
+                case "permit":
+                    inf.remove(idm.getDetailData());
+                    for(Pending d : pending){
+                    pf.remove(d);
+                    }
+                    break;
+                    
+                case "rejection":
+                    for(Pending d : pending){
+                    pf.remove(d);
+                    }
+                    break;
+                    
+                default:
+                    System.out.println("値が不正です。");
+                    break;
+            }
+            
+        }else{
+            
+            System.out.println("権限が不正な値です。update"+idm.getConvData().getInfotype());
+            System.out.println("userType : "+udm.getUser().getUsertype());
+            udm.setErrorMessage("セッションがタイムアウトしました　再度ログインしてください。");
+            return "/login/login.xhtml?faces-redirect=true";
         }
+        
         
         return "infopendinglist.xhtml?faces-redirect=true";
     }
@@ -277,7 +319,7 @@ public class InfomationBean{
             inf.remove(idm.getDetailData());
             idm.clear();
             return "infolist_upper.xhtml?faces-redirect=true";
-        }else if(udm.getUser().getUsertype().equals("teacher")&&idm.getConvData().getUserId().equals(udm.getUser().getUserId())){
+        }else if(udm.getUser().getUsertype().equals("teacher")&&idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId())){
             // 削除申請画面へ
             System.out.println("削除申請画面へ遷移");
             return "infodelrequest.xhtml?faces-redirect=true";
@@ -345,6 +387,14 @@ public class InfomationBean{
     }*/
     
     /* データの取得 */
+    public String paramGetInfoId(){
+        FacesContext fc = FacesContext.getCurrentInstance();
+        Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
+        String param = params.get("detailId");
+        System.out.println("param : "+param);
+        return param;
+    }
+    
     public List<ConvertedInfo> getAllInfo() throws ParseException{
         List<ConvertedInfo> convInfoList = new ArrayList<ConvertedInfo>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
@@ -360,11 +410,11 @@ public class InfomationBean{
         return convInfoList;
     }
     
-    public void getDetail(){
-        FacesContext fc = FacesContext.getCurrentInstance();
+    public void getDetail(String param){
+        /*FacesContext fc = FacesContext.getCurrentInstance();
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         String param = params.get("detailId");
-        System.out.println("param : "+param);
+        System.out.println("param : "+param);*/
         
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
         Info dd = inf.findDetail(param);
@@ -383,6 +433,48 @@ public class InfomationBean{
     
     public List<Pending> getAllPend(){
         return pf.findAll();
+    }
+    
+    public List<ConvertedPending> getPendingData(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        switch (udm.getUser().getUsertype()) {
+            case "admin":
+                System.out.println("申請データ取得");
+                //申請情報をすべて取得する
+                List<Pending> pnd = getAllPend();
+                List<ConvertedPending> cPnd = new ArrayList<ConvertedPending>();
+                //申請情報に基づき、インフォメーションの情報を取得する
+                for(Pending d : pnd){
+                    Info info = inf.findDetail(d.getPendingPK().getInfoId());
+                    ConvertedPending cp = new ConvertedPending(info.getTitle(),
+                            udf.findUserId(d.getPendingPK().getUserId()).getName(),d.getPendingCategory(),
+                            sdf.format(d.getPostDate()),d.getPendingPK().getInfoId(),d.getPendingPK().getUserId(),
+                            d.getReason());
+                    cPnd.add(cp);
+                }
+                idm.setConvPendData(cPnd);
+                return cPnd;
+                
+            case "teacher":
+                System.out.println("申請リストへ遷移");
+                List<Pending> pnd2 = pf.findData(udm.getUser().getUserId());
+                List<ConvertedPending> cPnd2 = new ArrayList<ConvertedPending>();
+                //申請情報に基づき、インフォメーションの情報を取得する
+                for(Pending d : pnd2){
+                    Info info = inf.findDetail(d.getPendingPK().getInfoId());
+                    ConvertedPending cp = new ConvertedPending(info.getTitle(),
+                            udf.findUserId(d.getPendingPK().getUserId()).getName(),d.getPendingCategory(),
+                            sdf.format(d.getPostDate()),d.getPendingPK().getInfoId(),d.getPendingPK().getUserId(),
+                            d.getReason());
+                    cPnd2.add(cp);
+                }
+                idm.setConvPendData(cPnd2);
+                return cPnd2;
+            default:
+                System.out.println("ユーザ種別が不正です。");
+                udm.setErrorMessage("セッションがタイムアウトしました　再度ログインしてください。");
+                return null;
+        }
     }
     
     /*セッターゲッター*/

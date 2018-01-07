@@ -33,7 +33,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Pending.findByUserId", query = "SELECT p FROM Pending p WHERE p.pendingPK.userId = :userId")
     , @NamedQuery(name = "Pending.findByReason", query = "SELECT p FROM Pending p WHERE p.reason = :reason")
     , @NamedQuery(name = "Pending.findByPendingCategory", query = "SELECT p FROM Pending p WHERE p.pendingCategory = :pendingCategory")
-    , @NamedQuery(name = "Pending.findByPostDate", query = "SELECT p FROM Pending p WHERE p.postDate = :postDate")})
+    , @NamedQuery(name = "Pending.findByPostDate", query = "SELECT p FROM Pending p WHERE p.postDate = :postDate")
+    , @NamedQuery(name = "Pending.findByPK", query = "SELECT p FROM Pending p WHERE p.pendingPK.infoId = :infoId and p.pendingPK.userId = :userId")})
 public class Pending implements Serializable {
 
     private static final long serialVersionUID = 1L;

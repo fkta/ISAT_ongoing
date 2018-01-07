@@ -6,13 +6,17 @@ public class ConvertedPending {
     private String pendCat;
     private String postDate;
     private String infoId;
+    private String userId;
+    private String reason;
 
-    public ConvertedPending(String infTitle, String Name, String pendCat, String postDate, String infoId) {
+    public ConvertedPending(String infTitle, String Name, String pendCat, String postDate, String infoId, String userId, String reason) {
         this.infTitle = infTitle;
         this.Name = Name;
         this.pendCat = pendCat;
         this.postDate = postDate;
         this.infoId = infoId;
+        this.userId = userId;
+        this.reason = reason;
         
     }
 
@@ -54,6 +58,22 @@ public class ConvertedPending {
 
     public void setInfoId(String infoId) {
         this.infoId = infoId;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getReason() {
+        return reason;
+    }
+
+    public void setReason(String reason) {
+        this.reason = reason;
     }
     
 }

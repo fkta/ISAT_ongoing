@@ -1,6 +1,7 @@
 package ejb;
 
 import entity.Pending;
+import entity.PendingPK;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -27,6 +28,23 @@ public class PendingFacade extends AbstractFacade<Pending> {
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
         return query.getResultList();
+    }
+    
+    public List<Pending> findUpdateData(String infoId){
+        TypedQuery<Pending> query = em.createNamedQuery("Pending.findByInfoId",Pending.class).setParameter("infoId", infoId);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
+        
+    }
+    
+    public List<Pending> findPKData(PendingPK penPK){
+        TypedQuery<Pending> query = em.createNamedQuery("Pending.findByPK",Pending.class).setParameter("infoId", penPK.getInfoId());
+        query.setParameter("userId", penPK.getUserId());
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
+        
     }
     
 }

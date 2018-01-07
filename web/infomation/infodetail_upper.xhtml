@@ -22,7 +22,9 @@
                     <h:outputText value="#{infoDataManager.convData.content}" escape=""/>
                 </div>
                 <div id="info_detail_footer">
-                    <h:commandLink action="#{infomationBean.transToList()}">インフォメーション一覧へ戻る</h:commandLink>
+                    <h:form>
+                        <h:commandLink action="#{infomationBean.transToList()}">インフォメーション一覧へ戻る</h:commandLink>
+                    </h:form>
                 </div>
             </ui:define>
         </ui:composition>

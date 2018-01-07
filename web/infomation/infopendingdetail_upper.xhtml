@@ -10,13 +10,19 @@
     </h:head>
     <h:body>
         <ui:composition template="/templates/info_template.xhtml">
-        <ui:define name="title">ISAT - INFO Detail</ui:define>
+        <ui:define name="title">ISAT - INFO PendingDetail</ui:define>
             <ui:define name="content">
                 <div id="info_detail_header">
-                    <h:form>
-                        <h:outputLabel for="info_detail_header_title" value="#{infoDataManager.convData.createDate}"/>
-                        <h1 id="info_detail_header_title">#{infoDataManager.convData.title}</h1>
-                    </h:form>
+                    <div>
+                        <h:form>
+                            <h:outputLabel for="info_detail_header_title" value="#{infoDataManager.convData.createDate}"/>
+                            <h:outputText value="#{infoDataManager.convData.userId.name}"/>
+                        </h:form>
+                    </div>
+                    <div>
+                        <h:outputText value="#{infoDataManager.pend.reason}"/>
+                    </div>
+                    <h2 id="info_detail_header_title">#{infoDataManager.convData.title}</h2>
                 </div>
                 <div id="info_detail_content">
                     <!--styleClass="preformatted"-->
@@ -26,7 +32,7 @@
                     <h:form>
                         <h:link outcome="infopendinglist.xhtml?faces-redirect=true"
                                 style="float: left">
-                            インフォメーション一覧へ戻る
+                            申請一覧へ戻る
                         </h:link>
                         <span style="float: right; margin-right: 30px;">
                             <p:commandButton value="許可" action="#{infomationBean.pendUpdate()}">

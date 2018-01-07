@@ -16,7 +16,9 @@
                     </div>
 
                     <div class="center-head">
-                        <h1 class="title">スレッド作成</h1>
+                        <h1 class="title">
+                            <ui:insert name="pagename"/>
+                        </h1>
                     </div>
 
                     <div class="right-head">
@@ -30,16 +32,18 @@
                 </div>
 
                 <div class="nav">
-                    <ul>
-                        <li><h:link><h:graphicImage url="/resources/image/bulletinboard.png"/>掲示板</h:link></li>
-                        <li><h:graphicImage url="/resources/image/schedule.png"/>スケジュール</li>
-                        <li><a href="#"><p><h:graphicImage url="/resources/image/questionnaire.png"/></p>アンケート</a></li>
-                        <li><a href="#"><p><h:graphicImage url="/resources/image/transmit.png"/></p>伝達</a></li>
-                        <li><a href="#"><p><h:graphicImage url="/resources/image/todo.jpg"/></p>ToDo</a></li>
-                        <li><a href="#"><p><h:graphicImage url="/resources/image/notice.png"/></p>受信BOX</a></li>
-                        <li><h:link outcome="/infomation/info_list.xhtml"><h:graphicImage url="/resources/image/info.png"/>info</h:link></li>
-                        <li><h:link outcome="/adminmenu/adminmenu.xhtml">管理者メニュー</h:link></li>
-                    </ul>
+                    <h:form>
+                        <ul>
+                            <li><h:link><h:graphicImage url="/resources/image/bulletinboard.png"/>掲示板</h:link></li>
+                            <li><h:graphicImage url="/resources/image/schedule.png"/>スケジュール</li>
+                            <li><a href="#"><p><h:graphicImage url="/resources/image/questionnaire.png"/></p>アンケート</a></li>
+                            <li><a href="#"><p><h:graphicImage url="/resources/image/transmit.png"/></p>伝達</a></li>
+                            <li><a href="#"><p><h:graphicImage url="/resources/image/todo.jpg"/></p>ToDo</a></li>
+                            <li><a href="#"><p><h:graphicImage url="/resources/image/notice.png"/></p>受信BOX</a></li>
+                            <li><h:commandLink action="#{infomationBean.transToList()}"><h:graphicImage url="/resources/image/info.png"/>info</h:commandLink></li>
+                            <li><h:link outcome="/adminmenu/adminmenu.xhtml">管理者メニュー</h:link></li>
+                        </ul>
+                    </h:form>
                 </div>
 
                 <div class="notice">
