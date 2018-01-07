@@ -2,22 +2,40 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title>ISAT - ログイン</title>
+        <title>ISAT - LoginPages</title>
+        <h:outputStylesheet library="css" name="login.css"/>
     </h:head>
     <h:body>
-        <h:outputText value="#{userDataManager.errorMessage}"/><br/>
-        <h:form>
-            <h:outputLabel for="login_userid" value="ユーザID : "/>
-            <p:inputText id="login_userid" value="#{managedBean.userId}" required="true"/><br/>
-            <h:outputLabel for="login_password" value="パスワード : "/>
-            <p:password id="login_password" value="#{managedBean.password}" required="true" requiredMessage="入力必須"/><br/>
-            <p:commandButton action="#{managedBean.userAuth()}" value="Login">
-                <f:ajax render="@all"/>
-            </p:commandButton>
-        </h:form>
+        <div class="left-box-1">
+            <h1>ISAT</h1>
+            <h:graphicImage url="/resources/image/wintosh_logo.png" styleClass="example1"/>
+            <h3>-Integration Student Assist Tool-</h3>
+            
+            <div class="left-box-2" style="text-align: center;padding-top: 20px">
+                <h:outputText value="ログイン" style="font-size: 30px; font-weight: bold;"/>
+                <div id="content">
+                    <h:form id="form">
+                        <h:outputText id="error_mes" value="#{managedBean.errorMessage}" rendered="true"/>
+                        
+                        <p:outputLabel for="number" value="ID:"/>
+                        <p:inputText id="number" value="#{managedBean.userId}" placeholder="10桁" style="margin-right: 20px;"/><br />
+
+                        <p:outputLabel for="pwd" value="Pass:"/>
+                        <p:password id="pwd" value="#{managedBean.password}" style="margin-top: 10px;
+                                                                            margin-right: 20px;"/><br />
+                        <p:commandButton action="#{managedBean.userAuth()}" value="Login" 
+                                         style="width:100px; height:30px; font-size:15px; margin-right: 20px;
+                                         margin-top: 10px">
+                            <f:ajax execute="@all" render=":form:error_mes"/>
+                        </p:commandButton>
+                        
+                        
+                    </h:form>
+                </div>
+            </div>
+        </div>  
     </h:body>
 </html>
-

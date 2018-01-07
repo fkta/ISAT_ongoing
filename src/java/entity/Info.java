@@ -28,7 +28,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Info.findByTerm", query = "SELECT i FROM Info i WHERE i.term = :term")
     , @NamedQuery(name = "Info.findByPriority", query = "SELECT i FROM Info i WHERE i.priority = :priority")
     , @NamedQuery(name = "Info.findByInfotype", query = "SELECT i FROM Info i WHERE i.infotype = :infotype")
-    , @NamedQuery(name = "Info.findInfo", query = "SELECT i FROM Info i WHERE i.term >= :now and i.infotype = 'display' or i.infotype = 'delete_pending'")})
+    , @NamedQuery(name = "Info.findInfo", query = "SELECT i FROM Info i WHERE i.term >= :now and i.infotype = 'display' or i.infotype = 'delete_pending'")
+    , @NamedQuery(name = "Info.findByUserId", query = "SELECT i FROM Info i WHERE i.userId.userId = :userId")})
 public class Info implements Serializable {
 
     private static final long serialVersionUID = 1L;

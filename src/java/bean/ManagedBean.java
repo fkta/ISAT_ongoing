@@ -29,12 +29,24 @@ public class ManagedBean {
     
     /* ユーザ認証処理 */
     public String userAuth(){
+        System.out.println("ユーザ認証開始");
         List<UserData> ud = udf.userAuth(userId, password);
         if(!ud.isEmpty()){
             udm.setUser(ud.get(0));
-            return "/infomation/info_list.xhtml?faces-redirect=true";
+            if(udm.getUser().getUsertype().equals("admin")||udm.getUser().getUsertype().equals("teacher")){
+                return "/infomation/infolist_upper.xhtml?faces-redirect=true";
+            }else if(udm.getUser().getUsertype().equals("student")){
+                return "/infomation/info_list.xhtml?faces-redirect=true";
+            }else{
+                errorMessage = "ユーザIDもしくはパスワードが間違っています2";
+                System.out.println("input data user id :"+userId + "password : "+password);
+                System.out.println("errorMessage : " + errorMessage);
+                return null;
+            }
+            
         }else{
             errorMessage = "ユーザIDもしくはパスワードが間違っています";
+            System.out.println("input data user id :"+userId + "password : "+password);
             System.out.println("errorMessage : " + errorMessage);
             return null;
        }

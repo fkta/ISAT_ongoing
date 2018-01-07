@@ -6,10 +6,14 @@
 package bean;
 
 import entity.Info;
+import entity.Pending;
+import entity.PendingPK;
 import function.ConvertedInfo;
+import function.ConvertedPending;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
 
 @Named(value = "infoDataManager")
 @SessionScoped
@@ -17,6 +21,9 @@ public class InfoDataManager implements Serializable {
 
     private Info detailData;
     private ConvertedInfo convData;
+    private List<Pending> pendData;
+    private List<ConvertedPending> convPendData;
+    private PendingPK pendPK;
     
     public void clear(){
         this.convData = null;
@@ -38,7 +45,29 @@ public class InfoDataManager implements Serializable {
     public void setConvData(ConvertedInfo convData) {
         this.convData = convData;
     }
-    
-    
+
+    public List<Pending> getPendData() {
+        return pendData;
+    }
+
+    public void setPendData(List<Pending> pendData) {
+        this.pendData = pendData;
+    }
+
+    public List<ConvertedPending> getConvPendData() {
+        return convPendData;
+    }
+
+    public void setConvPendData(List<ConvertedPending> convPendData) {
+        this.convPendData = convPendData;
+    }
+
+    public PendingPK getPendPK() {
+        return pendPK;
+    }
+
+    public void setPendPK(PendingPK pendPK) {
+        this.pendPK = pendPK;
+    }
     
 }

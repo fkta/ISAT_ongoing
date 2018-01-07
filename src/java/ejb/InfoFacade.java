@@ -51,4 +51,11 @@ public class InfoFacade extends AbstractFacade<Info> {
         return query.getSingleResult();
     }
     
+    public List<Info> findUser(String userId){
+        TypedQuery<Info> query = em.createNamedQuery("Info.findByUserId",Info.class).setParameter("userId", userId);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
+    }
+    
 }

@@ -7,8 +7,7 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templates/info_template.xhtml">
-            <ui:define name="title">ISAT - INFO Detail</ui:define>
+        <ui:define name="title">ISAT - INFO Detail</ui:define>
             <ui:define name="content">
                 <div id="info_detail_header">
                     <h:form>
@@ -22,7 +21,7 @@
                 </div>
                 <div id="info_detail_footer">
                     <h:form>
-                        <h:commandLink action="#{infomationBean.transToList}">インフォメーション一覧へ戻る</h:commandLink>
+                        <h:link outcome="infopendinglist.xhtml?faces-redirect=true">インフォメーション一覧へ戻る</h:link>
                     </h:form>
                 </div>
             </ui:define>

@@ -2,13 +2,15 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body>
         <ui:composition template="/templates/info_template.xhtml">
-            <ui:define name="title">ISAT - INFO Detail</ui:define>
+        <ui:define name="title">ISAT - INFO Detail</ui:define>
             <ui:define name="content">
                 <div id="info_detail_header">
                     <h:form>
@@ -22,7 +24,19 @@
                 </div>
                 <div id="info_detail_footer">
                     <h:form>
-                        <h:commandLink action="#{infomationBean.transToList}">インフォメーション一覧へ戻る</h:commandLink>
+                        <h:link outcome="infopendinglist.xhtml?faces-redirect=true"
+                                style="float: left">
+                            インフォメーション一覧へ戻る
+                        </h:link>
+                        <span style="float: right; margin-right: 30px;">
+                            <p:commandButton value="許可" action="#{infomationBean.pendUpdate()}">
+                                <f:param name="decision" value="permit"/>
+                            </p:commandButton>
+
+                            <p:commandButton value="却下" style="margin-left: 20px;" action="#{infomationBean.pendUpdate()}">
+                                <f:param name="decision" value="rejection"/>
+                            </p:commandButton>
+                        </span>
                     </h:form>
                 </div>
             </ui:define>

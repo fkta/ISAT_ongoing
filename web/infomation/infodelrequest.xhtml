@@ -8,12 +8,12 @@
         <title>Facelet Title</title>
     </h:head>
     <h:body>
-        <ui:composition template="/templetes/info_template.xhtml">
+        <ui:composition template="/templates/info_template.xhtml">
             <ui:define name="title">ISAT - 削除申請</ui:define>
             <ui:define name="content">
                 <div id="info_deleterequest_content">
                     <h:form>
-                        <h:outputText value="#{infoDataManager.convData.title}"/>
+                        <h:outputText value="#{infoDataManager.convData.title}"/><br/>
                         <p:inputTextarea value="#{infomationBean.delReason}" autoResize="false" maxlength="200"
                                              scrollHeight="100" style="width: 900px;height: 300px"/>
                         <p:commandButton action="#{infomationBean.deleteRequest()}" value="申請"/>

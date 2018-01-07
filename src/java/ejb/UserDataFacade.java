@@ -7,7 +7,6 @@ package ejb;
 
 import entity.UserData;
 import java.util.List;
-import javax.ejb.EJBException;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -38,6 +37,11 @@ public class UserDataFacade extends AbstractFacade<UserData> {
             query.setMaxResults(query.getMaxResults());
             return query.getResultList();
         
+    }
+    
+    public UserData findUserId(String userId){
+        TypedQuery<UserData> query = em.createNamedQuery("UserData.findByUserId",UserData.class).setParameter("userId", userId);
+        return query.getSingleResult();
     }
     
 }

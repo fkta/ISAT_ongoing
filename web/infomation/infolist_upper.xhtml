@@ -18,6 +18,7 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,20,30">
                         <f:facet name="header">
+                            <p:commandButton value="申請一覧" action="#{infomationBean.transToPendList()}"/>
                             <p:outputLabel value="掲示一覧"/>
                             <p:commandButton value="新規登録" onclick="PF('create_dlg').show();"/>
                         </f:facet>
