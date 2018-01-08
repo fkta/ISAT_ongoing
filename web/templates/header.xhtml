@@ -24,7 +24,7 @@
                     <div class="right-head">
                         <h:form>
                             <p:menuButton value="#{userDataManager.user.name}">
-                                <p:menuitem value="Profile" action="#{managedBean.transProfilePage()}"/>
+                                <p:menuitem value="Profile" outcome="#{managedBean.transProfilePage()}"/>
                                 <p:menuitem value="Logout" action="#{managedBean.logout()}"/>
                             </p:menuButton>
                         </h:form>
@@ -40,7 +40,7 @@
                             <li><a href="#"><p><h:graphicImage url="/resources/image/transmit.png"/></p>伝達</a></li>
                             <li><a href="#"><p><h:graphicImage url="/resources/image/todo.jpg"/></p>ToDo</a></li>
                             <li><a href="#"><p><h:graphicImage url="/resources/image/notice.png"/></p>受信BOX</a></li>
-                            <li><h:commandLink action="#{infomationBean.transToList()}"><h:graphicImage url="/resources/image/info.png"/>info</h:commandLink></li>
+                            <li><h:commandLink action="#{managedBean.transToInfoList()}"><h:graphicImage url="/resources/image/info.png"/>info</h:commandLink></li>
                             <li><h:link outcome="/adminmenu/adminmenu.xhtml">管理者メニュー</h:link></li>
                         </ul>
                     </h:form>

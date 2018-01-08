@@ -53,6 +53,7 @@ public class InfomationBean{
     
     @PostConstruct
     public void init(){
+        System.out.println("");
         List<Category> catList;
         catList = getAllCat();
         category = new ArrayList<SelectItem>();
@@ -263,7 +264,7 @@ public class InfomationBean{
                 inf.edit(info);
                 System.out.println("インフォ種別情報変更処理完了");
                 //関連する申請データを削除する処理
-                for(Pending d : pending){
+               for(Pending d : pending){
                     pf.remove(d);
                 }
                 break;
@@ -311,6 +312,23 @@ public class InfomationBean{
         return "infopendinglist.xhtml?faces-redirect=true";
     }
     
+    public String pendUpdate_lower(){
+        List<Pending> pending = pf.findPKData(idm.getPendPK());
+        for(Pending d : pending){
+            if(d.getPendingCategory().equals("create")){
+                inf.remove(idm.getDetailData());
+            }else if(d.getPendingCategory().equals("delete")){
+                pf.remove(d);
+            }else{
+                System.out.println("権限が不正な値です。update"+idm.getConvData().getInfotype());
+                System.out.println("userType : "+udm.getUser().getUsertype());
+                udm.setErrorMessage("セッションがタイムアウトしました　再度ログインしてください。");
+                return "/login/login.xhtml?faces-redirect=true";
+            }
+        }
+        return "infopendinglist.xhtml?faces-redirect=true";
+    }
+    
     /* 削除 */
     public String deleteInfo(){
         // 権限の確認
@@ -338,8 +356,8 @@ public class InfomationBean{
     public String deleteRequest() throws ParseException{
         Info target = idm.getDetailData();
         // 申請種別を削除申請中に変更
-        target.setInfotype("delete_pending");
-        inf.edit(target);
+        /*target.setInfotype("delete_pending");
+        inf.edit(target);*/
         PendingPK pndPK = new PendingPK(idm.getDetailData().getInfoId(),udm.getUser().getUserId());
         Pending pnd = new Pending();
         pnd.setPendingPK(pndPK);
@@ -432,7 +450,7 @@ public class InfomationBean{
     }
     
     public List<Pending> getAllPend(){
-        return pf.findAll();
+        return pf.findAllPending();
     }
     
     public List<ConvertedPending> getPendingData(){

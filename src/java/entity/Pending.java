@@ -28,7 +28,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Table(name = "pending")
 @XmlRootElement
 @NamedQueries({
-    @NamedQuery(name = "Pending.findAll", query = "SELECT p FROM Pending p")
+    @NamedQuery(name = "Pending.findAll", query = "SELECT p FROM Pending p order by p.postDate desc")
     , @NamedQuery(name = "Pending.findByInfoId", query = "SELECT p FROM Pending p WHERE p.pendingPK.infoId = :infoId")
     , @NamedQuery(name = "Pending.findByUserId", query = "SELECT p FROM Pending p WHERE p.pendingPK.userId = :userId")
     , @NamedQuery(name = "Pending.findByReason", query = "SELECT p FROM Pending p WHERE p.reason = :reason")

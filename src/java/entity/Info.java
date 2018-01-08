@@ -22,13 +22,13 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Info.findAll", query = "SELECT i FROM Info i")
-    , @NamedQuery(name = "Info.findByInfoId", query = "SELECT i FROM Info i WHERE i.infoId = :infoId")
+    , @NamedQuery(name = "Info.findByInfoId", query = "SELECT i FROM Info i WHERE i.infoId = :infoId order by i.term desc")
     , @NamedQuery(name = "Info.findByTitle", query = "SELECT i FROM Info i WHERE i.title = :title")
     , @NamedQuery(name = "Info.findByContent", query = "SELECT i FROM Info i WHERE i.content = :content")
     , @NamedQuery(name = "Info.findByTerm", query = "SELECT i FROM Info i WHERE i.term = :term")
     , @NamedQuery(name = "Info.findByPriority", query = "SELECT i FROM Info i WHERE i.priority = :priority")
     , @NamedQuery(name = "Info.findByInfotype", query = "SELECT i FROM Info i WHERE i.infotype = :infotype")
-    , @NamedQuery(name = "Info.findInfo", query = "SELECT i FROM Info i WHERE i.term >= :now and i.infotype = 'display' or i.infotype = 'delete_pending'")
+    , @NamedQuery(name = "Info.findInfo", query = "SELECT i FROM Info i WHERE i.term >= :now and i.infotype = 'display' or i.infotype = 'delete_pending' order by i.term desc")
     , @NamedQuery(name = "Info.findByUserId", query = "SELECT i FROM Info i WHERE i.userId.userId = :userId")})
 public class Info implements Serializable {
 

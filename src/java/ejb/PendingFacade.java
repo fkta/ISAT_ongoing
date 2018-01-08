@@ -23,6 +23,14 @@ public class PendingFacade extends AbstractFacade<Pending> {
         super(Pending.class);
     }
     
+    public List<Pending> findAllPending(){
+        TypedQuery<Pending> query = em.createNamedQuery("Pending.findAll",Pending.class);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
+        
+    }
+    
     public List<Pending> findData(String userId){
         TypedQuery<Pending> query = em.createNamedQuery("Pending.findByUserId",Pending.class).setParameter("userId", userId);
         query.setFirstResult(query.getFirstResult());
