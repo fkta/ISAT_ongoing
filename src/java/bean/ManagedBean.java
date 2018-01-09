@@ -1,17 +1,19 @@
 package bean;
 
+import ejb.SecretQuestionFacade;
 import ejb.UserDataFacade;
+import entity.SecretQuestion;
 import entity.UserData;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -24,15 +26,29 @@ public class ManagedBean {
     private String errorMessage;
     private boolean nicknameToggle;
     private String nickname;
+    private List<SelectItem> secretQuestions;
+    private SecretQuestion sqItem;
+    private String sqAnswer;
     
     @EJB
     UserDataFacade udf;
+    @EJB
+    SecretQuestionFacade sqf;
     @Inject
     UserDataManager udm;
-    
+          
     @PostConstruct
     public void init(){
         nicknameToggle = false;
+        
+        List<SecretQuestion> sqList;
+        sqList = sqf.findAll();
+        secretQuestions = new ArrayList<SelectItem>();
+        for(SecretQuestion sq : sqList){
+            SelectItem item = new SelectItem(sq.getQuestionId().toString(),sq.getQuestion());
+            secretQuestions.add(item);
+            
+        }
     }
     
     /* ユーザ認証処理 */
@@ -123,6 +139,17 @@ public class ManagedBean {
             getNickname();
         }
     }
+    
+    public void updateSecretQuestion(){
+        System.out.println("sqItem : "+sqItem+" sqAnswer : "+sqAnswer);
+        UserData ud = udm.getUser();
+        ud.setQuestionId(sqItem);
+        ud.setQanswer(sqAnswer);
+        udf.edit(ud);
+        udm.setUser(ud);
+        System.out.println("秘密の質問を更新しました 質問 : "+udm.getUser().getQuestionId().getQuestion());
+        System.out.println("答え : "+udm.getUser().getQanswer());
+    }
         
        
     /* 値の初期化 */
@@ -201,6 +228,32 @@ public class ManagedBean {
     public void setNickname(String nickname){
         System.out.println("setnickname : "+nickname);
         this.nickname = nickname;
+    }
+
+    public List<SelectItem> getSecretQuestions() {
+        return secretQuestions;
+    }
+
+    public void setSecretQuestions(List<SelectItem> secretQuestions) {
+        this.secretQuestions = secretQuestions;
+    }
+
+    public SecretQuestion getSqItem() {
+        return sqItem;
+    }
+
+    public void setSqItem(SecretQuestion sqItem) {
+        System.out.println("setSqItem : "+sqItem);
+        this.sqItem = sqItem;
+    }
+
+    public String getSqAnswer() {
+        return sqAnswer;
+    }
+
+    public void setSqAnswer(String sqAnswer) {
+        System.out.println("setSqAnswer : "+sqAnswer);
+        this.sqAnswer = sqAnswer;
     }
     
 }

@@ -83,7 +83,11 @@
                             
                             <p:row>
                                 <p:column colspan="3">秘密の質問</p:column>
-                                <p:column><h:commandButton value="設定"/></p:column>
+                                        <p:column>
+                                            <h:commandButton value="設定" onclick="PF('sq_edit_dlg').show();">
+                                                <p:ajax process="@this"/>
+                                            </h:commandButton>
+                                        </p:column>
                             </p:row>
                             
                             <p:row>
@@ -111,6 +115,23 @@
                         </p:panelGrid>
                     </h:form>
                 </div>
+                
+                <p:dialog header="秘密の質問設定" widgetVar="sq_edit_dlg" id="profile_sq_edit_dlg" modal="true">
+                    <div>
+                        <p:selectOneMenu id="sqItem" value="#{managedBean.sqItem}">
+                            <f:selectItem itemLabel="質問を選択" itemValue="">
+                            </f:selectItem>
+                            
+                            <f:selectItems value="#{managedBean.secretQuestions}">
+                            </f:selectItems>
+                            
+                        </p:selectOneMenu><br/>
+                        <p:inputText id="sqAnswer" value="#{managedBean.sqAnswer}" size="30"/>
+                        <p:commandButton value="変更" actionListener="#{managedBean.updateSecretQuestion()}">
+                            <p:ajax process="profile_sq_edit_dlg"/>
+                        </p:commandButton>
+                    </div>
+                </p:dialog>
                 
             </ui:define>
         </ui:composition>

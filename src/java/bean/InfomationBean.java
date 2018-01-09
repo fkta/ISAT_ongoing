@@ -53,7 +53,6 @@ public class InfomationBean{
     
     @PostConstruct
     public void init(){
-        System.out.println("");
         List<Category> catList;
         catList = getAllCat();
         category = new ArrayList<SelectItem>();
