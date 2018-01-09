@@ -150,7 +150,11 @@ public class ManagedBean {
         System.out.println("秘密の質問を更新しました 質問 : "+udm.getUser().getQuestionId().getQuestion());
         System.out.println("答え : "+udm.getUser().getQanswer());
     }
-        
+    
+    /* スケジュール関連 */
+        public String transToSchedule(){
+            return "/schedule/schedule.xhtml?faces-redirect=true";
+        }
        
     /* 値の初期化 */
     public void clear(){

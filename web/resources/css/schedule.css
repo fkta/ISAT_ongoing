@@ -1,0 +1,16 @@
+#schedule_left_content{
+    width: 30%;
+    background-color: pink;
+    float: left;
+}
+
+#schedule_right_content{
+    width: 70%;
+    background-color: mistyrose;
+    float: left;
+    
+}
+
+#schedule_delete_form{
+    text-align: right;
+}

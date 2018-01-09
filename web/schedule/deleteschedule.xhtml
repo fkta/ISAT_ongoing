@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/schedule_template.xhtml">
+            <ui:define name="title">ISAT - delete Schedule</ui:define>
+            <ui:define name="content">
+                <h:form>
+                    <p:dataTable value="#{scheduleDataManager.scheduleList}" var="s">
+                        <p:column headerText="予定名">
+                            <h:outputText value="#{s.title}" />
+                        </p:column>
+                        <p:column headerText="期限">
+                            <h:outputText value="#{s.EDate}" />
+                        </p:column>
+                        <p:column headerText="場所">
+                            <h:outputText value="#{s.place}" />
+                        </p:column>
+                        <p:column headerText="内容">
+                            <h:outputText value="#{s.content}" />
+                        </p:column>
+                        <p:column headerText="作成者">
+                            <h:outputText value="#{s.owner.name}" />
+                        </p:column>
+                        <p:column headerText="">
+                            <p:commandButton action="#{scheduleBean.deleteSchedule(s)}" value="削除"/>
+                        </p:column>
+
+                    </p:dataTable>
+                    <p:commandButton action="schedule.xhtml?faces-redirect=true" value="戻る"/>
+                </h:form>
+            </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

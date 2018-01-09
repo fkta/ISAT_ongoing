@@ -34,14 +34,52 @@
                 <div class="nav">
                     <h:form>
                         <ul>
-                            <li><h:link><h:graphicImage url="/resources/image/bulletinboard.png"/>掲示板</h:link></li>
-                            <li><h:graphicImage url="/resources/image/schedule.png"/>スケジュール</li>
-                            <li><a href="#"><p><h:graphicImage url="/resources/image/questionnaire.png"/></p>アンケート</a></li>
-                            <li><a href="#"><p><h:graphicImage url="/resources/image/transmit.png"/></p>伝達</a></li>
-                            <li><a href="#"><p><h:graphicImage url="/resources/image/todo.jpg"/></p>ToDo</a></li>
-                            <li><a href="#"><p><h:graphicImage url="/resources/image/notice.png"/></p>受信BOX</a></li>
-                            <li><h:commandLink action="#{managedBean.transToInfoList()}"><h:graphicImage url="/resources/image/info.png"/>info</h:commandLink></li>
-                            <li><h:link outcome="/adminmenu/adminmenu.xhtml">管理者メニュー</h:link></li>
+                            <li>
+                                <h:link>
+                                    <h:graphicImage url="/resources/image/bulletinboard.png"/>
+                                    <h:outputText value="掲示板"/>
+                                </h:link>
+                            </li>
+                            
+                            <li>
+                                <h:commandLink action="#{managedBean.transToSchedule()}">
+                                    <h:graphicImage url="/resources/image/schedule.png"/>
+                                    <h:outputText value="スケジュール"/>
+                                </h:commandLink>
+                            </li>
+                            
+                            <li>
+                                <h:graphicImage url="/resources/image/questionnaire.png"/>
+                                <h:outputText value="アンケート"/>
+                            </li>
+                            
+                            <li>
+                                <h:graphicImage url="/resources/image/transmit.png"/>
+                                <h:outputText value="伝達"/>
+                            </li>
+                            
+                            <li>
+                                <h:graphicImage url="/resources/image/todo.jpg"/>
+                                <h:outputText value="ToDo"/>
+                            </li>
+                            
+                            <li>
+                                <h:graphicImage url="/resources/image/notice.png"/>
+                                <h:outputText value="受信BOX"/>
+                            </li>
+                            
+                            <li>
+                                <h:commandLink action="#{managedBean.transToInfoList()}">
+                                    <h:graphicImage url="/resources/image/info.png"/>
+                                    <h:outputText value="インフォ"/>
+                                </h:commandLink>
+                            </li>
+                            
+                            <li>
+                                <h:link outcome="/adminmenu/adminmenu.xhtml">
+                                    <h:outputText value="管理画面"/>
+                                </h:link>
+                            </li>
                         </ul>
                     </h:form>
                 </div>
