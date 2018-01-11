@@ -11,8 +11,8 @@
     <h:body>
         <ui:composition template="/templates/profile_template.xhtml">
             <ui:define name="title">ISAT - INFO PendingDetail</ui:define>
-            <ui:define name="content">
-                <div id="profile_content">
+            <ui:define name="content" id="profile_content">
+                <div>
                     <h:form>
                         <p:panelGrid>
                             <f:facet name="header">
@@ -82,23 +82,30 @@
                             </p:row>
                             
                             <p:row>
-                                <p:column colspan="3">秘密の質問</p:column>
-                                        <p:column>
-                                            <h:commandButton value="設定" onclick="PF('sq_edit_dlg').show();">
-                                                <p:ajax process="@this"/>
-                                            </h:commandButton>
-                                        </p:column>
+                                <p:column colspan="3">
+                                    秘密の質問
+                                </p:column>
+                                
+                                <p:column>
+                                    <h:commandButton value="設定" onclick="PF('sq_edit_dlg').show();">
+                                        <p:ajax process="@this"/>
+                                    </h:commandButton>
+                                </p:column>
                             </p:row>
                             
-                            <p:row>
-                                <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion2}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
+                            <!--秘密の質問-->
+                            <p:outputPanel id="sq_display" binding="#{sq_display}">
+                                <p:row>
+                                    <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion}"/></p:column>
+                                    <p:column></p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion2}"/></p:column>
+                                    <p:column></p:column>
+                                </p:row>
+                            </p:outputPanel>
+                            <!--end-->
                             
                             <f:facet name="footer">
                                 <p:row style="text-align: right;">
@@ -116,20 +123,20 @@
                     </h:form>
                 </div>
                 
-                <p:dialog header="秘密の質問設定" widgetVar="sq_edit_dlg" id="profile_sq_edit_dlg" modal="true">
+                <p:dialog header="秘密の質問設定" widgetVar="sq_edit_dlg" id="profile_sq_edit_dlg" modal="true" resizable="false" showEffect="clip" hideEffect="drop">
                     <div>
-                        <p:selectOneMenu id="sqItem" value="#{managedBean.sqItem}">
-                            <f:selectItem itemLabel="質問を選択" itemValue="">
-                            </f:selectItem>
-                            
-                            <f:selectItems value="#{managedBean.secretQuestions}">
-                            </f:selectItems>
-                            
-                        </p:selectOneMenu><br/>
-                        <p:inputText id="sqAnswer" value="#{managedBean.sqAnswer}" size="30"/>
-                        <p:commandButton value="変更" actionListener="#{managedBean.updateSecretQuestion()}">
-                            <p:ajax process="profile_sq_edit_dlg"/>
-                        </p:commandButton>
+                        <h:form>
+                            <h:outputText id="selectItem" value="#{managedBean.test}"/>
+                            <p:selectOneMenu id="sqItem" value="#{managedBean.sqItem}">
+                                <f:selectItem itemLabel="質問を選択" itemValue=""/>
+                                <f:selectItems value="#{managedBean.secretQuestions}"/>
+                                    <p:ajax process="@this" event="change" listener="#{managedBean.updateAjax()}" update="selectItem"/>
+                            </p:selectOneMenu><br/>
+                            <p:inputText id="sqAnswer" value="#{managedBean.sqAnswer}" size="30"/>
+                            <p:commandButton value="変更" actionListener="#{managedBean.updateSecretQuestion()}" onclick="PF('sq_edit_dlg').hide()">
+                                <p:ajax update=":#{sq_display.clientId}" process="@form"/>
+                            </p:commandButton>
+                        </h:form>
                     </div>
                 </p:dialog>
                 

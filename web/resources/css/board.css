@@ -1,0 +1,20 @@
+#response_form{
+    width: 500px;
+    
+}
+
+#response_input_form{
+    width: 800px;
+    
+}
+
+.response_form_button{
+    width: 90px;
+    font-size: 10px;
+    
+}
+
+#threadlist_content{
+    clear: both;
+}
+

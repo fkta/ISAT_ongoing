@@ -78,7 +78,7 @@
                         <h:panelGrid columnClasses="value">
 
 
-                            <p:schedule id="schedule" value="#{scheduleBean.eventModel}" timeZone="Asia/Tokyo" widgetVar="myschedule" nextDayThreshold="00:00:01"> 
+                            <p:schedule id="schedule" value="#{scheduleBean.eventModel}" locale="ja" timeZone="Asia/Tokyo" widgetVar="myschedule" nextDayThreshold="00:00:01"> 
                                 <p:ajax event="dateSelect" listener="#{scheduleBean.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                                 <p:ajax event="eventSelect" listener="#{scheduleBean.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
                                 <p:ajax event="eventMove" listener="#{scheduleBean.onEventMove}" update="messages" />
@@ -86,16 +86,16 @@
                             </p:schedule>
                         </h:panelGrid>
 
-                        <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
+                        <p:dialog widgetVar="eventDialog" header="スケジュール追加" showEffect="clip" hideEffect="clip">
                             <h:panelGrid id="eventDetails" columns="2">
                                 <p:outputLabel for="title" value="タイトル" />
                                 <p:inputText id="title" value="#{scheduleBean.title}" required="true" />
 
-                                <p:outputLabel for="from" value="From:" />
-                                <p:calendar id="from" value="#{scheduleBean.startDate}" pattern="yyyy/MM/dd HH:mm"/>
+                                <p:outputLabel for="from" value="開始日時:" />
+                                <p:calendar id="from" value="#{scheduleBean.startDate}" locale="ja" pattern="yyyy/MM/dd HH:mm"/>
 
-                                <p:outputLabel for="to" value="To:" />
-                                <p:calendar id="to" value="#{scheduleBean.endDate}" pattern="yyyy/MM/dd HH:mm"/>
+                                <p:outputLabel for="to" value="終了日時:" />
+                                <p:calendar id="to" value="#{scheduleBean.endDate}" locale="ja" pattern="yyyy/MM/dd HH:mm"/>
 
                                 <p:outputLabel for="place" value="場所" />
                                 <p:inputText id="place" value="#{scheduleBean.place}" required="true" />

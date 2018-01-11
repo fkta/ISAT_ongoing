@@ -27,8 +27,12 @@ public class ManagedBean {
     private boolean nicknameToggle;
     private String nickname;
     private List<SelectItem> secretQuestions;
-    private SecretQuestion sqItem;
+    private int sqItem;
     private String sqAnswer;
+    private String SecretQuestion;
+    private String SecretQuestion2;
+    //ajaxTest
+    private String test;
     
     @EJB
     UserDataFacade udf;
@@ -45,10 +49,16 @@ public class ManagedBean {
         sqList = sqf.findAll();
         secretQuestions = new ArrayList<SelectItem>();
         for(SecretQuestion sq : sqList){
-            SelectItem item = new SelectItem(sq.getQuestionId().toString(),sq.getQuestion());
+            // (int,String)
+            SelectItem item = new SelectItem(sq.getQuestionId(),sq.getQuestion());
             secretQuestions.add(item);
             
         }
+    }
+    
+    /* ajaxTest */
+    public void updateAjax(){
+        test = String.valueOf(sqItem);
     }
     
     /* ユーザ認証処理 */
@@ -58,9 +68,9 @@ public class ManagedBean {
         if(!ud.isEmpty()){
             udm.setUser(ud.get(0));
             if(udm.getUser().getUsertype().equals("admin")||udm.getUser().getUsertype().equals("teacher")){
-                return "/infomation/infolist_upper.xhtml?faces-redirect=true";
+                return "/schedule/schedule.xhtml?faces-redirect=true";
             }else if(udm.getUser().getUsertype().equals("student")){
-                return "/infomation/info_list.xhtml?faces-redirect=true";
+                return "/schedule/schedule.xhtml?faces-redirect=true";
             }else{
                 errorMessage = "ユーザIDもしくはパスワードが間違っています2";
                 System.out.println("input data user id :"+userId + "password : "+password);
@@ -143,10 +153,12 @@ public class ManagedBean {
     public void updateSecretQuestion(){
         System.out.println("sqItem : "+sqItem+" sqAnswer : "+sqAnswer);
         UserData ud = udm.getUser();
-        ud.setQuestionId(sqItem);
+        SecretQuestion sq = new SecretQuestion(sqItem);
+        ud.setQuestionId(sq);
         ud.setQanswer(sqAnswer);
         udf.edit(ud);
-        udm.setUser(ud);
+        udm.setUser(udf.findUserId(ud.getUserId()));
+        getSecretQuestion();
         System.out.println("秘密の質問を更新しました 質問 : "+udm.getUser().getQuestionId().getQuestion());
         System.out.println("答え : "+udm.getUser().getQanswer());
     }
@@ -156,6 +168,11 @@ public class ManagedBean {
             return "/schedule/schedule.xhtml?faces-redirect=true";
         }
        
+    /* 掲示板関連 */
+        public String transToBoard(){
+            return "/board/threadlist.xhtml?faces-redirect=true";
+        }
+        
     /* 値の初期化 */
     public void clear(){
         this.userId = null;
@@ -170,9 +187,10 @@ public class ManagedBean {
         if(udm.getUser().getQuestionId() != null){
             sq = udm.getUser().getQuestionId().getQuestion();
         }else{
-            sq = "設定されていません";
+            sq = "設定されていません!";
         }
-        return sq;
+        this.SecretQuestion = sq;
+        return SecretQuestion;
     }
     
     public String getSecretQuestion2(){
@@ -180,7 +198,7 @@ public class ManagedBean {
         if(udm.getUser().getQuestionId2() != null){
             sq = udm.getUser().getQuestionId2().getQuestion();
         }else{
-            sq = "設定されていません";
+            sq = "設定されていません!!";
         }
         return sq;
     }
@@ -242,12 +260,11 @@ public class ManagedBean {
         this.secretQuestions = secretQuestions;
     }
 
-    public SecretQuestion getSqItem() {
+    public int getSqItem() {
         return sqItem;
     }
 
-    public void setSqItem(SecretQuestion sqItem) {
-        System.out.println("setSqItem : "+sqItem);
+    public void setSqItem(int sqItem) {
         this.sqItem = sqItem;
     }
 
@@ -259,5 +276,14 @@ public class ManagedBean {
         System.out.println("setSqAnswer : "+sqAnswer);
         this.sqAnswer = sqAnswer;
     }
+
+    public String getTest() {
+        return test;
+    }
+
+    public void setTest(String test) {
+        this.test = test;
+    }
+    
     
 }
