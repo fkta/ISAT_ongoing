@@ -13,36 +13,29 @@
             <ui:define name="title">ISAT - Board List</ui:define>
             <ui:define name="content">
                 <!--スレッド詳細-->
-                <p:dataTable value="#{boardDataManager.cbbDetail}" var="t">
+                <p:panelGrid style="width: 100%; margin-bottom: 50px">
                     <f:facet name="header">
-                        <p:commandButton value="戻る" action="#{managedBean.transToBoard()}" styleClass="response_form_button"/>
-                        <h:outputText value="スレッド内容"/>
+                        <p:row>
+                            <p:column>
+                                <p:commandButton value="戻る" action="#{managedBean.transToBoard()}" styleClass="response_form_button"/>
+                                <h:outputText value="スレッド内容"/>
+                            </p:column>
+                        </p:row>
                     </f:facet>
-                    
-                    <p:column headerText="スレッド名">#{t.title}</p:column>
-                    
-                    <p:column headerText="作成日">#{t.postDate}</p:column>
-                    
-                    <p:column headerText="作成者">#{t.userId.name}</p:column>
-                </p:dataTable>
-
-
-                <!--レス一覧-->
-                <h:form>
-                    <p:dataTable value="#{boardDataManager.responseList}" var="r">
-                        <p:column headerText="投稿" width="80%">
-                            <h:outputText value="#{r.postDate}" style="font-size: 12px" escape="true"/>&nbsp;&nbsp;
-                            <h:outputText value="#{r.userId.name}" style="font-size: 12px;"/><br/>
-                            
-                            <h:outputText value="#{r.comment}"/>
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{boardDataManager.threadDetailData.title}" style="font-size: 16px; font-weight: bold"/>&nbsp;&nbsp;
+                            <h:outputText value="#{boardDataManager.threadDetailData.postDate}" style="font-size: 12px;"/>&nbsp;&nbsp;
+                            <h:outputText value="#{boardDataManager.threadDetailData.userId.name}" style="font-size: 14px;"/><br/>
+                            <h:outputText value="#{boardDataManager.threadDetailData.detail}"/>
                         </p:column>
-                        <p:column><p:commandLink value="削除" action="#{boardBean.deleteResponse(r)}"/></p:column>
-                    </p:dataTable>
-                </h:form>
-
-
+                    </p:row>
+                    
+                </p:panelGrid>
+                
                 <!--レス作成-->
                 <h:form>
+                    <p:growl id="create_reponse_message" showDetail="true" life="40"/>  
                     <p:panelGrid id="response_form">
 
                         <f:facet name="header">
@@ -61,12 +54,52 @@
                                 </p:column>
 
                                 <p:column>
-                                    <p:commandButton value="投稿" action="#{boardBean.createResponse()}" styleClass="response_form_button"/>
+                                    <p:commandButton value="投稿" action="#{boardBean.createResponse()}" update="#{response_area.clientId} response_form create_reponse_message" styleClass="response_form_button"/>
                                 </p:column>
                             </p:row>
 
                     </p:panelGrid>
                 </h:form>
+
+                <!--レス一覧-->
+                <h:form>
+                    <p:outputPanel id="response_area" binding="#{response_area}">
+                        <p:growl id="remove_message" showDetail="true" />  
+                        <p:dataTable value="#{boardDataManager.responseList}" var="r" rows="10" styleClass="datatable"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,20,30">
+                            <p:column headerText="投稿" width="90%">
+                                <h:outputText value="#{r.convertedPostDate}" style="font-size: 12px" escape="true"/>&nbsp;&nbsp;
+                                <h:outputText value="#{r.userId.name}" style="font-size: 12px; font-weight: bold;"/><br/>
+
+                                <h:outputText value="#{r.comment}" escape=""/>
+                            </p:column>
+                            
+                            <p:column>
+                                <!--削除ボタンを押すとダイアログを表示する-->
+                                <p:commandLink value="削除" update="#{response_area.clientId}" action="#{boardBean.removeResponse(r)}">
+                                    <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                                </p:commandLink>
+                                
+                                <!--
+                                <p:commandLink value="セットでーた">
+                                    <p:ajax event="click" listener="#{boardBean.addDelMessage(r)}"/>
+                                </p:commandLink>
+                                -->
+                            </p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </h:form>
+
+                <!--確認ダイアログ-->
+                <h:form>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+                <!--confirm dialog end-->
             </ui:define>
         </ui:composition>
     </h:body>

@@ -10,23 +10,19 @@
 
 #info_create_dlg_left{
     float: left;
-    background-color: #ff4343;
-    width: 500px;
+    width: 380px;
     height: 100px;
 }
 
 #info_create_dlg_right{
     float: left;
-    background-color: #2ec950;
-    width: 500px;
+    width: 380px;
     height: 100px;
 }
 
 #info_create_dlg_bottom{
-    width: 1000px;
-    height: 400px;
+    width: 760px;
     clear: both;
-    background-color: #2e5fc9;
 }
 
 #info_content{
@@ -36,4 +32,18 @@
 
 .datatable{
     text-align: center;
+}
+
+#info_detail_header h2{
+    margin: 0;
+    background-color: appworkspace;
+}
+
+#info_create_dlg_button_area{
+    width: 760px;
+    text-align: right;
+}
+
+#info_create_header{
+    width: 800px;
 }

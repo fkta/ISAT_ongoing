@@ -33,6 +33,7 @@ public class ManagedBean {
     private String SecretQuestion2;
     //ajaxTest
     private String test;
+    private String inputValue;
     
     @EJB
     UserDataFacade udf;
@@ -59,6 +60,10 @@ public class ManagedBean {
     /* ajaxTest */
     public void updateAjax(){
         test = String.valueOf(sqItem);
+    }
+    
+    public void updateValue(){
+        this.inputValue = nickname;
     }
     
     /* ユーザ認証処理 */
@@ -283,6 +288,15 @@ public class ManagedBean {
 
     public void setTest(String test) {
         this.test = test;
+    }
+
+    public String getInputValue() {
+        this.inputValue = this.nickname;
+        return inputValue;
+    }
+
+    public void setInputValue(String inputValue) {
+        this.inputValue = inputValue;
     }
     
     

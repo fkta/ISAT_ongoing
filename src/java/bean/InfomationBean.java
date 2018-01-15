@@ -9,7 +9,6 @@ import entity.Info;
 import entity.Pending;
 import entity.PendingPK;
 import entity.UserData;
-import function.ConvertedInfo;
 import function.ConvertedPending;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
@@ -37,6 +37,8 @@ public class InfomationBean{
     private Date selectedTerm;
     private Boolean endDate;
     private String delReason;
+    //メッセージ
+    protected FacesContext context = FacesContext.getCurrentInstance();
     
     @EJB
     InfoFacade inf;
@@ -78,22 +80,24 @@ public class InfomationBean{
     public void clear(){
         this.title = null;
         this.content = null;
+        this.title = null;
+        this.selectedTerm = null;
+        this.endDate = null;
+        this.priority = null;
+        this.catItem = null;
+        this.catItem = null;
+        this.content = null;
     }
     
     /* ページ遷移処理 */
     public String transToDetail(){
         getDetail(paramGetInfoId());
         // ユーザ種別で遷移先を振り分ける
-        if(udm.getUser().getUsertype().equals("admin")||
-                (udm.getUser().getUsertype().equals("teacher")&&
-                idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId()))){
+        if(udm.getUser().getUsertype().equals("admin")||udm.getUser().getUsertype().equals("teacher")){
             System.out.println("info_detail usertype : "+udm.getUser().getUsertype());
-            System.out.println("info_detail auth : "+idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId()));
             return "infodetail_upper.xhtml?faces-redirect=true";
-        }else if(udm.getUser().getUsertype().equals("teacher")||
-                udm.getUser().getUsertype().equals("student")){
+        }else if(udm.getUser().getUsertype().equals("student")){
             System.out.println("info_detail usertype : "+udm.getUser().getUsertype());
-            System.out.println("info_detail auth : "+idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId()));
             return "infodetail.xhtml?faces-redirect=true";
         }else{
             System.out.println("ユーザ種別が不正です。");
@@ -163,7 +167,7 @@ public class InfomationBean{
     }
     
     /* 新規作成 */
-    public String addInfo() throws ParseException{
+    public void addInfo() throws ParseException{
         
         /*System.out.println("1 content : "+content);
         System.out.println("1 catItem : "+catItem);
@@ -216,24 +220,26 @@ public class InfomationBean{
         info.setCategoryId(cat);
         
         // Infotype Edit
-        if(ud.getUserId().startsWith("ad")){
+        /*if(ud.getUserId().startsWith("ad")){
             //管理者ならinfotypeをdisplayにする
             info.setInfotype("display");
         }else if(ud.getUserId().startsWith("tc")){
             //教師なら申請中にする
             info.setInfotype("create_pending");
-            
-            
-            
-        }
+        }*/
+        
+        info.setInfotype("display");
         
         info.setTerm(selectedTerm);
         info.setCreateDate(nowTime);
         info.setPriority(priority);
-        info.setUserId(ud);
+        info.setUserId(udm.getUser());
+        System.out.println("作成者 : " +info.getUserId().getName());
         inf.create(info);
         
-        if(ud.getUserId().startsWith("tc")){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "作成しました") );
+        
+        /*if(ud.getUserId().startsWith("tc")){
             //申請情報の作成
             PendingPK pndPK = new PendingPK(info.getInfoId(),udm.getUser().getUserId());
             Pending pnd = new Pending();
@@ -243,9 +249,7 @@ public class InfomationBean{
             pnd.setReason("新規作成の申請です。");
             pf.create(pnd);
             System.out.println("create pending succesful");
-        }
-        
-        return null;
+        }*/
     }
     
     /* 更新 */
@@ -331,24 +335,24 @@ public class InfomationBean{
     /* 削除 */
     public String deleteInfo(){
         // 権限の確認
-        if(udm.getUser().getUsertype().equals("admin")){
+        if(udm.getUser().getUsertype().equals("admin")||udm.getUser().getUsertype().equals("teacher")){
             // 削除する
             inf.remove(idm.getDetailData());
             idm.clear();
-            return "infolist_upper.xhtml?faces-redirect=true";
-        }else if(udm.getUser().getUsertype().equals("teacher")&&idm.getConvData().getUserId().getUserId().equals(udm.getUser().getUserId())){
-            // 削除申請画面へ
-            System.out.println("削除申請画面へ遷移");
-            return "infodelrequest.xhtml?faces-redirect=true";
-        }else if(udm.getUser().getUsertype().equals("teacher")){
-            System.out.println("作成者ではない為、削除申請できません。");
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "削除しました") );
             return "infolist_upper.xhtml?faces-redirect=true";
         }else{
             System.out.println("権限が不正な値です。");
             System.out.println("userType : "+udm.getUser().getUsertype());
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "セッションがタイムアウトしました　再度ログインしてください。") );
             udm.setErrorMessage("セッションがタイムアウトしました　再度ログインしてください。");
             return "/login/login.xhtml?faces-redirect=true";
         }
+    }
+    
+    public void deleteInfo(Info info){
+        inf.remove(info);
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "削除しました") );
     }
     
     /* 削除申請 */
@@ -412,19 +416,19 @@ public class InfomationBean{
         return param;
     }
     
-    public List<ConvertedInfo> getAllInfo() throws ParseException{
-        List<ConvertedInfo> convInfoList = new ArrayList<ConvertedInfo>();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        for(Info data : inf.findAllInfo()){
-            ConvertedInfo cInfo = new ConvertedInfo(
-                    data.getInfoId(),data.getTitle(),data.getContent(),
-                    sdf.format(data.getTerm()),sdf.format(data.getCreateDate()),
-                    data.getPriority(),data.getInfotype(),data.getCategoryId(),
-                    data.getUserId());
-            
-            convInfoList.add(cInfo);
-        }
-        return convInfoList;
+    public List<Info> getAllInfo() throws ParseException{
+//        List<ConvertedInfo> convInfoList = new ArrayList<ConvertedInfo>();
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
+//        for(Info data : inf.findAllInfo()){
+//            ConvertedInfo cInfo = new ConvertedInfo(
+//                    data.getInfoId(),data.getTitle(),data.getContent(),
+//                    sdf.format(data.getTerm()),sdf.format(data.getCreateDate()),
+//                    data.getPriority(),data.getInfotype(),data.getCategoryId(),
+//                    data.getUserId());
+//            
+//            convInfoList.add(cInfo);
+//        }
+        return inf.findAllInfo();
     }
     
     public void getDetail(String param){
@@ -433,15 +437,7 @@ public class InfomationBean{
         String param = params.get("detailId");
         System.out.println("param : "+param);*/
         
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm");
-        Info dd = inf.findDetail(param);
-        ConvertedInfo convInfo = new ConvertedInfo(
-                dd.getInfoId(),dd.getTitle(),dd.getContent(),sdf.format(dd.getTerm()),
-                sdf.format(dd.getCreateDate()),dd.getPriority(),dd.getInfotype(),
-                dd.getCategoryId(),dd.getUserId());
-        
         idm.setDetailData(inf.findDetail(param));
-        idm.setConvData(convInfo);
     }
     
     public List<Category> getAllCat(){

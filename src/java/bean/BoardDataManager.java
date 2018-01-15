@@ -1,5 +1,6 @@
 package bean;
 
+import entity.BulletinBoard;
 import entity.Response;
 import function.ConvertBulletinBoard;
 import javax.inject.Named;
@@ -10,6 +11,7 @@ import java.util.List;
 @Named(value = "boardDataManager")
 @SessionScoped
 public class BoardDataManager implements Serializable {
+    private BulletinBoard threadDetailData;
     private List<ConvertBulletinBoard> bList;
     private ConvertBulletinBoard cbbDetail;
     private List<Response> responseList;
@@ -36,6 +38,14 @@ public class BoardDataManager implements Serializable {
 
     public void setResponseList(List<Response> responseList) {
         this.responseList = responseList;
+    }
+
+    public BulletinBoard getThreadDetailData() {
+        return threadDetailData;
+    }
+
+    public void setThreadDetailData(BulletinBoard threadDetailData) {
+        this.threadDetailData = threadDetailData;
     }
 
 }

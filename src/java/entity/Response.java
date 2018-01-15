@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -89,6 +90,12 @@ public class Response implements Serializable {
 
     public Date getPostDate() {
         return postDate;
+    }
+    
+    //日付書式を変えたString型で返す
+    public String getConvertedPostDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return sdf.format(postDate);
     }
 
     public void setPostDate(Date postDate) {

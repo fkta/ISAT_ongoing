@@ -15,6 +15,7 @@ import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 
@@ -23,7 +24,12 @@ import javax.inject.Inject;
 public class BoardBean {
     
     private String title;
+    private String detail;
     private String comment;
+    // レスポンスの削除確認画面で使用する
+    private Response delData;
+    // メッセージ
+    protected FacesContext context = FacesContext.getCurrentInstance();
     
     @EJB
     BulletinBoardFacade bbf;
@@ -34,31 +40,47 @@ public class BoardBean {
     @Inject
     BoardDataManager bdm;
     
+    /* 初期化処理 */
+    public void clear(){
+        this.title = null;
+        this.comment = null;
+        this.detail = null;
+    }
+    
+    /* 削除メッセージ用のデータを作成する */
+    public void addDelMessage(Response response){
+        this.delData = response;
+        System.out.println("delData : "+delData.getComment());
+    }
+    
     /* スレッド作成 */
-    public String addThread() throws ParseException{
+    public void addThread() throws ParseException{
         createThread();
-        return null;
+        // メッセージの表示
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "作成しました") );
     }
     
     public void createThread() throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         String threadId = "thr".concat(sdf.format(new Date()));
         sdf.applyPattern("yyyy/MM/dd HH:mm:ss");
-        BulletinBoard bb = new BulletinBoard(threadId,title,sdf.parse(sdf.format(new Date())),udm.getUser());
+        BulletinBoard bb = new BulletinBoard(threadId,title,sdf.parse(sdf.format(new Date())),udm.getUser(),detail);
         bbf.create(bb);
+        
+        // 入力フォームの初期化
+        clear();
     }
     
     /* レスポンス作成 */
-    public String addResponse(){
+    public void addResponse(){
         createResponse();
-        return null;
     }
     
     public void createResponse(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         Response res = new Response();
         ResponsePK resPK = new ResponsePK();
-        resPK.setThreadId(bdm.getCbbDetail().getThreadId());
+        resPK.setThreadId(bdm.getThreadDetailData().getThreadId());
         resPK.setResponseId("res"+ sdf.format(new Date()));
         
         res.setResponsePK(resPK);
@@ -67,13 +89,20 @@ public class BoardBean {
         res.setUserId(udm.getUser());
         rf.create(res);
         //リストの更新
-        bdm.setResponseList(rf.findByThreadId(bdm.getCbbDetail().getThreadId()));
+        bdm.setResponseList(rf.findByThreadId(bdm.getThreadDetailData().getThreadId()));
+        
+        //入力フォームの初期化
+        clear();
+        
+        //メッセージの作成
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "投稿しました") );
+        
         System.out.println("レスを作成しました");
         System.out.println("投稿内容 : "+res.getComment()+" 投稿者 : "+res.getUserId().getName());
     }
     
-//スレッド一覧表示
-    public List<ConvertBulletinBoard> getAllTheard(){
+    //スレッド一覧表示
+    /*public List<ConvertBulletinBoard> getAllTheard(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         List<ConvertBulletinBoard> cList = new ArrayList<ConvertBulletinBoard>();
         for(BulletinBoard d : bbf.orderByPostDate()){
@@ -82,28 +111,40 @@ public class BoardBean {
             cbb.setThreadId(d.getThreadId());
             cbb.setPostDate(sdf.format(d.getPostDate()));
             cbb.setUserId(d.getUserId());
+            cbb.setDetail(d.getDetail());
             cList.add(cbb);
         }
         return cList;
-    }   
+    }*/   
+    
+    public List<BulletinBoard> getAllThread(){
+      return bbf.orderByPostDate();
+    }
+    
+    // レス数カウント
+    public int resCount(BulletinBoard bb){
+        return rf.findByThreadId(bb.getThreadId()).size();
+    }
     
     /* スレッド詳細表示 */
-    public String transToDetail(ConvertBulletinBoard cbb){
+    public String transToDetail(BulletinBoard bb){
         // パラメータ取得
-        updateDetailData(cbb);
+        updateDetailData(bb);
         
         return "threaddetail.xhtml?faces-redirect=true";
     }
     
-    public void updateDetailData(ConvertBulletinBoard cbb){
-        FacesContext fc = FacesContext.getCurrentInstance();
+    public void updateDetailData(BulletinBoard bb){
+        /*FacesContext fc = FacesContext.getCurrentInstance();
         Map<String,String> params = fc.getExternalContext().getRequestParameterMap();
         String threadId = params.get("threadId");
-        System.out.println("threadId : "+threadId);
+        System.out.println("threadId : "+threadId);*/
         
         // データの保管
-        bdm.setCbbDetail(cbb);
-        bdm.setResponseList(rf.findByThreadId(threadId));
+        bdm.setThreadDetailData(bb);
+        System.out.println("cbb Title : "+bb.getTitle());
+        bdm.setResponseList(rf.findByThreadId(bb.getThreadId()));
+        System.out.println("Detail : "+bdm.getThreadDetailData().getDetail());
 }
     
     
@@ -118,29 +159,36 @@ public class BoardBean {
 
     
 //レス削除
-    public String deleteResponse(Response response){
-        // レス作成者かを確認する
-        if(response.getUserId().getUserId().equals(udm.getUser().getUserId())){
+    public void removeResponse(Response response){
+        // レス作成者かを確認する もしくは教師
+        if(response.getUserId().getUserId().equals(udm.getUser().getUserId())||udm.getUser().getUsertype().equals("teacher")){
             rf.remove(response);
-            bdm.setResponseList();
+            bdm.setResponseList(rf.findByThreadId(bdm.getThreadDetailData().getThreadId()));
+            //メッセージの表示
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "削除しました") );
             System.out.println("削除対象 : " + response.getResponsePK().getResponseId());
             System.out.println("削除内容 : " + response.getComment());
+            
         }else{
+            //メッセージの表示
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "投稿者のみ削除できます") );
+
             System.out.println("レスの作成者ではありません　削除失敗");
             
         }
         
-    return null;
 }
     
     //スレッド削除
-    public String deleteThread(ConvertBulletinBoard cbb) throws ParseException{
+    public String removeThread(ConvertBulletinBoard cbb) throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         //スレッドの作成者かを確認する
-        if(cbb.getUserId().getUserId().equals(udm.getUser().getUserId())){
-            BulletinBoard bb = new BulletinBoard(cbb.getThreadId(), cbb.getTitle(), sdf.parse(cbb.getPostDate()), cbb.getUserId());
+        if(cbb.getUserId().getUserId().equals(udm.getUser().getUserId())||udm.getUser().getUsertype().equals("teacher")){
+            BulletinBoard bb = new BulletinBoard(cbb.getThreadId(), cbb.getTitle(), sdf.parse(cbb.getPostDate()), cbb.getUserId(),cbb.getDetail());
             bbf.remove(bb);
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "削除しました") );
         }else{
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "スレッドの作成者ではありません") );
             System.out.println("スレッドの作成者ではありません");
         }
         return null;
@@ -160,7 +208,25 @@ public class BoardBean {
     }
 
     public void setComment(String comment) {
-        this.comment = comment;
+        this.comment = comment.replaceAll("\n","<br/>");
+        System.out.println("comment : "+this.comment);
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail.replaceAll("\n","<br/>");
+        this.detail = detail;
+    }
+
+    public Response getDelData() {
+        return delData;
+    }
+
+    public void setDelData(Response delData) {
+        this.delData = delData;
     }
 
     

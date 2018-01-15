@@ -14,112 +14,138 @@
             <ui:define name="content" id="profile_content">
                 <div>
                     <h:form>
-                        <p:panelGrid>
-                            <f:facet name="header">
+                        <p:outputPanel id="profile_grid" binding="#{profile_grid}">
+                            <p:panelGrid>
+                                <f:facet name="header">
+                                    <p:row>
+                                        <p:column colspan="3">ユーザ情報</p:column>
+                                        <p:column>設定する</p:column>
+                                    </p:row>
+                                </f:facet>
+
                                 <p:row>
-                                    <p:column colspan="3">ユーザ情報</p:column>
-                                    <p:column>設定する</p:column>
+                                    <p:column>氏名</p:column>
+                                    <p:column colspan="2"><h:outputText value="#{userDataManager.user.name}"/></p:column>
+                                    <p:column></p:column>
                                 </p:row>
-                            </f:facet>
-                            
-                            <p:row>
-                                <p:column>氏名</p:column>
-                                <p:column colspan="2"><h:outputText value="#{userDataManager.user.name}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column>ニックネーム</p:column>
-                                
-                                <p:column colspan="2">
-                                    <p:outputPanel id="display_mode">
-                                        <h:outputText value="#{managedBean.nickname}" rendered="#{!managedBean.nicknameToggle}"/>
-                                    </p:outputPanel>
-                                    
-                                    <p:outputPanel id="input_mode">
-                                        <p:inputText value="#{managedBean.nickname}" rendered="#{managedBean.nicknameToggle}"
-                                                     style="font-size: 14px">
-                                            <p:ajax process="input_mode" event="keyup"/>
-                                        </p:inputText>
-                                    </p:outputPanel>
-                                </p:column>
-                                
-                                <p:column>
-                                    <p:selectBooleanCheckbox value="#{managedBean.nicknameToggle}">
-                                        <p:ajax process="display_mode input_mode @this" update="display_mode input_mode comit_footer"/>
-                                    </p:selectBooleanCheckbox>
-                                </p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column>性別</p:column>
-                                <p:column colspan="2"><h:outputText value="#{userDataManager.user.gender}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column>入学年度</p:column>
-                                <p:column colspan="2"><h:outputText value="#{userDataManager.user.entranceYear}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column>卒業年度</p:column>
-                                <p:column colspan="2"><h:outputText value="#{userDataManager.user.guraduationYear}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column>学科</p:column>
-                                <p:column colspan="2"><h:outputText value="#{userDataManager.user.departmentId.departmentName}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column>アカウント種別</p:column>
-                                <p:column colspan="2"><h:outputText value="#{userDataManager.user.usertype}"/></p:column>
-                                <p:column></p:column>
-                            </p:row>
-                            
-                            <p:row>
-                                <p:column colspan="3">
-                                    秘密の質問
-                                </p:column>
-                                
-                                <p:column>
-                                    <h:commandButton value="設定" onclick="PF('sq_edit_dlg').show();">
-                                        <p:ajax process="@this"/>
-                                    </h:commandButton>
-                                </p:column>
-                            </p:row>
-                            
-                            <!--秘密の質問-->
-                            <p:outputPanel id="sq_display" binding="#{sq_display}">
+
+                                <!--ニックネーム-->
                                 <p:row>
-                                    <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion}"/></p:column>
+                                        <p:column>ニックネーム</p:column>
+
+                                        <p:column colspan="2">
+
+                                            <p:outputPanel id="display_mode">
+                                                <h:outputText value="#{managedBean.nickname}" rendered="#{!managedBean.nicknameToggle}"/>
+                                            </p:outputPanel>
+
+                                            <p:outputPanel id="input_mode">
+                                                <p:inputText id="input_area" value="#{managedBean.nickname}" rendered="#{managedBean.nicknameToggle}"
+                                                             style="font-size: 14px">
+                                                    <p:ajax process="@this" update="display_nickname" event="keyup" listener="#{managedBean.updateValue()}"/>
+                                                </p:inputText>
+                                            </p:outputPanel>
+
+                                        </p:column>
+
+                                        <p:column>
+                                            <p:outputPanel id="change_link">
+                                                <p:selectBooleanCheckbox value="#{managedBean.nicknameToggle}" rendered="#{!managedBean.nicknameToggle}">
+                                                    <p:ajax process="@this" update="display_mode input_mode change_link"/>
+                                                </p:selectBooleanCheckbox>
+
+
+                                                <p:commandLink value="変更する" rendered="#{managedBean.nicknameToggle}" actionListener="#{managedBean.updateUserData()}">
+                                                    <p:ajax process="input_area @this"/>
+                                                </p:commandLink>
+                                            </p:outputPanel>
+
+                                        </p:column>
+                                </p:row>
+                                <!--end-->
+
+                                <p:row>
+                                    <p:column>性別</p:column>
+                                    <p:column colspan="2"><h:outputText value="#{userDataManager.user.gender}"/></p:column>
                                     <p:column></p:column>
                                 </p:row>
 
                                 <p:row>
-                                    <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion2}"/></p:column>
+                                    <p:column>入学年度</p:column>
+                                    <p:column colspan="2"><h:outputText value="#{userDataManager.user.entranceYear}"/></p:column>
                                     <p:column></p:column>
                                 </p:row>
-                            </p:outputPanel>
-                            <!--end-->
-                            
-                            <f:facet name="footer">
-                                <p:row style="text-align: right;">
-                                    <p:column colspan="4">
-                                        <p:outputPanel id="comit_footer">
-                                                <p:commandLink value="変更する" rendered="#{managedBean.nicknameToggle}">
-                                                    <p:ajax process="input_mode" listener="#{managedBean.updateUserData()}"/>
-                                                </p:commandLink>
-                                        </p:outputPanel>
+
+                                <p:row>
+                                    <p:column>卒業年度</p:column>
+                                    <p:column colspan="2"><h:outputText value="#{userDataManager.user.guraduationYear}"/></p:column>
+                                    <p:column></p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>学科</p:column>
+                                    <p:column colspan="2"><h:outputText value="#{userDataManager.user.departmentId.departmentName}"/></p:column>
+                                    <p:column></p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>アカウント種別</p:column>
+                                    <p:column colspan="2"><h:outputText value="#{userDataManager.user.usertype}"/></p:column>
+                                    <p:column></p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column colspan="3">
+                                        秘密の質問
+                                    </p:column>
+
+                                    <p:column>
+                                        <h:commandButton value="設定" onclick="PF('sq_edit_dlg').show();">
+                                            <p:ajax process="@this"/>
+                                        </h:commandButton>
                                     </p:column>
                                 </p:row>
-                            </f:facet>
-                            
-                        </p:panelGrid>
+
+                                <!--秘密の質問-->
+                                <p:outputPanel id="sq_display" binding="#{sq_display}">
+                                    <p:row>
+                                        <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion}"/></p:column>
+                                        <p:column></p:column>
+                                    </p:row>
+
+                                    <p:row>
+                                        <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion2}"/></p:column>
+                                        <p:column></p:column>
+                                    </p:row>
+                                    
+                                    <!--ajaxテスト-->
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <h:inputText value="#{managedBean.nickname}">
+                                                <p:ajax process="@this" event="keyup" listener="#{managedBean.updateValue()}" update="display_nickname"/>
+                                            </h:inputText>
+                                        </p:column>
+                                        <p:column>
+                                            <h:outputText id="display_nickname" value="#{managedBean.inputValue}"/>
+                                        </p:column>
+                                    </p:row>
+                                </p:outputPanel>
+                                <!--end-->
+
+                                <f:facet name="footer">
+                                    <p:row style="text-align: right;">
+                                        <p:column colspan="4">
+                                            <p:outputPanel id="comit_footer">
+                                                    <p:commandLink value="変更する" rendered="#{managedBean.nicknameToggle}">
+                                                        <p:ajax process="input_mode" listener="#{managedBean.updateUserData()}"/>
+                                                    </p:commandLink>
+                                            </p:outputPanel>
+                                        </p:column>
+                                    </p:row>
+                                </f:facet>
+
+                            </p:panelGrid>
+                        </p:outputPanel> 
                     </h:form>
                 </div>
                 
@@ -133,8 +159,7 @@
                                     <p:ajax process="@this" event="change" listener="#{managedBean.updateAjax()}" update="selectItem"/>
                             </p:selectOneMenu><br/>
                             <p:inputText id="sqAnswer" value="#{managedBean.sqAnswer}" size="30"/>
-                            <p:commandButton value="変更" actionListener="#{managedBean.updateSecretQuestion()}" onclick="PF('sq_edit_dlg').hide()">
-                                <p:ajax update=":#{sq_display.clientId}" process="@form"/>
+                            <p:commandButton value="変更" action="#{managedBean.updateSecretQuestion()}" oncomplete="PF('sq_edit_dlg').hide();" update=":#{profile_grid.clientId}">
                             </p:commandButton>
                         </h:form>
                     </div>

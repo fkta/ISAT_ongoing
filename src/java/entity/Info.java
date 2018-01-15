@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -123,6 +124,12 @@ public class Info implements Serializable {
     public void setTerm(Date term) {
         this.term = term;
     }
+    
+    //日付書式を変えたString型で返す
+    public String getConvertedTerm(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return sdf.format(term);
+    }
 
     public String getPriority() {
         return priority;
@@ -156,7 +163,19 @@ public class Info implements Serializable {
         this.userId = userId;
     }
     
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
     
+    //日付書式を変えたString型で返す
+    public String getConvertedCreateDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return sdf.format(createDate);
+    }
 
     @Override
     public int hashCode() {
@@ -183,12 +202,4 @@ public class Info implements Serializable {
         return "entity.Info[ infoId=" + infoId + " ]";
     }
 
-    public Date getCreateDate() {
-        return createDate;
-    }
-
-    public void setCreateDate(Date createDate) {
-        this.createDate = createDate;
-    }
-    
 }

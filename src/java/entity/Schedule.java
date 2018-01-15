@@ -35,9 +35,7 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Schedule.findByTitle", query = "SELECT s FROM Schedule s WHERE s.title = :title")
     , @NamedQuery(name = "Schedule.findBySDate", query = "SELECT s FROM Schedule s WHERE s.sDate = :sDate")
     , @NamedQuery(name = "Schedule.findByEDate", query = "SELECT s FROM Schedule s WHERE s.eDate = :eDate")
-    , @NamedQuery(name = "Schedule.findByContent", query = "SELECT s FROM Schedule s WHERE s.content = :content")
-    , @NamedQuery(name = "Schedule.findByPlace", query = "SELECT s FROM Schedule s WHERE s.place = :place")
-    , @NamedQuery(name = "Schedule.findBySchedule", query = "SELECT s FROM Schedule s WHERE s.sDate between :sDate and :eDate or s.eDate between :sDate and :eDate")})
+    , @NamedQuery(name = "Schedule.findByContent", query = "SELECT s FROM Schedule s WHERE s.content = :content")})
 public class Schedule implements Serializable {
 
     private static final long serialVersionUID = 1L;
@@ -65,11 +63,6 @@ public class Schedule implements Serializable {
     @Size(max = 200)
     @Column(name = "content")
     private String content;
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 40)
-    @Column(name = "place")
-    private String place;
     @JoinColumn(name = "owner", referencedColumnName = "user_id")
     @ManyToOne(optional = false)
     private UserData owner;
@@ -81,12 +74,11 @@ public class Schedule implements Serializable {
         this.scheduleId = scheduleId;
     }
 
-    public Schedule(String scheduleId, String title, Date sDate, Date eDate, String place) {
+    public Schedule(String scheduleId, String title, Date sDate, Date eDate) {
         this.scheduleId = scheduleId;
         this.title = title;
         this.sDate = sDate;
         this.eDate = eDate;
-        this.place = place;
     }
 
     public String getScheduleId() {
@@ -127,14 +119,6 @@ public class Schedule implements Serializable {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getPlace() {
-        return place;
-    }
-
-    public void setPlace(String place) {
-        this.place = place;
     }
 
     public UserData getOwner() {

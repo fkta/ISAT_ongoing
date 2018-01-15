@@ -13,82 +13,106 @@
             <ui:define name="title">ISAT - インフォメーション</ui:define>
             <ui:define name="content">
                 <h:form>
-                    <p:dataTable value="#{infomationBean.allInfo}" var="d" rows="10" styleClass="datatable"
-                                 paginator="true"
-                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10,20,30">
-                        <f:facet name="header">
-                            <p:commandButton value="申請一覧" action="#{infomationBean.transToPendList()}"/>
-                            <p:outputLabel value="掲示一覧"/>
-                            <p:commandButton value="新規登録" onclick="PF('create_dlg').show();"/>
-                        </f:facet>
-                        <p:column headerText="タイトル">
-                            <p:commandLink value="#{d.title}" action="#{infomationBean.transToDetail()}">
-                                <f:param name="detailId" value="#{d.infoId}"/>
-                            </p:commandLink>
-                        </p:column>
-                        
-                        <p:column headerText="カテゴリ">
-                            <h:outputText value="#{d.categoryId.categoryName}"/>
-                        </p:column>
-                        
-                        <p:column headerText="作成日">
-                            <h:outputText value="#{d.createDate}"/>
-                        </p:column>
-                        
-                        <p:column headerText="作成者">
-                            <h:outputText value="#{d.userId.name}"/>
-                        </p:column>
-                        
-                        <p:column headerText="掲載終了日">
-                            <h:outputText value="#{d.term}"/>
-                        </p:column>
                     
-                    </p:dataTable>
+                    <p:outputPanel id="info_list_panel" binding="#{info_list_panel}">
+
+                        <p:dataTable value="#{infomationBean.allInfo}" var="d" rows="10" styleClass="datatable"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,20,30">
+                            <f:facet name="header">
+                                <p:outputLabel value="掲示一覧"/>
+                                <p:commandButton value="新規登録" onclick="PF('create_dlg').show();"/>
+                            </f:facet>
+                            <p:column headerText="タイトル">
+                                <p:commandLink value="#{d.title}" action="#{infomationBean.transToDetail()}">
+                                    <f:param name="detailId" value="#{d.infoId}"/>
+                                </p:commandLink>
+                            </p:column>
+
+                            <p:column headerText="カテゴリ">
+                                <h:outputText value="#{d.categoryId.categoryName}"/>
+                            </p:column>
+
+                            <p:column headerText="作成日">
+                                <h:outputText value="#{d.convertedCreateDate}"/>
+                            </p:column>
+
+                            <p:column headerText="作成者">
+                                <h:outputText value="#{d.userId.name}"/>
+                            </p:column>
+
+                            <p:column headerText="掲載終了日">
+                                <h:outputText value="#{d.convertedTerm}"/>
+                            </p:column>
+                            
+                            <p:column style="width: 5%;">
+                                <p:commandLink value="削除" actionListener="#{infomationBean.deleteInfo(d)}" update="#{info_message.clientId} #{info_list_panel.clientId}" style="font-size: 14px">
+                                    <!--削除確認ダイアログの表示-->
+                                    <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                                </p:commandLink>
+                            </p:column>
+
+                        </p:dataTable>
+                        
+                    </p:outputPanel>
                 </h:form>
                 
                 <!--だいあろぐ-->
                 <!--新規作成-->
                 <p:dialog header="新規登録" widgetVar="create_dlg" modal="true" id="info_createdlg">
                     <h:form>
-                        <!--ヘッダー左-->
-                        <div id="info_create_dlg_left">
-                            <h:outputText value="登録内容を入力してください。" /><br/>
-                            <p:outputLabel for="info_title" value="タイトル : "/>
-                            <p:inputText id="info_title" value="#{infomationBean.title}"/><br/>
+                        
+                        <p:outputPanel id="info_create_panel">
 
-                            <h:outputLabel for="info_term" value="掲載期間 : "/>
-                            <p:calendar id="info_term" value="#{infomationBean.selectedTerm}" pattern="yyyy/MM/dd HH:mm:ss"/>
-                            <h:outputLabel for="info_enddate" value="終日"/>
-                            <p:selectBooleanCheckbox id="info_enddate" value="#{infomationBean.endDate}"/>
-                        </div>
-                    
-                        <!--ヘッダー右-->
-                        <div id="info_create_dlg_right">
-                            <h:outputLabel for="info_priority" value="重要度 : "/>
-                            <p:selectOneMenu id="info_priority" value="#{infomationBean.priority}">
-                                <f:selectItem itemLabel="普" itemValue="normal" />
-                                <f:selectItem itemLabel="高" itemValue="high" />
-                            </p:selectOneMenu><br/>
-                            <h:outputLabel for="info_category" value="カテゴリ : "/>
-                            <p:selectOneMenu id="info_category" value="#{infomationBean.catItem}">
-                                <f:selectItem itemLabel="カテゴリを選択" itemValue=""/>
-                                <f:selectItems value="#{infomationBean.category}"/>
-                            </p:selectOneMenu>
+                            <div id="info_create_header">
+                                <h:outputText value="登録内容を入力してください。" />
+                            </div>
+                            
+                            <!--ヘッダー左-->
+                            <div id="info_create_dlg_left">
+                                <p:outputLabel for="info_title" value="タイトル : "/>
+                                <p:inputText id="info_title" value="#{infomationBean.title}" style="margin-bottom: 20px"/><br/>
 
-                        </div>
+                                <h:outputLabel for="info_term" value="掲載期間 : "/>
+                                <p:calendar id="info_term" value="#{infomationBean.selectedTerm}" pattern="yyyy/MM/dd HH:mm:ss"/>
+                                <h:outputLabel for="info_enddate" value="終日"/>
+                                <p:selectBooleanCheckbox id="info_enddate" value="#{infomationBean.endDate}"/>
+                            </div>
 
-                        <!--コンテンツ-->
-                        <div id="info_create_dlg_bottom">
-                            <p:outputLabel value="内容 : "/><br/>
-                            <p:inputTextarea id="info_content" value="#{infomationBean.content}" autoResize="false" maxlength="1000"
-                                             scrollHeight="100" style="width: 900px;height: 300px"/><br/>
-                            <p:commandButton value="登録" action="#{infomationBean.addInfo()}"/>
-                        </div>
+                            <!--ヘッダー右-->
+                            <div id="info_create_dlg_right">
+                                <h:outputLabel for="info_priority" value="重要度 : "/>
+                                <p:selectOneMenu id="info_priority" value="#{infomationBean.priority}" style="font-size: 14px">
+                                    <f:selectItem itemLabel="普" itemValue="normal" />
+                                    <f:selectItem itemLabel="高" itemValue="high" />
+                                </p:selectOneMenu><br/>
+                                <h:outputLabel for="info_category" value="カテゴリ : "/>
+                                <p:selectOneMenu id="info_category" value="#{infomationBean.catItem}" style="font-size: 14px">
+                                    <f:selectItem itemLabel="カテゴリを選択" itemValue=""/>
+                                    <f:selectItems value="#{infomationBean.category}"/>
+                                </p:selectOneMenu>
+
+                            </div>
+
+                            <!--コンテンツ-->
+                            <div id="info_create_dlg_bottom">
+                                <p:outputLabel value="内容 : "/><br/>
+                                <p:inputTextarea id="info_content" value="#{infomationBean.content}" autoResize="false" maxlength="1000"
+                                                 scrollHeight="100" style="width: 750px;height: 300px"/><br/>
+                            </div>
+                            
+                            <div id="info_create_dlg_button_area">
+                                <p:commandButton value="リセット" actionListener="#{infomationBean.clear()}" update="info_create_panel" style="margin-right: 20px; font-size: 14px;"/>
+                                <p:commandButton value="登録" action="#{infomationBean.addInfo()}" update="#{info_list_panel.clientId} #{info_message.clientId}" oncomplete="PF('create_dlg').hide();" style="font-size: 14px;">
+                                    <p:confirm header="Confirmation" message="登録してよろしいですか？" icon="ui-icon-alert"/>
+                                </p:commandButton>
+                            </div>
+                            
+                        </p:outputPanel>
                     </h:form>
                 </p:dialog> 
                 
-            
             </ui:define>
                 
         </ui:composition>

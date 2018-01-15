@@ -1,13 +1,13 @@
 package function;
 
 import entity.UserData;
-import java.util.Date;
 
 public class ConvertBulletinBoard {
     private String threadId;
     private String title;
     private String postDate;
     private UserData userId;
+    private String detail;
 
     public String getThreadId() {
         return threadId;
@@ -40,6 +40,14 @@ public class ConvertBulletinBoard {
 
     public void setUserId(UserData userId) {
         this.userId = userId;
+    }
+
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
     
     

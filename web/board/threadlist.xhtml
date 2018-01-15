@@ -20,45 +20,95 @@
                     
                 <div id="threadlist_content">
                     <h:form>
-                        <p:dataTable value="#{boardBean.allTheard}" var="t">
-                            <f:facet name="header">
-                                <h:outputText value="掲示板"/>
-                            </f:facet>
-                            
-                            <p:column headerText="タイトル">
-                                <p:commandLink action="#{boardBean.transToDetail(t)}" value="#{t.title}">
-                                    <f:param value="#{t.threadId}" name="threadId"/>
-                                </p:commandLink>
-                            </p:column>
-                            
-                            <p:column headerText="作成者">
-                                <h:outputText value="#{t.userId.name}"/>
-                            </p:column>
-                            
-                            <p:column headerText="作成日">
-                                <h:outputText value="#{t.postDate}"/>
-                            </p:column>
-                            
-                            <p:column headerText="レス投稿数">
-                                <h:outputText value="resCount"/>
-                            </p:column>
-                            
-                            <p:column>
-                                <p:commandLink value="削除" action="#{boardBean.deleteThread(t)}"/>
-                            </p:column>
-                        </p:dataTable>
+                        <p:growl binding="#{info_message}" showDetail="true"/>
+                       
+                        <p:outputPanel binding="#{info_list}">
+                            <p:dataTable value="#{boardBean.allThread}" var="t" style="text-align: center;" rows="10" styleClass="datatable"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,20,30">
+                                <f:facet name="header">
+                                    <h:outputText value="掲示板"/>
+                                </f:facet>
+
+                                <p:column headerText="タイトル">
+                                    <p:commandLink action="#{boardBean.transToDetail(t)}" value="#{t.title}">
+                                        <f:param value="#{t.threadId}" name="threadId"/>
+                                    </p:commandLink>
+                                </p:column>
+
+                                <p:column headerText="作成者">
+                                    <h:outputText value="#{t.userId.name}"/>
+                                </p:column>
+
+                                <p:column headerText="作成日" style="width: 23%;">
+                                    <h:outputText value="#{t.convertedPostDate}"/>
+                                </p:column>
+
+                                <p:column headerText="投稿数" style="width: 8%;">
+                                    <h:outputText value="#{boardBean.resCount(t)}件"/>
+                                </p:column>
+
+                                <p:column style="width: 5%;">
+                                    <p:commandLink value="削除" action="#{boardBean.removeThread(t)}" update="#{info_message.clientId} #{info_list.clientId}" style="font-size: 14px">
+                                        <!--削除確認ダイアログの表示-->
+                                        <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                                    </p:commandLink>
+                                </p:column>
+                            </p:dataTable>
+                        </p:outputPanel>
                     </h:form>
                 </div>
                 
-                <p:dialog widgetVar="thread_create_dlg" header="スレッド作成">
+                <!--ダイアログ-->
+                <p:dialog widgetVar="thread_create_dlg" header="スレッド作成" modal="true" resizable="false" showEffect="clip" hideEffect="drop"
+                          styleClass="thread_create_box" width="500" height="300">
                     <h:form>
-                        <h:panelGrid class="create" columns="3">
-                            タイトル：<h:inputText id="title" value="#{boardBean.title}"/>
-                            <h:message for="title" styleClass="error"/>
-                        </h:panelGrid>
-                        <p:commandButton value="作成" action="#{boardBean.createThread()}"/>
+                        <p:outputPanel id="thread_dlg_pop">
+                            
+                            <h:panelGrid class="create" style="text-align: left;">
+                                
+                                <p:row>
+                                    <p:column>
+                                        <h:outputLabel for="thread_title" value="タイトル"/><br/>
+                                        <h:inputText id="thread_title" value="#{boardBean.title}" style="width: 450px"/>
+                                        <h:message for="thread_title" styleClass="error"/>
+                                    </p:column>
+                                </p:row>
+                                <p:row>
+                                    <p:column>
+
+                                            <h:outputLabel for="thread_detail" value="コメント"/><br/>
+                                            <h:inputTextarea id="thread_detail" value="#{boardBean.detail}" style="width: 450px; height: 150px"/>
+                                            <h:message for="thread_detail" styleClass="error"/>
+
+                                    </p:column>
+                                </p:row>
+
+                                <p:row>
+                                    <p:column>
+                                        <p:commandButton value="リセット" actionListener="#{boardBean.clear()}" update="thread_dlg_pop"/>
+                                        <p:commandButton value="作成" action="#{boardBean.addThread()}" oncomplete="PF('thread_create_dlg').hide();"
+                                                         update="#{info_list.clientId} #{info_message.clientId} thread_dlg_pop"/>
+                                    </p:column>
+                                
+                                </p:row>
+                            </h:panelGrid>
+                        
+                        </p:outputPanel>
                     </h:form>
                 </p:dialog>
+                <!--end-->
+                
+                <!--確認ダイアログ-->
+                <h:form>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                        <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                    </p:confirmDialog>
+                </h:form>
+                <!--confirm dialog end-->
+                
             </ui:define>
         </ui:composition>
     </h:body>

@@ -2,7 +2,8 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
@@ -10,22 +11,44 @@
         <ui:composition template="/templates/info_template.xhtml">
             <ui:define name="title">ISAT - INFO Detail</ui:define>
             <ui:define name="content">
-                <div id="info_detail_header">
-                    <h:form>
-                        <h:outputLabel for="info_detail_header_title" value="#{infoDataManager.convData.createDate}"/>
-                        <h:commandLink action="#{infomationBean.deleteInfo()}">削除</h:commandLink>
-                        <h1 id="info_detail_header_title">#{infoDataManager.convData.title}</h1>
-                    </h:form>
-                </div>
-                <div id="info_detail_content">
-                    <!--styleClass="preformatted"-->
-                    <h:outputText value="#{infoDataManager.convData.content}" escape=""/>
-                </div>
-                <div id="info_detail_footer">
-                    <h:form>
-                        <h:commandLink action="#{infomationBean.transToList()}">インフォメーション一覧へ戻る</h:commandLink>
-                    </h:form>
-                </div>
+                
+                <p:panelGrid style="width: 100%">
+                    
+                    <p:row>
+                        <p:column>
+                            <div id="info_detail_header">
+                                <h:form>
+                                    <h:outputLabel for="info_detail_header_title" value="#{infoDataManager.detailData.convertedCreateDate}"/>
+                                    <p:commandLink action="#{infomationBean.deleteInfo()}" value="削除" update="#{info_message.clientId}">
+                                        <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                                    </p:commandLink>
+                                    <h2 id="info_detail_header_title">#{infoDataManager.detailData.title}</h2>
+                                </h:form>
+                            </div>
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <div id="info_detail_content">
+                                <!--styleClass="preformatted"-->
+                                <h:outputText value="#{infoDataManager.detailData.content}" escape=""/>
+                            </div>
+                        </p:column>
+                    </p:row>
+                    
+                    
+                    <p:row>
+                        <p:column>
+                            <div id="info_detail_footer">
+                                <h:form>
+                                    <p:commandLink action="#{infomationBean.transToList}">インフォメーション一覧へ戻る</p:commandLink>
+                                </h:form>
+                            </div>
+                        </p:column>
+                    </p:row>
+                    
+                </p:panelGrid>
             </ui:define>
         </ui:composition>
     </h:body>

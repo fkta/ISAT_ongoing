@@ -65,18 +65,22 @@ public class ScheduleBean {
         return "deleteschedule.xhtml?faces-redirect=true";
     }
     
-    public String create(){
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhmmss");
+    public void create(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         Schedule sch = new Schedule();
         sch.setOwner(udm.getUser());
         sch.setScheduleId("sch"+sdf.format(new Date()));
-        sch.setTitle(title);
-        sch.setSDate(startDate);
-        sch.setEDate(endDate);
-        sch.setContent(content);
-        sch.setPlace(place);
-        sf.create(sch);
-        return null;
+        sch.setTitle(event.getTitle());
+        sch.setSDate(event.getStartDate());
+        sch.setEDate(event.getEndDate());
+        sch.setContent(event.getDescription());
+        System.out.println("owner : "+sch.getOwner());
+        System.out.println("id : "+sch.getScheduleId());
+        System.out.println("title : "+sch.getTitle());
+        System.out.println("start : "+sch.getSDate());
+        System.out.println("end : "+sch.getEDate());
+        System.out.println("content : "+sch.getContent());
+//        sf.create(sch);
     }
  
     @PostConstruct

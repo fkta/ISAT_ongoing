@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Collection;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -32,6 +33,10 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "BulletinBoard.orderByPostDate", query = "SELECT b FROM BulletinBoard b ORDER BY b.postDate DESC")})
 public class BulletinBoard implements Serializable {
 
+    @Size(max = 200)
+    @Column(name = "detail")
+    private String detail;
+
     private static final long serialVersionUID = 1L;
     @Id
     @Basic(optional = false)
@@ -62,11 +67,12 @@ public class BulletinBoard implements Serializable {
         this.threadId = threadId;
     }
 
-    public BulletinBoard(String threadId, String title, Date postDate, UserData userId) {
+    public BulletinBoard(String threadId, String title, Date postDate, UserData userId,String detail) {
         this.threadId = threadId;
         this.title = title;
         this.postDate = postDate;
         this.userId = userId;
+        this.detail = detail;
     }
 
     public String getThreadId() {
@@ -92,6 +98,11 @@ public class BulletinBoard implements Serializable {
     public void setPostDate(Date postDate) {
         this.postDate = postDate;
     }
+    
+    public String getConvertedPostDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return sdf.format(postDate);
+    }
 
     public UserData getUserId() {
         return userId;
@@ -99,6 +110,14 @@ public class BulletinBoard implements Serializable {
 
     public void setUserId(UserData userId) {
         this.userId = userId;
+    }
+    
+    public String getDetail() {
+        return detail;
+    }
+
+    public void setDetail(String detail) {
+        this.detail = detail;
     }
 
     @XmlTransient
@@ -134,5 +153,7 @@ public class BulletinBoard implements Serializable {
     public String toString() {
         return "entity.BulletinBoard[ threadId=" + threadId + " ]";
     }
+
+    
     
 }
