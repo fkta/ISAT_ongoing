@@ -35,4 +35,12 @@ public class ScheduleFacade extends AbstractFacade<Schedule> {
        return query.getResultList();
     }
     
+    public List<Schedule> findByScheduleId(String scheduleId){
+       TypedQuery<Schedule> query = em.createNamedQuery("Schedule.findByScheduleId",Schedule.class);
+       query.setParameter("scheduleId", scheduleId);
+       query.setFirstResult(query.getFirstResult());
+       query.setMaxResults(query.getMaxResults());
+       return query.getResultList();
+    }
+    
 }

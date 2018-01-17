@@ -13,9 +13,14 @@
             <ui:define name="title">ISAT - schedule</ui:define>
             <ui:define name="content">
 <h:form>
+    
+    <p:breadCrumb style="font-size: 14px;">
+        <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
+        <p:menuitem value="スケジュール"/>
+    </p:breadCrumb>
  
     <h:panelGrid columnClasses="value">
-        <p:schedule id="schedule" value="#{scheduleBean2.eventModel}" widgetVar="myschedule" timeZone="Asia/Tokyo" locale="ja" nextDayThreshold="00:00:01">
+        <p:schedule id="schedule" value="#{scheduleBean2.eventModel}" widgetVar="myschedule" timeZone="Asia/Tokyo" locale="ja">
  
             <p:ajax event="dateSelect" listener="#{scheduleBean2.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
             <p:ajax event="eventSelect" listener="#{scheduleBean2.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
@@ -28,80 +33,100 @@
     <!--ダイアログ-->
     <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
         <div>
-            <h:panelGrid id="eventDetails" style="text-align: right;">
+            <p:outputPanel id="schedule_dlg" style="width: 1000px;height: 500px;">
 
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="title" value="予定:" />
-                    </p:column>
+                <h:panelGrid id="eventDetails" style="text-align: right; height: 100%; width: 500px; float: left;">
 
-                    <p:column colspan="2">
-                        <p:inputText id="title" value="#{scheduleBean2.event.title}" required="true" />
-                    </p:column>
-                </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="title" value="予定:" />
+                        </p:column>
 
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="from" value="開始日時:" />
-                    </p:column>
+                        <p:column colspan="2">
+                            <p:inputText id="title" value="#{scheduleBean2.event.title}" required="true" />
+                        </p:column>
+                    </p:row>
 
-                    <p:column colspan="2">
-                        <p:calendar id="from" value="#{scheduleBean2.event.startDate}" pattern="yyyy/MM/dd HH:mm"/>
-                    </p:column>
-                </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="from" value="開始日時:" />
+                        </p:column>
 
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="to" value="終了日時:" />
-                    </p:column>
+                        <p:column colspan="2">
+                            <p:calendar id="from" value="#{scheduleBean2.event.startDate}" pattern="yyyy/MM/dd HH:mm"/>
+                        </p:column>
+                    </p:row>
 
-                    <p:column colspan="2">
-                        <p:calendar id="to" value="#{scheduleBean2.event.endDate}" pattern="yyyy/MM/dd HH:mm"/>
-                    </p:column>
-                </p:row>
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="to" value="終了日時:" />
+                        </p:column>
+
+                        <p:column colspan="2">
+                            <p:calendar id="to" value="#{scheduleBean2.event.endDate}" pattern="yyyy/MM/dd HH:mm"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="allDay" value="終日" />
+                        </p:column>
+
+                        <p:column colspan="2">
+                            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean2.event.allDay}" />
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel for="description" value="備考:"/>
+                        </p:column>
+
+                        <p:column colspan="2">
+                            <p:inputTextarea id="description" value="#{scheduleBean2.event.description}"/>
+                        </p:column>
+                    </p:row>
+
+                    <p:row>
+
+                        <p:column>
+                            <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton value="削除" update="#{info_message.clientId}" actionListener="#{scheduleBean2.removeEvent()}" style="font-size: 14px;"
+                                             oncomplete="PF('myschedule').update();PF('eventDialog').hide()">
+
+                                <p:confirm header="Confirmation" message="予定を削除してもよろしいですか？" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                        </p:column>
+
+                        <p:column>
+                            <p:commandButton id="addButton" value="登録/変更" update="#{info_message.clientId}" actionListener="#{scheduleBean2.addEvent()}" style="font-size: 14px;"
+                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                        </p:column>
+
+                    </p:row>
+
+                </h:panelGrid>
                 
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="allDay" value="終日" />
-                    </p:column>
-
-                    <p:column colspan="2">
-                        <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean2.event.allDay}" />
-                    </p:column>
-                </p:row>
-
-                <p:row>
-                    <p:column>
-                        <p:outputLabel for="description" value="備考:"/>
-                    </p:column>
-
-                    <p:column colspan="2">
-                        <p:inputTextarea id="description" value="#{scheduleBean2.event.description}"/>
-                    </p:column>
-                </p:row>
-
-                <p:row>
-
-                    <p:column>
-                        <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
-                    </p:column>
-
-                    <p:column>
-                        <p:commandButton value="削除" update="#{info_message.clientId}" action="#{scheduleBean2.removeEvent()}" style="font-size: 14px;"
-                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();">
-                        
-                            <p:confirm header="Confirmation" message="予定を削除してもよろしいですか？" icon="ui-icon-alert"/>
-                        </p:commandButton>
-                    </p:column>
-
-                    <p:column>
-                        <p:commandButton id="addButton" value="登録/変更" update="#{info_message.clientId}" action="#{scheduleBean2.addEvent()}" style="font-size: 14px;"
-                                     oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-                    </p:column>
-
-                </p:row>
-
-            </h:panelGrid>
+                <div style="width: 500px; height: 100%; background-color: burlywood; float: left;">
+                    
+                    <p:selectOneMenu id="classItem" value="#{scheduleBean2.pickItem}">
+                        <f:selectItem itemLabel="クラスを選択" itemValue=""/>
+                        <f:selectItems value="#{scheduleBean2.classList}"/>
+                        <p:ajax process="@this" event="change" update="pickarea"/>
+                    </p:selectOneMenu>
+                    <br/>
+                    
+                    <p:outputPanel id="pickarea">
+                        <p:pickList id="pickList" value="#{scheduleBean2.users}" var="user" itemLabel="#{user.name}" itemValue="#{user.userId}"/>
+                    </p:outputPanel>
+                    
+                    
+                </div>
+                
+            </p:outputPanel>
             
         </div>
     </p:dialog>    

@@ -36,6 +36,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Department.findByDepartmentName", query = "SELECT d FROM Department d WHERE d.departmentName = :departmentName")
     , @NamedQuery(name = "Department.findByDepartmentCode", query = "SELECT d FROM Department d WHERE d.departmentCode = :departmentCode")
     , @NamedQuery(name = "Department.findByClassCode", query = "SELECT d FROM Department d WHERE d.classCode = :classCode")
+    , @NamedQuery(name = "Department.findClass", query = "SELECT d FROM Department d WHERE d.departmentCode = :departmentCode and d.classCode = :classCode")
     , @NamedQuery(name = "Department.findByYears", query = "SELECT d FROM Department d WHERE d.years = :years")})
 public class Department implements Serializable {
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb;
 
 import entity.UserData;
@@ -12,10 +7,6 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
-/**
- *
- * @author glowo
- */
 @Stateless
 public class UserDataFacade extends AbstractFacade<UserData> {
 
@@ -42,6 +33,16 @@ public class UserDataFacade extends AbstractFacade<UserData> {
     public UserData findUserId(String userId){
         TypedQuery<UserData> query = em.createNamedQuery("UserData.findByUserId",UserData.class).setParameter("userId", userId);
         return query.getSingleResult();
+    }
+    
+    
+    public List<UserData> findByUserType(String usertype){
+            TypedQuery<UserData> query = em.createNamedQuery("UserData.findByUsertype",UserData.class);
+            query.setParameter("usertype", usertype);
+            query.setFirstResult(query.getFirstResult());
+            query.setMaxResults(query.getMaxResults());
+            return query.getResultList();
+        
     }
     
 }

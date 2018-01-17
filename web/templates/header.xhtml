@@ -12,7 +12,11 @@
             <div class="head">
                 <div class="top-head">
                     <div class="left-head">
-                        <h:graphicImage url="/resources/image/wintosh_logo.png"/>
+                        
+                        <p:link outcome="/faces/toppage/top.xhtml?faces-redirect=true">
+                            <h:graphicImage url="/resources/image/wintosh_logo.png"/>
+                        </p:link>
+                        
                     </div>
 
                     <div class="center-head">
@@ -35,48 +39,38 @@
                     <h:form>
                         <ul>
                             <li>
-                                <h:commandLink action="#{managedBean.transToBoard()}">
-                                    <h:graphicImage url="/resources/image/bulletinboard.png"/>
+                                <h:commandLink action="#{managedBean.transToBoard()}" styleClass="link">
+                                    <h:graphicImage url="/resources/image/bulletinboard.png"/><br/>
                                     <h:outputText value="掲示板"/>
                                 </h:commandLink>
                             </li>
                             
-                            <li>
-                                <h:commandLink action="#{managedBean.transToSchedule()}">
-                                    <h:graphicImage url="/resources/image/schedule.png"/>
+                            <li style="margin-left: 20px;">
+                                <h:commandLink action="#{managedBean.transToSchedule()}" styleClass="link">
+                                    <h:graphicImage url="/resources/image/schedule.png"/><br/>
                                     <h:outputText value="スケジュール"/>
                                 </h:commandLink>
                             </li>
                             
-                            <li>
-                                <h:graphicImage url="/resources/image/questionnaire.png"/>
-                                <h:outputText value="アンケート"/>
-                            </li>
-                            
-                            <li>
-                                <h:graphicImage url="/resources/image/transmit.png"/>
+                            <li style="margin-left: 20px;">
+                                <h:graphicImage url="/resources/image/transmit.png"/><br/>
                                 <h:outputText value="伝達"/>
                             </li>
                             
-                            <li>
-                                <h:graphicImage url="/resources/image/todo.jpg"/>
+                            <li style="margin-left: 20px;">
+                                <h:graphicImage url="/resources/image/todo.jpg"/><br/>
                                 <h:outputText value="ToDo"/>
                             </li>
                             
-                            <li>
-                                <h:graphicImage url="/resources/image/notice.png"/>
-                                <h:outputText value="受信BOX"/>
-                            </li>
-                            
-                            <li>
-                                <h:commandLink action="#{managedBean.transToInfoList()}">
-                                    <h:graphicImage url="/resources/image/info.png"/>
+                            <li style="margin-left: 20px;">
+                                <h:commandLink action="#{managedBean.transToInfoList()}" styleClass="link">
+                                    <h:graphicImage url="/resources/image/info.png"/><br/>
                                     <h:outputText value="インフォ"/>
                                 </h:commandLink>
                             </li>
                             
-                            <li>
-                                <h:link outcome="/adminmenu/adminmenu.xhtml">
+                            <li style="margin-left: 20px;">
+                                <h:link outcome="/adminmenu/adminmenu.xhtml" styleClass="link">
                                     <h:outputText value="管理画面"/>
                                 </h:link>
                             </li>
@@ -84,7 +78,7 @@
                     </h:form>
                 </div>
 
-                <div class="notice">
+                <!--<div class="notice">
                     <div class="box1">
                         <p>お知らせ</p>
                     </div>
@@ -92,7 +86,7 @@
                     <div class="box2">
                         <p>お知らせ</p>
                     </div>
-                </div>
+                </div>-->
             </div>
         </ui:composition>
         

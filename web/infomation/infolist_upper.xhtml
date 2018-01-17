@@ -14,12 +14,12 @@
             <ui:define name="content">
                 <h:form>
                     
+                    <p:breadCrumb style="font-size: 12px; margin-bottom: 20px;">
+                        <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="インフォメーション"/>
+                    </p:breadCrumb>
+                    
                     <p:outputPanel id="info_list_panel" binding="#{info_list_panel}">
-                        <p:breadCrumb>
-                            <p:menuitem value="top" url="/toppage/top.xhtml?faces-redirect=true"/>
-                            <p:menuitem value="info"/>
-                        </p:breadCrumb>
-                        <h:outputText value="インフォメーション一覧" style="font-size: 16px; background-color: blue;"/>
 
                         <p:dataTable value="#{infomationBean.allInfo}" var="d" rows="10" styleClass="datatable"
                                      paginator="true"
@@ -35,20 +35,20 @@
                                 </p:commandLink>
                             </p:column>
 
-                            <p:column headerText="カテゴリ">
+                            <p:column headerText="カテゴリ" style="width: 10%">
                                 <h:outputText value="#{d.categoryId.categoryName}"/>
                             </p:column>
 
-                            <p:column headerText="作成日">
-                                <h:outputText value="#{d.convertedCreateDate}"/>
+                            <p:column headerText="作成日" style="width: 20%">
+                                <h:outputText value="#{d.convertedCreateDate}" style="font-size: 14px;"/>
                             </p:column>
 
-                            <p:column headerText="作成者">
+                            <p:column headerText="作成者" style="width: 10%">
                                 <h:outputText value="#{d.userId.name}"/>
                             </p:column>
 
-                            <p:column headerText="掲載終了日">
-                                <h:outputText value="#{d.convertedTerm}"/>
+                            <p:column headerText="掲載終了日" style="width: 20%">
+                                <h:outputText value="#{d.convertedTerm}" style="font-size: 14px;"/>
                             </p:column>
                             
                             <p:column style="width: 5%;">

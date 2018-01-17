@@ -12,6 +12,15 @@
             <ui:define name="title">ISAT - INFO Detail</ui:define>
             <ui:define name="content">
                 
+                <h:form>
+                    <p:breadCrumb style="font-size: 12px; margin-bottom: 20px;">
+                        <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="インフォメーション" url="infolist_upper.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="詳細"/>
+                    </p:breadCrumb>
+                </h:form>
+                
+                
                 <p:panelGrid style="width: 100%">
                     
                     <p:row>
@@ -19,7 +28,7 @@
                             <div id="info_detail_header">
                                 <h:form>
                                     <h:outputLabel for="info_detail_header_title" value="#{infoDataManager.detailData.convertedCreateDate}"/>
-                                    <p:commandLink action="#{infomationBean.deleteInfo()}" value="削除" update="#{info_message.clientId}">
+                                    <p:commandLink action="#{infomationBean.deleteInfo()}" value="削除" update="#{info_message.clientId}" style="margin-left: 20px">
                                         <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
                                     </p:commandLink>
                                     <h2 id="info_detail_header_title">#{infoDataManager.detailData.title}</h2>

@@ -1,6 +1,7 @@
 package ejb;
 
-import entity.Department;
+import entity.ScheduleManage;
+import entity.UserData;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -8,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 @Stateless
-public class DepartmentFacade extends AbstractFacade<Department> {
+public class ScheduleManageFacade extends AbstractFacade<ScheduleManage> {
 
     @PersistenceContext(unitName = "ISATPU")
     private EntityManager em;
@@ -18,14 +19,13 @@ public class DepartmentFacade extends AbstractFacade<Department> {
         return em;
     }
 
-    public DepartmentFacade() {
-        super(Department.class);
+    public ScheduleManageFacade() {
+        super(ScheduleManage.class);
     }
     
-    public List<Department> findByClass(char departmentCode,String classCode){
-        TypedQuery<Department> query = em.createNamedQuery("Department.findClass",Department.class);
-        query.setParameter("departmentCode", departmentCode);
-        query.setParameter("classCode", classCode);
+    public List<ScheduleManage> findUserId(UserData userId){
+        TypedQuery<ScheduleManage> query = em.createNamedQuery("ScheduleManage.findByUserId",ScheduleManage.class);
+        query.setParameter("userId", userId);
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
         return query.getResultList();

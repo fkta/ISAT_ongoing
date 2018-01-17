@@ -8,6 +8,7 @@ body{
 .head{
     width:100%;
     margin:0px auto;
+    margin-bottom: 10px;
 }
 
 .top-head{
@@ -96,4 +97,8 @@ body{
     padding: 0;
     border: none;
     background-color: whitesmoke;
+}
+
+.link{
+    text-decoration: none;
 }

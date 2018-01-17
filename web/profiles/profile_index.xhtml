@@ -12,6 +12,14 @@
         <ui:composition template="/templates/profile_template.xhtml">
             <ui:define name="title">ISAT - INFO PendingDetail</ui:define>
             <ui:define name="content" id="profile_content">
+                
+                <h:form>
+                    <p:breadCrumb style="font-size: 12px; margin-bottom: 20px;">
+                        <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="プロフィール"/>
+                    </p:breadCrumb>
+                </h:form>
+                
                 <div>
                     <h:form>
                         <p:outputPanel id="profile_grid" binding="#{profile_grid}">

@@ -12,6 +12,14 @@
         <ui:composition template="/templates/board_template.xhtml">
             <ui:define name="title">ISAT - Board List</ui:define>
             <ui:define name="content">
+                
+                <h:form>
+                    <p:breadCrumb style="font-size: 12px; margin-bottom: 20px;">
+                        <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="掲示板 一覧"/>
+                    </p:breadCrumb>
+                </h:form>
+                
                 <div class="threadcreate">
                     <h:form>
                         <p:commandButton value="スレッド作成" onclick="PF('thread_create_dlg').show();"
