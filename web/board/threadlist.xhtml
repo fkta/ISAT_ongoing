@@ -14,13 +14,14 @@
             <ui:define name="content">
                 <div class="threadcreate">
                     <h:form>
-                        <p:commandButton value="スレッド作成" onclick="PF('thread_create_dlg').show();" style="float: right;"/>
+                        <p:commandButton value="スレッド作成" onclick="PF('thread_create_dlg').show();"
+                                         style="float: right; font-size: 14px;" icon="ui-icon-plus"/>
                     </h:form>
                 </div>
                     
                 <div id="threadlist_content">
                     <h:form>
-                        <p:growl binding="#{info_message}" showDetail="true"/>
+                        
                        
                         <p:outputPanel binding="#{info_list}">
                             <p:dataTable value="#{boardBean.allThread}" var="t" style="text-align: center;" rows="10" styleClass="datatable"
@@ -87,9 +88,9 @@
 
                                 <p:row>
                                     <p:column>
-                                        <p:commandButton value="リセット" actionListener="#{boardBean.clear()}" update="thread_dlg_pop"/>
+                                        <p:commandButton value="リセット" actionListener="#{boardBean.clear()}" update="thread_dlg_pop" style="font-size: 14px;"/>
                                         <p:commandButton value="作成" action="#{boardBean.addThread()}" oncomplete="PF('thread_create_dlg').hide();"
-                                                         update="#{info_list.clientId} #{info_message.clientId} thread_dlg_pop"/>
+                                                         update="#{info_list.clientId} #{info_message.clientId} thread_dlg_pop" style="font-size: 14px;"/>
                                     </p:column>
                                 
                                 </p:row>
@@ -100,14 +101,7 @@
                 </p:dialog>
                 <!--end-->
                 
-                <!--確認ダイアログ-->
-                <h:form>
-                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
-                        <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
-                    </p:confirmDialog>
-                </h:form>
-                <!--confirm dialog end-->
+                
                 
             </ui:define>
         </ui:composition>

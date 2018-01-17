@@ -52,7 +52,7 @@ public class ScheduleBean {
         sf.remove(ds);
     }
 
-    public String findSchedule() throws ParseException{
+    /*public String findSchedule() throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         String cDate = sdf.format(stDate);
         cDate = cDate.substring(0,11);
@@ -63,7 +63,7 @@ public class ScheduleBean {
         sdm.setScheduleList(sf.searchSchedule(stDate, enDate));
         System.out.println("取得した予定 "+sdm.getScheduleList().get(0).getTitle());
         return "deleteschedule.xhtml?faces-redirect=true";
-    }
+    }*/
     
     public void create(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");

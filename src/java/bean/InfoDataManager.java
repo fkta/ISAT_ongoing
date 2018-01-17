@@ -21,8 +21,6 @@ public class InfoDataManager implements Serializable {
 
     private Info detailData;
     private ConvertedInfo convData;
-    private List<Pending> pendData;
-    private List<ConvertedPending> convPendData;
     private PendingPK pendPK;
     private Pending pend;
     
@@ -45,22 +43,6 @@ public class InfoDataManager implements Serializable {
 
     public void setConvData(ConvertedInfo convData) {
         this.convData = convData;
-    }
-
-    public List<Pending> getPendData() {
-        return pendData;
-    }
-
-    public void setPendData(List<Pending> pendData) {
-        this.pendData = pendData;
-    }
-
-    public List<ConvertedPending> getConvPendData() {
-        return convPendData;
-    }
-
-    public void setConvPendData(List<ConvertedPending> convPendData) {
-        this.convPendData = convPendData;
     }
 
     public PendingPK getPendPK() {

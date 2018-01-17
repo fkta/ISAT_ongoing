@@ -11,6 +11,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
@@ -34,6 +35,9 @@ public class ManagedBean {
     //ajaxTest
     private String test;
     private String inputValue;
+    
+    // メッセージ
+    protected FacesContext context = FacesContext.getCurrentInstance();
     
     @EJB
     UserDataFacade udf;
@@ -66,6 +70,23 @@ public class ManagedBean {
         this.inputValue = nickname;
     }
     
+    /* メッセージ作成処理 */
+    public void scheduleAddMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "予定を追加しました") );
+        
+    }
+    
+    public void scheduleDeleteMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "予定を削除しました") );
+        
+    }
+    
+    public void scheduleUpdateMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "予定を更新しました") );
+        
+    }
+    
+    
     /* ユーザ認証処理 */
     public String userAuth(){
         System.out.println("ユーザ認証開始");
@@ -73,9 +94,9 @@ public class ManagedBean {
         if(!ud.isEmpty()){
             udm.setUser(ud.get(0));
             if(udm.getUser().getUsertype().equals("admin")||udm.getUser().getUsertype().equals("teacher")){
-                return "/schedule/schedule.xhtml?faces-redirect=true";
+                return "/toppage/top.xhtml?faces-redirect=true";
             }else if(udm.getUser().getUsertype().equals("student")){
-                return "/schedule/schedule.xhtml?faces-redirect=true";
+                return "/toppage/top.xhtml?faces-redirect=true";
             }else{
                 errorMessage = "ユーザIDもしくはパスワードが間違っています2";
                 System.out.println("input data user id :"+userId + "password : "+password);

@@ -236,6 +236,7 @@ public class InfomationBean{
         info.setUserId(udm.getUser());
         System.out.println("作成者 : " +info.getUserId().getName());
         inf.create(info);
+        clear();
         
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "作成しました") );
         
@@ -448,6 +449,7 @@ public class InfomationBean{
         return pf.findAllPending();
     }
     
+    /*
     public List<ConvertedPending> getPendingData(){
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         switch (udm.getUser().getUsertype()) {
@@ -488,7 +490,7 @@ public class InfomationBean{
                 udm.setErrorMessage("セッションがタイムアウトしました　再度ログインしてください。");
                 return null;
         }
-    }
+    }*/
     
     /*セッターゲッター*/
 

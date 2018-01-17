@@ -5,13 +5,10 @@ import ejb.ResponseFacade;
 import entity.BulletinBoard;
 import entity.Response;
 import entity.ResponsePK;
-import function.ConvertBulletinBoard;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -180,11 +177,10 @@ public class BoardBean {
 }
     
     //スレッド削除
-    public String removeThread(ConvertBulletinBoard cbb) throws ParseException{
+    public String removeThread(BulletinBoard bb) throws ParseException{
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         //スレッドの作成者かを確認する
-        if(cbb.getUserId().getUserId().equals(udm.getUser().getUserId())||udm.getUser().getUsertype().equals("teacher")){
-            BulletinBoard bb = new BulletinBoard(cbb.getThreadId(), cbb.getTitle(), sdf.parse(cbb.getPostDate()), cbb.getUserId(),cbb.getDetail());
+        if(bb.getUserId().getUserId().equals(udm.getUser().getUserId())||udm.getUser().getUsertype().equals("teacher")){
             bbf.remove(bb);
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "削除しました") );
         }else{

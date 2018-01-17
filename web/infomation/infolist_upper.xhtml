@@ -15,6 +15,11 @@
                 <h:form>
                     
                     <p:outputPanel id="info_list_panel" binding="#{info_list_panel}">
+                        <p:breadCrumb>
+                            <p:menuitem value="top" url="/toppage/top.xhtml?faces-redirect=true"/>
+                            <p:menuitem value="info"/>
+                        </p:breadCrumb>
+                        <h:outputText value="インフォメーション一覧" style="font-size: 16px; background-color: blue;"/>
 
                         <p:dataTable value="#{infomationBean.allInfo}" var="d" rows="10" styleClass="datatable"
                                      paginator="true"
@@ -63,7 +68,7 @@
                 <p:dialog header="新規登録" widgetVar="create_dlg" modal="true" id="info_createdlg">
                     <h:form>
                         
-                        <p:outputPanel id="info_create_panel">
+                        <p:outputPanel id="info_create_panel" binding="#{info_create_panel}">
 
                             <div id="info_create_header">
                                 <h:outputText value="登録内容を入力してください。" />
@@ -73,7 +78,6 @@
                             <div id="info_create_dlg_left">
                                 <p:outputLabel for="info_title" value="タイトル : "/>
                                 <p:inputText id="info_title" value="#{infomationBean.title}" style="margin-bottom: 20px"/><br/>
-
                                 <h:outputLabel for="info_term" value="掲載期間 : "/>
                                 <p:calendar id="info_term" value="#{infomationBean.selectedTerm}" pattern="yyyy/MM/dd HH:mm:ss"/>
                                 <h:outputLabel for="info_enddate" value="終日"/>
@@ -104,7 +108,7 @@
                             
                             <div id="info_create_dlg_button_area">
                                 <p:commandButton value="リセット" actionListener="#{infomationBean.clear()}" update="info_create_panel" style="margin-right: 20px; font-size: 14px;"/>
-                                <p:commandButton value="登録" action="#{infomationBean.addInfo()}" update="#{info_list_panel.clientId} #{info_message.clientId}" oncomplete="PF('create_dlg').hide();" style="font-size: 14px;">
+                                <p:commandButton value="登録" action="#{infomationBean.addInfo()}" update="#{info_list_panel.clientId} #{info_message.clientId} info_create_panel" oncomplete="PF('create_dlg').hide();" style="font-size: 14px;">
                                     <p:confirm header="Confirmation" message="登録してよろしいですか？" icon="ui-icon-alert"/>
                                 </p:commandButton>
                             </div>

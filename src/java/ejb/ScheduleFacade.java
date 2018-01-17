@@ -1,7 +1,7 @@
 package ejb;
 
 import entity.Schedule;
-import java.util.Date;
+import entity.UserData;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -28,8 +28,8 @@ public class ScheduleFacade extends AbstractFacade<Schedule> {
         return query.getSingleResult();
     }
     
-    public List<Schedule> searchSchedule(Date sDate,Date eDate){
-       TypedQuery<Schedule> query = em.createNamedQuery("Schedule.findBySchedule",Schedule.class).setParameter("sDate", sDate).setParameter("eDate", eDate);
+    public List<Schedule> searchSchedule(UserData owner){
+       TypedQuery<Schedule> query = em.createNamedQuery("Schedule.findByOwner",Schedule.class).setParameter("owner", owner);
        query.setFirstResult(query.getFirstResult());
        query.setMaxResults(query.getMaxResults());
        return query.getResultList();

@@ -35,8 +35,12 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Schedule.findByTitle", query = "SELECT s FROM Schedule s WHERE s.title = :title")
     , @NamedQuery(name = "Schedule.findBySDate", query = "SELECT s FROM Schedule s WHERE s.sDate = :sDate")
     , @NamedQuery(name = "Schedule.findByEDate", query = "SELECT s FROM Schedule s WHERE s.eDate = :eDate")
+    , @NamedQuery(name = "Schedule.findByOwner", query = "SELECT s FROM Schedule s WHERE s.owner = :owner")
     , @NamedQuery(name = "Schedule.findByContent", query = "SELECT s FROM Schedule s WHERE s.content = :content")})
 public class Schedule implements Serializable {
+
+    @Column(name = "allday")
+    private Boolean allday;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -153,6 +157,14 @@ public class Schedule implements Serializable {
     @Override
     public String toString() {
         return "entity.Schedule[ scheduleId=" + scheduleId + " ]";
+    }
+
+    public Boolean getAllday() {
+        return allday;
+    }
+
+    public void setAllday(Boolean allday) {
+        this.allday = allday;
     }
     
 }
