@@ -1,7 +1,7 @@
 package ejb;
 
-import entity.ScheduleManage;
-import entity.UserData;
+import entity.Todo;
+import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
@@ -9,7 +9,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 
 @Stateless
-public class ScheduleManageFacade extends AbstractFacade<ScheduleManage> {
+public class TodoFacade extends AbstractFacade<Todo> {
 
     @PersistenceContext(unitName = "ISATPU")
     private EntityManager em;
@@ -19,24 +19,25 @@ public class ScheduleManageFacade extends AbstractFacade<ScheduleManage> {
         return em;
     }
 
-    public ScheduleManageFacade() {
-        super(ScheduleManage.class);
+    public TodoFacade() {
+        super(Todo.class);
     }
     
-    public List<ScheduleManage> findUserId(String userId){
-        TypedQuery<ScheduleManage> query = em.createNamedQuery("ScheduleManage.findByUserId",ScheduleManage.class);
-        query.setParameter("userId", userId);
+    public List<Todo> findByGoindTodo(){
+        TypedQuery<Todo> query = em.createNamedQuery("Todo.findByGoingTodo",Todo.class);
+        query.setParameter("nowtime", new Date());
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
+        System.out.println("進行中のtodoデータ件数 : "+query.getResultList().size());
         return query.getResultList();
     }
     
-    
-    public List<ScheduleManage> findByScheduleId(String scheduleId){
-        TypedQuery<ScheduleManage> query = em.createNamedQuery("ScheduleManage.findByScheduleId",ScheduleManage.class);
-        query.setParameter("scheduleId", scheduleId);
+    public List<Todo> findByFinishingTodo(){
+        TypedQuery<Todo> query = em.createNamedQuery("Todo.findByFinishingTodo",Todo.class);
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
+        System.out.println("完了したtodoデータ件数 : "+query.getResultList().size());
         return query.getResultList();
     }
+    
 }

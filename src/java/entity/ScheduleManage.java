@@ -1,16 +1,12 @@
 package entity;
 
 import java.io.Serializable;
-import javax.persistence.Basic;
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -19,48 +15,41 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "ScheduleManage.findAll", query = "SELECT s FROM ScheduleManage s")
-    , @NamedQuery(name = "ScheduleManage.findByScheduleId", query = "SELECT s FROM ScheduleManage s WHERE s.scheduleId = :scheduleId")
-    , @NamedQuery(name = "ScheduleManage.findByUserId", query = "SELECT s FROM ScheduleManage s WHERE s.userId = :userId")})
+    , @NamedQuery(name = "ScheduleManage.findByScheduleId", query = "SELECT s FROM ScheduleManage s WHERE s.scheduleManagePK.scheduleId = :scheduleId")
+    , @NamedQuery(name = "ScheduleManage.findByUserId", query = "SELECT s FROM ScheduleManage s WHERE s.scheduleManagePK.userId = :userId")})
 public class ScheduleManage implements Serializable {
 
+    @Size(max = 10)
+    @Column(name = "emptyfield")
+    private String emptyfield;
+
     private static final long serialVersionUID = 1L;
-    @Id
-    @Basic(optional = false)
-    @NotNull
-    @Size(min = 1, max = 17)
-    @Column(name = "schedule_id")
-    private String scheduleId;
-    @JoinColumn(name = "user_Id", referencedColumnName = "user_id")
-    @ManyToOne(optional = false)
-    private UserData userId;
+    @EmbeddedId
+    protected ScheduleManagePK scheduleManagePK;
 
     public ScheduleManage() {
     }
 
-    public ScheduleManage(String scheduleId) {
-        this.scheduleId = scheduleId;
+    public ScheduleManage(ScheduleManagePK scheduleManagePK) {
+        this.scheduleManagePK = scheduleManagePK;
     }
 
-    public String getScheduleId() {
-        return scheduleId;
+    public ScheduleManage(String scheduleId, String userId) {
+        this.scheduleManagePK = new ScheduleManagePK(scheduleId, userId);
     }
 
-    public void setScheduleId(String scheduleId) {
-        this.scheduleId = scheduleId;
+    public ScheduleManagePK getScheduleManagePK() {
+        return scheduleManagePK;
     }
 
-    public UserData getUserId() {
-        return userId;
-    }
-
-    public void setUserId(UserData userId) {
-        this.userId = userId;
+    public void setScheduleManagePK(ScheduleManagePK scheduleManagePK) {
+        this.scheduleManagePK = scheduleManagePK;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (scheduleId != null ? scheduleId.hashCode() : 0);
+        hash += (scheduleManagePK != null ? scheduleManagePK.hashCode() : 0);
         return hash;
     }
 
@@ -71,7 +60,7 @@ public class ScheduleManage implements Serializable {
             return false;
         }
         ScheduleManage other = (ScheduleManage) object;
-        if ((this.scheduleId == null && other.scheduleId != null) || (this.scheduleId != null && !this.scheduleId.equals(other.scheduleId))) {
+        if ((this.scheduleManagePK == null && other.scheduleManagePK != null) || (this.scheduleManagePK != null && !this.scheduleManagePK.equals(other.scheduleManagePK))) {
             return false;
         }
         return true;
@@ -79,7 +68,15 @@ public class ScheduleManage implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.ScheduleManage[ scheduleId=" + scheduleId + " ]";
+        return "entity.ScheduleManage[ scheduleManagePK=" + scheduleManagePK + " ]";
+    }
+
+    public String getEmptyfield() {
+        return emptyfield;
+    }
+
+    public void setEmptyfield(String emptyfield) {
+        this.emptyfield = emptyfield;
     }
     
 }

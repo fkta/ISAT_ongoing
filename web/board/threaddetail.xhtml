@@ -12,21 +12,22 @@
         <ui:composition template="/templates/board_template.xhtml">
             <ui:define name="title">ISAT - Board List</ui:define>
             <ui:define name="content">
-                
                 <h:form>
                     <p:breadCrumb style="font-size: 12px; margin-bottom: 20px;">
                         <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
-                        <p:menuitem value="掲示板 一覧" url="threadlist.xhtml?faces-redirect=true"/>
-                        <p:menuitem value="詳細"/>
+                        <p:menuitem value="掲示板 一覧" url="threadlist.xhtml?faces-redirect=true" style="text-decoration: none;"/>
+                        <p:menuitem value="詳細" style="text-decoration: none;"/>
                     </p:breadCrumb>
                 </h:form>
                 
                 <!--スレッド詳細-->
+                <p:commandButton icon="ui-icon-arrowreturnthick-1-w" value="戻る" style="font-size: 14px;" onclick="history.back();"/>
+                
                 <p:panelGrid style="width: 100%; margin-bottom: 50px">
                     <f:facet name="header">
                         <p:row>
                             <p:column>
-                                <p:commandButton value="戻る" action="#{managedBean.transToBoard()}" styleClass="response_form_button"/>
+                                
                                 <h:outputText value="スレッド内容"/>
                             </p:column>
                         </p:row>
@@ -34,9 +35,9 @@
                     <p:row>
                         <p:column>
                             <h:outputText value="#{boardDataManager.threadDetailData.title}" style="font-size: 16px; font-weight: bold"/>&nbsp;&nbsp;
-                            <h:outputText value="#{boardDataManager.threadDetailData.postDate}" style="font-size: 12px;"/>&nbsp;&nbsp;
+                            <h:outputText value="#{boardDataManager.threadDetailData.convertedPostDate}" style="font-size: 12px;"/>&nbsp;&nbsp;
                             <h:outputText value="#{boardDataManager.threadDetailData.userId.name}" style="font-size: 14px;"/><br/>
-                            <h:outputText value="#{boardDataManager.threadDetailData.detail}"/>
+                            <h:outputText value="#{boardDataManager.threadDetailData.detail}" escape=""/>
                         </p:column>
                     </p:row>
                     
@@ -45,7 +46,7 @@
                 <!--レス作成-->
                 <h:form>
                     <p:growl id="create_reponse_message" showDetail="true" life="40"/>  
-                    <p:panelGrid id="response_form" style="margin-bottom: 30px;">
+                    <p:panelGrid id="response_form" style="margin-bottom: 30px; width: 100%">
 
                         <f:facet name="header">
                             <p:row>
@@ -57,13 +58,14 @@
 
 
                             <p:row>
-                                <p:column>
+                                <p:column style="width: 90%">
                                     <p:inputTextarea id="response_input_form" value="#{boardBean.comment}" autoResize="false" maxlength="400"
-                                                     scrollHeight="50" style="height: 100px; width: 800px"/>
+                                                     scrollHeight="50" style="height: 100px; width: 100%;"/>
                                 </p:column>
 
                                 <p:column>
-                                    <p:commandButton value="投稿" action="#{boardBean.createResponse()}" update="#{response_area.clientId} response_form create_reponse_message" styleClass="response_form_button"/>
+                                    <p:commandButton value="投稿" action="#{boardBean.createResponse()}" update="#{response_area.clientId} response_form create_reponse_message" styleClass="response_form_button"
+                                                     style="font-size: 14px;"/>
                                 </p:column>
                             </p:row>
 
@@ -72,6 +74,7 @@
 
                 <!--レス一覧-->
                 <h:form>
+                    <p:commandButton actionListener="#{boardBean.updateResponseList()}" update="response_area" icon="ui-icon-arrowrefresh-1-w" value="更新" style="font-size: 14px;"/>
                     <p:outputPanel id="response_area" binding="#{response_area}">
                         <p:growl id="remove_message" showDetail="true" />  
                         <p:dataTable value="#{boardDataManager.responseList}" var="r" rows="10" styleClass="datatable"
@@ -100,6 +103,10 @@
                         </p:dataTable>
                     </p:outputPanel>
                 </h:form>
+                
+                <div>
+                    <p:link outcome="threadlist.xhtml?faces-redirect=true">掲示板一覧に戻る</p:link>
+                </div>
 
                 <!--確認ダイアログ-->
                 <h:form>

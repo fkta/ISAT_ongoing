@@ -58,8 +58,12 @@
                             </li>
                             
                             <li style="margin-left: 20px;">
-                                <h:graphicImage url="/resources/image/todo.jpg"/><br/>
-                                <h:outputText value="ToDo"/>
+                                <h:link outcome="/todo/todolist.xhtml?faces-redirect=true" styleClass="link">
+                                    <h:graphicImage url="/resources/image/todo.jpg"/><br/>
+                                    <h:outputText value="ToDo"/>
+                                </h:link>
+                            
+                                
                             </li>
                             
                             <li style="margin-left: 20px;">
@@ -70,7 +74,7 @@
                             </li>
                             
                             <li style="margin-left: 20px;">
-                                <h:link outcome="/adminmenu/adminmenu.xhtml" styleClass="link">
+                                <h:link outcome="/adminmenu/adminmenu.xhtml?faces-redirect=true" styleClass="link">
                                     <h:outputText value="管理画面"/>
                                 </h:link>
                             </li>

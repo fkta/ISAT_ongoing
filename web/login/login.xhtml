@@ -26,12 +26,16 @@
                         <p:outputLabel for="pwd" value="Pass:"/>
                         <p:password id="pwd" value="#{managedBean.password}" style="margin-top: 10px;
                                                                             margin-right: 20px;"/><br />
+                        
+                        <p:link outcome="/faces/login/secretquestion.xhtml?faces-redirect=true">
+                            パスワードを忘れた方はこちら
+                        </p:link>
+                        
                         <p:commandButton action="#{managedBean.userAuth()}" value="Login" 
                                          style="width:100px; height:30px; font-size:15px; margin-right: 20px;
                                          margin-top: 10px">
                             <f:ajax execute="@all" render=":form:error_mes"/>
                         </p:commandButton>
-                        
                         
                     </h:form>
                 </div>

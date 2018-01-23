@@ -1,5 +1,6 @@
 package ejb;
 
+import entity.Department;
 import entity.UserData;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -43,6 +44,25 @@ public class UserDataFacade extends AbstractFacade<UserData> {
             query.setMaxResults(query.getMaxResults());
             return query.getResultList();
         
+    }
+    
+    public List<UserData> findByDepartment(Department departmentId, int year, int gakunen){
+        TypedQuery<UserData> query = em.createNamedQuery("UserData.findByDepartment",UserData.class);
+        query.setParameter("departmentId", departmentId);
+        query.setParameter("year", year);
+        query.setParameter("gakunen", gakunen);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
+    }
+    
+    
+    public List<UserData> findSecret(String userId){
+        TypedQuery<UserData> query = em.createNamedQuery("UserData.findSequret",UserData.class);
+        query.setParameter("userId", userId);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
     }
     
 }

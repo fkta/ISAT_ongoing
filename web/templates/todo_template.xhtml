@@ -5,10 +5,20 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:p="http://primefaces.org/ui">
     <h:head>
-        <title><ui:insert name="title"/></title>
+        <title>Facelet Title</title>
         <h:outputStylesheet library="css" name="template.css"/>
         <h:outputStylesheet library="css" name="footer.css"/>
-        <h:outputStylesheet library="css" name="profile.css"/>
+        <h:outputStylesheet library="css" name="todo.css"/>
+        
+        <style>
+            .ui-datatable-header{
+                background-color: whitesmoke;
+                background-image: none;
+                border: 0;
+                color: black;
+            }
+        </style>
+        
     </h:head>
     <h:body>
         <div id="header">

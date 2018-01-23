@@ -16,12 +16,15 @@
                 <h:form>
                     <p:breadCrumb style="font-size: 12px; margin-bottom: 20px;">
                         <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
-                        <p:menuitem value="掲示板 一覧"/>
+                        <p:menuitem value="掲示板 一覧" style="text-decoration: none;"/>
                     </p:breadCrumb>
                 </h:form>
                 
                 <div class="threadcreate">
                     <h:form>
+                        <p:commandButton value="更新" icon="ui-icon-arrowrefresh-1-w" update="#{info_list.clientId}"
+                                         style="font-size: 14px;"/>
+                        
                         <p:commandButton value="スレッド作成" onclick="PF('thread_create_dlg').show();"
                                          style="float: right; font-size: 14px;" icon="ui-icon-plus"/>
                     </h:form>
@@ -46,7 +49,7 @@
                                     </p:commandLink>
                                 </p:column>
 
-                                <p:column headerText="作成者">
+                                <p:column headerText="作成者" style="width: 15%">
                                     <h:outputText value="#{t.userId.name}"/>
                                 </p:column>
 
@@ -96,9 +99,15 @@
 
                                 <p:row>
                                     <p:column>
-                                        <p:commandButton value="リセット" actionListener="#{boardBean.clear()}" update="thread_dlg_pop" style="font-size: 14px;"/>
-                                        <p:commandButton value="作成" action="#{boardBean.addThread()}" oncomplete="PF('thread_create_dlg').hide();"
-                                                         update="#{info_list.clientId} #{info_message.clientId} thread_dlg_pop" style="font-size: 14px;"/>
+                                        <p:outputPanel style="text-align: right;">
+                                            <p:commandButton value="閉じる" style="font-size: 14px; margin-right: 7px;">
+                                                <p:ajax process="@this" oncomplete="PF('thread_create_dlg').hide();" update="thread_dlg_pop"/>
+                                            </p:commandButton>
+                                            <p:commandButton value="リセット" actionListener="#{boardBean.clear()}" update="thread_dlg_pop" style="font-size: 14px; margin-right: 7px;"/>
+                                            <p:commandButton value="作成" action="#{boardBean.addThread()}" oncomplete="PF('thread_create_dlg').hide();"
+                                                             update="#{info_list.clientId} #{info_message.clientId} thread_dlg_pop" style="font-size: 14px;"/>
+                                        </p:outputPanel>
+                                        
                                     </p:column>
                                 
                                 </p:row>

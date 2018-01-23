@@ -16,14 +16,15 @@
     
     <p:breadCrumb style="font-size: 14px;">
         <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
-        <p:menuitem value="スケジュール"/>
+        <p:menuitem value="スケジュール" style="text-decoration: none;"/>
     </p:breadCrumb>
  
-    <h:panelGrid columnClasses="value">
-        <p:schedule id="schedule" value="#{scheduleBean2.eventModel}" widgetVar="myschedule" timeZone="Asia/Tokyo" locale="ja">
+    <h:panelGrid columnClasses="value" style="margin-top: 10px;">
+        <p:schedule id="schedule" value="#{scheduleBean2.eventModel}" widgetVar="myschedule" timeZone="Asia/Tokyo" locale="ja"
+                    timeFormat="HH:mm">
  
-            <p:ajax event="dateSelect" listener="#{scheduleBean2.onDateSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
-            <p:ajax event="eventSelect" listener="#{scheduleBean2.onEventSelect}" update="eventDetails" oncomplete="PF('eventDialog').show();" />
+            <p:ajax event="dateSelect" listener="#{scheduleBean2.onDateSelect}" update="eventDetails pickarea pickdepartment" oncomplete="PF('eventDialog').show();" />
+            <p:ajax event="eventSelect" listener="#{scheduleBean2.onEventSelect}" update="eventDetails pickarea pickdepartment" oncomplete="PF('eventDialog').show();" />
             <p:ajax event="eventMove" listener="#{scheduleBean2.onEventMove}" update="messages" />
             <p:ajax event="eventResize" listener="#{scheduleBean2.onEventResize}" update="messages" />
  
@@ -33,17 +34,17 @@
     <!--ダイアログ-->
     <p:dialog widgetVar="eventDialog" header="Event Details" showEffect="clip" hideEffect="clip">
         <div>
-            <p:outputPanel id="schedule_dlg" style="width: 1000px;height: 500px;">
+            <p:outputPanel id="schedule_dlg" style="width: 830px;height: 500px;">
 
-                <h:panelGrid id="eventDetails" style="text-align: right; height: 100%; width: 500px; float: left;">
+                <h:panelGrid id="eventDetails" style="text-align: right; height: 100%; width: 345px; float: left;">
 
                     <p:row>
                         <p:column>
                             <p:outputLabel for="title" value="予定:" />
                         </p:column>
 
-                        <p:column colspan="2">
-                            <p:inputText id="title" value="#{scheduleBean2.event.title}" required="true" />
+                        <p:column colspan="3">
+                            <p:inputText id="title" value="#{scheduleBean2.event.title}" required="true" disabled="#{scheduleBean2.disable}"/>
                         </p:column>
                     </p:row>
 
@@ -52,8 +53,8 @@
                             <p:outputLabel for="from" value="開始日時:" />
                         </p:column>
 
-                        <p:column colspan="2">
-                            <p:calendar id="from" value="#{scheduleBean2.event.startDate}" pattern="yyyy/MM/dd HH:mm"/>
+                        <p:column colspan="3">
+                            <p:calendar id="from" value="#{scheduleBean2.event.startDate}" pattern="yyyy/MM/dd HH:mm" disabled="#{scheduleBean2.disable}"/>
                         </p:column>
                     </p:row>
 
@@ -62,8 +63,8 @@
                             <p:outputLabel for="to" value="終了日時:" />
                         </p:column>
 
-                        <p:column colspan="2">
-                            <p:calendar id="to" value="#{scheduleBean2.event.endDate}" pattern="yyyy/MM/dd HH:mm"/>
+                        <p:column colspan="3">
+                            <p:calendar id="to" value="#{scheduleBean2.event.endDate}" pattern="yyyy/MM/dd HH:mm" disabled="#{scheduleBean2.disable}"/>
                         </p:column>
                     </p:row>
 
@@ -72,57 +73,72 @@
                             <p:outputLabel for="allDay" value="終日" />
                         </p:column>
 
-                        <p:column colspan="2">
-                            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean2.event.allDay}" />
+                        <p:column colspan="3">
+                            <h:selectBooleanCheckbox id="allDay" value="#{scheduleBean2.event.allDay}" disabled="#{scheduleBean2.disable}"/>
                         </p:column>
                     </p:row>
 
                     <p:row>
-                        <p:column>
-                            <p:outputLabel for="description" value="備考:"/>
-                        </p:column>
-
-                        <p:column colspan="2">
-                            <p:inputTextarea id="description" value="#{scheduleBean2.event.description}"/>
-                        </p:column>
+                        <p:outputPanel style="text-align: left; margin-left: 5px;">
+                            <h:outputText value="備考"/>
+                        </p:outputPanel>
+                        
                     </p:row>
-
+                    
                     <p:row>
-
-                        <p:column>
-                            <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
+                        
+                        <p:column colspan="4">
+                            <p:inputTextarea id="description" value="#{scheduleBean2.event.description}" disabled="#{scheduleBean2.disable}" cols="30" rows="14" scrollHeight="1" autoResize="false"/>
                         </p:column>
-
-                        <p:column>
-                            <p:commandButton value="削除" update="#{info_message.clientId}" actionListener="#{scheduleBean2.removeEvent()}" style="font-size: 14px;"
-                                             oncomplete="PF('myschedule').update();PF('eventDialog').hide()">
-
-                                <p:confirm header="Confirmation" message="予定を削除してもよろしいですか？" icon="ui-icon-alert"/>
-                            </p:commandButton>
-                        </p:column>
-
-                        <p:column>
-                            <p:commandButton id="addButton" value="登録/変更" update="#{info_message.clientId}" actionListener="#{scheduleBean2.addEvent()}" style="font-size: 14px;"
-                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
-                        </p:column>
-
                     </p:row>
 
                 </h:panelGrid>
                 
-                <div style="width: 500px; height: 100%; background-color: burlywood; float: left;">
-                    
-                    <p:selectOneMenu id="classItem" value="#{scheduleBean2.pickItem}">
-                        <f:selectItem itemLabel="クラスを選択" itemValue=""/>
-                        <f:selectItems value="#{scheduleBean2.classList}"/>
-                        <p:ajax process="@this" event="change" update="pickarea"/>
-                    </p:selectOneMenu>
-                    <br/>
-                    
-                    <p:outputPanel id="pickarea">
-                        <p:pickList id="pickList" value="#{scheduleBean2.users}" var="user" itemLabel="#{user.name}" itemValue="#{user.userId}"/>
+                <div style="width: 455px; height: 100%; float: left; font-size: 14px; margin-left: 30px;">
+                    <p:outputPanel id="pickdepartment">
+                        
+                        <p:selectBooleanCheckbox value="#{scheduleBean2.share}" itemLabel="共有設定を行う" disabled="#{scheduleBean2.disable}" style="margin-bottom: 10px;"/><br/>
+
+                        <p:selectOneMenu id="classItem" value="#{scheduleBean2.pickItem}" disabled="#{scheduleBean2.disable}">
+                            <f:selectItem itemLabel="クラスを選択" itemValue="none"/>
+                            <f:selectItems value="#{scheduleBean2.classList}"/>
+                            <p:ajax process="@this" event="change" update="pickarea" listener="#{scheduleBean2.updatePickList()}"/>
+                        </p:selectOneMenu>
+                        
                     </p:outputPanel>
                     
+                    <br/>
+                    
+                    <p:outputPanel id="pickarea" binding="#{pickarea}">
+                        <p:pickList id="pickList" converter="entityConverter" value="#{scheduleBean2.users}" var="users" itemLabel="#{users.name}" itemValue="#{users}"
+                                    effectSpeed="fast" showCheckbox="true" converterMessage="コンバート失敗" disabled="#{scheduleBean2.disable}">
+                            <f:facet name="sourceCaption">ユーザー</f:facet>
+                            <f:facet name="targetCaption">共有者</f:facet>
+                            
+                            <p:ajax process="@this" event="transfer" listener="#{scheduleBean2.outputTest()}"/>
+                        </p:pickList>
+                    </p:outputPanel>
+                    
+                    <div>
+                        <p:outputPanel style="text-align: right; margin-top: 20px;">
+                            <p:commandButton oncomplete="PF('eventDialog').hide();" 
+                                             value="閉じる" style="font-size: 14px;">
+                                <p:ajax process="@this" listener="#{scheduleBean2.clear()}"/>
+                            </p:commandButton>
+
+                            <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>    
+
+                            <p:commandButton value="削除" update="#{info_message.clientId}" actionListener="#{scheduleBean2.removeEvent()}" style="font-size: 14px;"
+                                                 oncomplete="PF('myschedule').update();PF('eventDialog').hide()">
+
+                                    <p:confirm header="Confirmation" message="予定を削除してもよろしいですか？" icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                            <p:commandButton id="addButton" value="登録/変更" update="#{info_message.clientId}" actionListener="#{scheduleBean2.addEvent()}" style="font-size: 14px;"
+                                         oncomplete="PF('myschedule').update();PF('eventDialog').hide();" />
+                        </p:outputPanel>
+                        
+                    </div>
                     
                 </div>
                 

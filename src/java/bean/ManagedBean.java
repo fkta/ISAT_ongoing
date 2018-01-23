@@ -32,6 +32,20 @@ public class ManagedBean {
     private String sqAnswer;
     private String SecretQuestion;
     private String SecretQuestion2;
+    
+    //パスワードの再設定
+    private String oldpass;
+    private String newpass;
+    private String confpass;
+    
+    //パスワード救済措置
+    private String inputUserId;
+    private String inputAnswer;
+    private String outputSecret;
+    protected String secretAnswer;
+    private boolean output;
+    
+    
     //ajaxTest
     private String test;
     private String inputValue;
@@ -49,6 +63,7 @@ public class ManagedBean {
     @PostConstruct
     public void init(){
         nicknameToggle = false;
+        output = false;
         
         List<SecretQuestion> sqList;
         sqList = sqf.findAll();
@@ -64,6 +79,16 @@ public class ManagedBean {
     /* ajaxTest */
     public void updateAjax(){
         test = String.valueOf(sqItem);
+    }
+    
+    public void resetItems(){
+        secretQuestions = new ArrayList<SelectItem>();
+        for(SecretQuestion sq : sqf.findAll()){
+            // (int,String)
+            SelectItem item = new SelectItem(sq.getQuestionId(),sq.getQuestion());
+            secretQuestions.add(item);
+            
+        }
     }
     
     public void updateValue(){
@@ -84,6 +109,32 @@ public class ManagedBean {
     public void scheduleUpdateMessage(){
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "予定を更新しました") );
         
+    }
+    
+    /* パスワード再設定処理 */
+    public void findSecretQuestion(){
+        //検索結果があるかを判定
+        if(udf.findSecret(inputUserId).size() > 0){
+            for(UserData ud : udf.findSecret(inputUserId)){
+                //秘密の質問が設定されているかどうか
+                if(null != ud.getQuestionId()){
+                    outputSecret = ud.getQuestionId().getQuestion();
+                    secretAnswer = ud.getQanswer();
+                    
+                    inputUserId = null;
+                    output = true;
+                    
+                }else{
+                    output = false;
+                    context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Fail", "秘密の質問が設定されていません") );
+                    
+                }
+            }
+            
+        }else{
+            output = false;
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Error", "ユーザが存在しません") );
+        }
     }
     
     
@@ -176,6 +227,30 @@ public class ManagedBean {
         }
     }
     
+    public void changePassword(){
+        // パスワードが一致したら
+        if(oldpass.equals(udm.getUser().getPassword())){
+            //確認用のパスワードが一致しているか
+            if(newpass.equals(confpass)){
+                //変更処理
+                UserData ud = udm.getUser();
+                ud.setPassword(newpass);
+                udm.setUser(ud);
+                
+                udf.edit(ud);
+                System.out.println("変更後のパスワード : "+ud.getPassword());
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success","パスワードを変更しました"));
+                
+            }else{
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error","確認パスワードが一致しません"));
+            }
+            
+        }else{
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error","パスワードが一致しません"));
+        }
+        
+    }
+    
     public void updateSecretQuestion(){
         System.out.println("sqItem : "+sqItem+" sqAnswer : "+sqAnswer);
         UserData ud = udm.getUser();
@@ -187,6 +262,11 @@ public class ManagedBean {
         getSecretQuestion();
         System.out.println("秘密の質問を更新しました 質問 : "+udm.getUser().getQuestionId().getQuestion());
         System.out.println("答え : "+udm.getUser().getQanswer());
+        
+        //初期化処理
+        sqAnswer = null;
+        
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"秘密の質問を設定しました",""));
     }
     
     /* スケジュール関連 */
@@ -318,6 +398,62 @@ public class ManagedBean {
 
     public void setInputValue(String inputValue) {
         this.inputValue = inputValue;
+    }
+
+    public String getOldpass() {
+        return oldpass;
+    }
+
+    public void setOldpass(String oldpass) {
+        this.oldpass = oldpass;
+    }
+
+    public String getNewpass() {
+        return newpass;
+    }
+
+    public void setNewpass(String newpass) {
+        this.newpass = newpass;
+    }
+
+    public String getConfpass() {
+        return confpass;
+    }
+
+    public void setConfpass(String confpass) {
+        this.confpass = confpass;
+    }
+
+    public String getInputUserId() {
+        return inputUserId;
+    }
+
+    public void setInputUserId(String inputUserId) {
+        this.inputUserId = inputUserId;
+    }
+
+    public String getInputAnswer() {
+        return inputAnswer;
+    }
+
+    public void setInputAnswer(String inputAnswer) {
+        this.inputAnswer = inputAnswer;
+    }
+
+    public String getOutputSecret() {
+        return outputSecret;
+    }
+
+    public void setOutputSecret(String outputSecret) {
+        this.outputSecret = outputSecret;
+    }
+
+    public boolean isOutput() {
+        return output;
+    }
+
+    public void setOutput(boolean output) {
+        this.output = output;
     }
     
     

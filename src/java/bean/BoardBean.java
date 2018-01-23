@@ -123,6 +123,11 @@ public class BoardBean {
         return rf.findByThreadId(bb.getThreadId()).size();
     }
     
+    public String transToList(){
+        System.out.println("trans to list");
+        return "threadlist.xhtml?faces-redirect=true";
+    }
+    
     /* スレッド詳細表示 */
     public String transToDetail(BulletinBoard bb){
         // パラメータ取得
@@ -143,6 +148,10 @@ public class BoardBean {
         bdm.setResponseList(rf.findByThreadId(bb.getThreadId()));
         System.out.println("Detail : "+bdm.getThreadDetailData().getDetail());
 }
+    
+    public void updateResponseList(){
+        bdm.setResponseList(rf.findByThreadId(bdm.getThreadDetailData().getThreadId()));
+    }
     
     
 //レス一覧表示
@@ -214,7 +223,6 @@ public class BoardBean {
 
     public void setDetail(String detail) {
         this.detail = detail.replaceAll("\n","<br/>");
-        this.detail = detail;
     }
 
     public Response getDelData() {

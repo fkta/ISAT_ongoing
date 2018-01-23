@@ -1,0 +1,40 @@
+#form1{
+    width: 45%;
+    float: left;
+    margin-top: 40px;
+    margin-right: 9.5%;
+}
+
+#form2{
+    width: 45%;
+    float: left;
+    margin-top: 40px;
+}
+
+#form3{
+    width: 45%;
+    float: left;
+    margin-top: 40px;
+    margin-right: 9.5%;
+}
+
+#form4{
+    width: 45%;
+    float: left;
+    margin-top: 40px;
+    margin-right: 9.5%;
+}
+
+#form5{
+   width: 45%;
+    float: right;
+    margin-top: 40px;
+}
+
+#day{
+    color: black;
+}
+
+#day td{
+    background-color: white;
+}

@@ -16,60 +16,29 @@
                 <h:form>
                     <p:breadCrumb style="font-size: 12px; margin-bottom: 20px;">
                         <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
-                        <p:menuitem value="プロフィール"/>
+                        <p:menuitem value="プロフィール" style="text-decoration: none;"/>
                     </p:breadCrumb>
                 </h:form>
                 
-                <div>
+                <div style="width: 500px; margin: 0 auto;">
                     <h:form>
                         <p:outputPanel id="profile_grid" binding="#{profile_grid}">
-                            <p:panelGrid>
+                            <p:panelGrid style="width: 500px; font-size: 14px; text-align: center;">
                                 <f:facet name="header">
                                     <p:row>
                                         <p:column colspan="3">ユーザ情報</p:column>
-                                        <p:column>設定する</p:column>
+                                        <p:column style="width: 18%;">設定する</p:column>
                                     </p:row>
                                 </f:facet>
 
                                 <p:row>
-                                    <p:column>氏名</p:column>
+                                    <p:column style="width: 30%;">氏名</p:column>
                                     <p:column colspan="2"><h:outputText value="#{userDataManager.user.name}"/></p:column>
                                     <p:column></p:column>
                                 </p:row>
 
                                 <!--ニックネーム-->
-                                <p:row>
-                                        <p:column>ニックネーム</p:column>
-
-                                        <p:column colspan="2">
-
-                                            <p:outputPanel id="display_mode">
-                                                <h:outputText value="#{managedBean.nickname}" rendered="#{!managedBean.nicknameToggle}"/>
-                                            </p:outputPanel>
-
-                                            <p:outputPanel id="input_mode">
-                                                <p:inputText id="input_area" value="#{managedBean.nickname}" rendered="#{managedBean.nicknameToggle}"
-                                                             style="font-size: 14px">
-                                                    <p:ajax process="@this" update="display_nickname" event="keyup" listener="#{managedBean.updateValue()}"/>
-                                                </p:inputText>
-                                            </p:outputPanel>
-
-                                        </p:column>
-
-                                        <p:column>
-                                            <p:outputPanel id="change_link">
-                                                <p:selectBooleanCheckbox value="#{managedBean.nicknameToggle}" rendered="#{!managedBean.nicknameToggle}">
-                                                    <p:ajax process="@this" update="display_mode input_mode change_link"/>
-                                                </p:selectBooleanCheckbox>
-
-
-                                                <p:commandLink value="変更する" rendered="#{managedBean.nicknameToggle}" actionListener="#{managedBean.updateUserData()}">
-                                                    <p:ajax process="input_area @this"/>
-                                                </p:commandLink>
-                                            </p:outputPanel>
-
-                                        </p:column>
-                                </p:row>
+                                
                                 <!--end-->
 
                                 <p:row>
@@ -108,9 +77,9 @@
                                     </p:column>
 
                                     <p:column>
-                                        <h:commandButton value="設定" onclick="PF('sq_edit_dlg').show();">
+                                        <p:commandButton value="設定" onclick="PF('sq_edit_dlg').show();">
                                             <p:ajax process="@this"/>
-                                        </h:commandButton>
+                                        </p:commandButton>
                                     </p:column>
                                 </p:row>
 
@@ -121,36 +90,31 @@
                                         <p:column></p:column>
                                     </p:row>
 
-                                    <p:row>
+                                    <!--<p:row>
                                         <p:column colspan="3"><h:outputText value="#{managedBean.secretQuestion2}"/></p:column>
                                         <p:column></p:column>
-                                    </p:row>
+                                    </p:row>-->
                                     
-                                    <!--ajaxテスト-->
-                                    <p:row>
-                                        <p:column colspan="2">
-                                            <h:inputText value="#{managedBean.nickname}">
-                                                <p:ajax process="@this" event="keyup" listener="#{managedBean.updateValue()}" update="display_nickname"/>
-                                            </h:inputText>
-                                        </p:column>
-                                        <p:column>
-                                            <h:outputText id="display_nickname" value="#{managedBean.inputValue}"/>
-                                        </p:column>
-                                    </p:row>
+                                    
                                 </p:outputPanel>
-                                <!--end-->
-
+                                
+                                
                                 <f:facet name="footer">
-                                    <p:row style="text-align: right;">
-                                        <p:column colspan="4">
-                                            <p:outputPanel id="comit_footer">
-                                                    <p:commandLink value="変更する" rendered="#{managedBean.nicknameToggle}">
-                                                        <p:ajax process="input_mode" listener="#{managedBean.updateUserData()}"/>
-                                                    </p:commandLink>
-                                            </p:outputPanel>
+                                    <p:row>
+                                        <p:column colspan="4" style="text-align: right;">
+                                            <p:commandLink value="パスワードを変更する" onclick="PF('pass_edit_dlg').show()"/>
                                         </p:column>
                                     </p:row>
                                 </f:facet>
+                                
+                                <!--end-->
+
+                                <!--<f:facet name="footer">
+                                    <p:row style="text-align: right;">
+                                        <p:column colspan="4" style="width: 100%; height: 100px;">
+                                        </p:column>
+                                    </p:row>
+                                </f:facet>-->
 
                             </p:panelGrid>
                         </p:outputPanel> 
@@ -160,18 +124,129 @@
                 <p:dialog header="秘密の質問設定" widgetVar="sq_edit_dlg" id="profile_sq_edit_dlg" modal="true" resizable="false" showEffect="clip" hideEffect="drop">
                     <div>
                         <h:form>
-                            <h:outputText id="selectItem" value="#{managedBean.test}"/>
-                            <p:selectOneMenu id="sqItem" value="#{managedBean.sqItem}">
-                                <f:selectItem itemLabel="質問を選択" itemValue=""/>
-                                <f:selectItems value="#{managedBean.secretQuestions}"/>
-                                    <p:ajax process="@this" event="change" listener="#{managedBean.updateAjax()}" update="selectItem"/>
-                            </p:selectOneMenu><br/>
-                            <p:inputText id="sqAnswer" value="#{managedBean.sqAnswer}" size="30"/>
-                            <p:commandButton value="変更" action="#{managedBean.updateSecretQuestion()}" oncomplete="PF('sq_edit_dlg').hide();" update=":#{profile_grid.clientId}">
-                            </p:commandButton>
+                            <p:outputPanel style="font-size: 14px;" id="secret_area">
+                                <p:panelGrid columns="1">
+                                    
+                                    <p:column colspan="3">
+                                        <p:selectOneMenu id="sqItem" value="#{managedBean.sqItem}" required="true" requiredMessage="質問を選択してください">
+                                        <f:selectItem itemLabel="質問を選択" itemValue=""/>
+                                        <f:selectItems value="#{managedBean.secretQuestions}"/>
+                                            <p:ajax process="@this" event="change" listener="#{managedBean.updateAjax()}"/>
+                                        </p:selectOneMenu><br/>
+                                    </p:column>
+                                    
+                                    <p:inputText id="sqAnswer" value="#{managedBean.sqAnswer}" size="30" required="true" requiredMessage="質問の答えを入力していません"/>
+                                    <p:message for="sqAnswer"/>
+                                    
+                                </p:panelGrid>
+                            </p:outputPanel>
+                                
+                            <p:outputPanel style="text-align: right; font-size: 14px">
+                                <p:commandButton value="リセット" update="secret_area">
+                                    <p:resetInput target="secret_area" />
+                                </p:commandButton>
+                                <p:commandButton value="変更" actionListener="#{managedBean.updateSecretQuestion()}" action="#{managedBean.resetItems()}" oncomplete="PF('sq_edit_dlg').hide();" update=":#{profile_grid.clientId} #{info_messages.clientId} secret_area">
+                                    <p:resetInput target="secret_area" />
+                                </p:commandButton>
+                            </p:outputPanel>
+                                
+                            
+                            
                         </h:form>
                     </div>
                 </p:dialog>
+                
+                
+                <p:dialog header="パスワード変更" widgetVar="pass_edit_dlg" id="pass_edit_dlg" modal="true" resizable="false" showEffect="clip" hideEffect="drop">
+                    <div style="width: 450px;">
+                        <h:form>
+                            <p:outputPanel id="pass_area" style="font-size: 14px; text-align: right;">
+                                <p:panelGrid>
+                                    
+                                    <!--現在のパスワード入力フォーム-->
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="nowpass" value="現在のパスワード:"/>
+                                        </p:column>
+                                        
+                                        <p:column>
+                                            <p:password id="nowpass" value="#{managedBean.oldpass}" required="true" requiredMessage="入力欄が空です">
+                                                <f:validateLength minimum="8" maximum="20"/>
+                                                <p:ajax event="blur" process="@this" update="nowpass_message"/>
+                                            </p:password>
+                                        </p:column>
+                                        
+                                    </p:row>
+                                    
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:message id="nowpass_message" for="nowpass"/>
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    
+                                    
+                                    <!--変更後パスワード入力フォーム-->
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="newpass" value="変更するパスワード:"/>
+                                        </p:column>
+                                        
+                                        <p:column>
+                                            <p:password id="newpass" feedback="true" value="#{managedBean.newpass}"
+                                                promptLabel="入力して下さい" weakLabel="パスワード強度：弱い" goodLabel="パスワード強度：普通" strongLabel="パスワード強度：強い"
+                                                required="true" requiredMessage="入力欄が空です">
+
+                                                <f:validateLength minimum="8" maximum="20"/>
+                                                <p:ajax event="blur" process="@this" update="newpass_message"/>
+                                            </p:password>
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    <p:row>
+                                        <p:column colspan="2">
+                                            <p:message id="newpass_message" for="newpass"/>
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    
+                                    <!--確認フォーム-->
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="confpass" value="再度入力してください:"/>
+                                        </p:column>
+                                        
+                                        <p:column>
+                                            <p:password id="confpass" feedback="true" value="#{managedBean.confpass}"
+                                                promptLabel="入力して下さい" weakLabel="パスワード強度：弱い" goodLabel="パスワード強度：普通" strongLabel="パスワード強度：強い"
+                                                required="true" requiredMessage="入力欄が空です">
+
+                                                <f:validateLength minimum="8" maximum="20"/>
+                                                <p:ajax event="blur" process="@this" update="confpass_message"/>
+                                            </p:password>
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    <p:row>
+                                        <p:column colspan="2">
+                                             <p:message id="confpass_message" for="confpass"/>
+                                        </p:column>
+                                    </p:row>
+                                    
+                                    
+                                </p:panelGrid>
+                                
+                            </p:outputPanel>
+                            
+                            <p:outputPanel style="text-align: right; font-size: 14px;">
+                                <p:commandButton value="変更" action="#{managedBean.changePassword()}" oncomplete="PF('pass_edit_dlg').hide();" update=":#{profile_grid.clientId} #{info_message.clientId}">
+                                </p:commandButton>
+                            </p:outputPanel>
+                            
+                        </h:form>
+                    </div>
+                </p:dialog>
+                
                 
             </ui:define>
         </ui:composition>

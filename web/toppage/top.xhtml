@@ -3,12 +3,13 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://primefaces.org/ui">
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
         <title>Facelet Title</title>
     </h:head>
     <h:body> 
-        <ui:composition template="/templates/board_template.xhtml">
+        <ui:composition template="/templates/top_template.xhtml">
             <ui:define name="title">ISAT - Board List</ui:define>
             <ui:define name="content">
                 
@@ -17,7 +18,143 @@
                         <p:menuitem value="top"/>
                     </p:breadCrumb>
                 </h:form>
+                <!--パンくず end-->
                 
+                <h:form>
+                <p:panelGrid style="width: 100%" id="weekschedule">
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="7">2018年1月第4週</p:column>
+                        </p:row>
+                    </f:facet>
+                        <p:row>
+                            <p:column>日曜</p:column>
+                            <p:column>月曜</p:column>
+                            <p:column>火曜</p:column>
+                            <p:column>水曜</p:column>
+                            <p:column>木曜</p:column>
+                            <p:column>金曜</p:column>
+                            <p:column>土曜</p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column >21</p:column>
+                            <p:column>22</p:column>
+                            <p:column>23</p:column>
+                            <p:column>24</p:column>
+                            <p:column>25</p:column>
+                            <p:column>26</p:column>
+                            <p:column>27</p:column>
+                        </p:row>
+
+                </p:panelGrid>
+            </h:form>
+
+
+
+            <h:form>
+                <p:outputPanel>
+                    <p:panelGrid>
+                        <f:facet name="header">
+                            <p:row>
+                                <p:column colspan="2">お知らせ</p:column>
+                            </p:row>
+                        </f:facet>
+                            <p:row>
+                                <p:column headerText="タイトル">タイトル</p:column>
+                                <p:column headerText="日付">日付</p:column>
+                            </p:row>
+
+                    </p:panelGrid>
+                </p:outputPanel>
+                
+            </h:form>
+
+            <h:form>
+                <p:panelGrid>
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="2">掲示板</p:column>
+                        </p:row>
+                    </f:facet>
+                        <p:row>
+                            <p:column headerText="タイトル">タイトル</p:column>
+                            <p:column headerText="日付">日付</p:column>
+                        </p:row>
+                </p:panelGrid>
+            </h:form>
+
+
+
+                    <h:form>  
+            <p:panelGrid>
+                <f:facet name="header">
+                    <p:row>
+                        <p:column colspan="7">時間割</p:column>
+                    </p:row>
+                </f:facet>
+                    <p:row>
+                        <p:column colspan="2">限</p:column>
+                        <p:column colspan="2">授業名</p:column>
+                        <p:column colspan="2">教室</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">1</p:column>
+                        <p:column colspan="2">卒業研究</p:column>
+                        <p:column colspan="2">202</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">2</p:column>
+                        <p:column colspan="2">卒業研究</p:column>
+                        <p:column colspan="2">202</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">3</p:column>
+                        <p:column colspan="2">卒業研究</p:column>
+                        <p:column colspan="2">202</p:column>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">4</p:column>
+                        <p:column colspan="2">卒業研究</p:column>
+                        <p:column colspan="2">202</p:column>
+                    </p:row>
+
+            </p:panelGrid>
+            </h:form>
+
+
+
+            <h:form>
+                <p:panelGrid>
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="3">インフォ</p:column>
+                        </p:row>
+                    </f:facet>
+                        <p:row>
+                            <p:column headerText="タイトル">タイトル</p:column>
+                            <p:column headerText="カテゴリ">カテゴリ</p:column>
+                            <p:column headerText="日付">日付</p:column>
+                        </p:row>
+
+                </p:panelGrid>
+            </h:form>
+
+            <h:form>
+                <p:panelGrid>
+                    <f:facet name="header">
+                        <p:row>
+                            <p:column colspan="3">ToDo</p:column>
+                        </p:row>
+                    </f:facet>
+                        <p:row>
+                            <p:column headerText="タイトル">タイトル</p:column>
+                            <p:column headerText="日付">日付</p:column>
+                            <p:column headerText="重要度">重要度</p:column>
+                        </p:row>
+
+                </p:panelGrid>
+            </h:form>
+
             </ui:define>
         </ui:composition>
     </h:body>

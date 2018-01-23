@@ -25,12 +25,25 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "UserData.findByName", query = "SELECT u FROM UserData u WHERE u.name = :name")
     , @NamedQuery(name = "UserData.findByNickname", query = "SELECT u FROM UserData u WHERE u.nickname = :nickname")
     , @NamedQuery(name = "UserData.findByGender", query = "SELECT u FROM UserData u WHERE u.gender = :gender")
+    , @NamedQuery(name = "UserData.findByDepartmentId", query = "SELECT u FROM UserData u WHERE u.departmentId = :departmentId")
     , @NamedQuery(name = "UserData.findByUsertype", query = "SELECT u FROM UserData u WHERE u.usertype = :usertype")
     , @NamedQuery(name = "UserData.findByPassword", query = "SELECT u FROM UserData u WHERE u.password = :password")
     , @NamedQuery(name = "UserData.findByQanswer", query = "SELECT u FROM UserData u WHERE u.qanswer = :qanswer")
     , @NamedQuery(name = "UserData.findByQanswer2", query = "SELECT u FROM UserData u WHERE u.qanswer2 = :qanswer2")
-    , @NamedQuery(name = "UserData.authUser", query = "SELECT u FROM UserData u WHERE u.userId = :userId and u.password = :password")})
+    , @NamedQuery(name = "UserData.authUser", query = "SELECT u FROM UserData u WHERE u.userId = :userId and u.password = :password")
+    , @NamedQuery(name = "UserData.findByDepartment",
+            query = "SELECT u FROM UserData u WHERE u.departmentId = :departmentId and :year - u.entranceYear = :gakunen")
+    , @NamedQuery(name = "UserData.findSequret", query = "SELECT u FROM UserData u WHERE u.userId = :userId")})
 public class UserData implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "entrance_year")
+    private short entranceYear;
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "guraduation_year")
+    private short guraduationYear;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -39,12 +52,6 @@ public class UserData implements Serializable {
     @Size(min = 1, max = 10)
     @Column(name = "user_id")
     private String userId;
-    @Size(max = 4)
-    @Column(name = "entrance_year")
-    private String entranceYear;
-    @Size(max = 4)
-    @Column(name = "guraduation_year")
-    private String guraduationYear;
     @Basic(optional = false)
     @NotNull
     @Size(min = 1, max = 20)
@@ -104,22 +111,6 @@ public class UserData implements Serializable {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getEntranceYear() {
-        return entranceYear;
-    }
-
-    public void setEntranceYear(String entranceYear) {
-        this.entranceYear = entranceYear;
-    }
-
-    public String getGuraduationYear() {
-        return guraduationYear;
-    }
-
-    public void setGuraduationYear(String guraduationYear) {
-        this.guraduationYear = guraduationYear;
     }
 
     public String getName() {
@@ -224,7 +215,27 @@ public class UserData implements Serializable {
 
     @Override
     public String toString() {
+        return userId;
+    }
+    
+    /*public String toString() {
         return "entity.UserData[ userId=" + userId + " ]";
+    }*/
+
+    public short getEntranceYear() {
+        return entranceYear;
+    }
+
+    public void setEntranceYear(short entranceYear) {
+        this.entranceYear = entranceYear;
+    }
+
+    public short getGuraduationYear() {
+        return guraduationYear;
+    }
+
+    public void setGuraduationYear(short guraduationYear) {
+        this.guraduationYear = guraduationYear;
     }
     
 }

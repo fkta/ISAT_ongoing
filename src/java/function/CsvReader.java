@@ -80,8 +80,8 @@ public class CsvReader {
                     UserData ud = new UserData();
                     ud.setUserId(token.nextToken());
                     System.out.println("point0");
-                    ud.setEntranceYear(token.nextToken());
-                    ud.setGuraduationYear(token.nextToken());
+                    ud.setEntranceYear(Short.parseShort(token.nextToken()));
+                    ud.setGuraduationYear(Short.parseShort(token.nextToken()));
                     /*try{
                         SimpleDateFormat sdFormat = new SimpleDateFormat("yyyy");
                         Date date = sdFormat.parse(token.nextToken());
