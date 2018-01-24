@@ -111,6 +111,12 @@ public class ManagedBean {
         
     }
     
+    // todo関連
+    public void todoUpdateMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "todoを更新しました") );
+        
+    }
+    
     /* パスワード再設定処理 */
     public void findSecretQuestion(){
         //検索結果があるかを判定

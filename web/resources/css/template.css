@@ -1,8 +1,12 @@
+html{
+    background-image: url("../image/backimg.png");
+}
+
 body{
     width: 999px;
     height: 100%;
     margin:0px auto;
-    background-color: whitesmoke;
+    background-color: ivory;
 }
 
 .head{
