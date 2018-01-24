@@ -117,6 +117,20 @@ public class ManagedBean {
         
     }
     
+    public void todoCreateMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "todoを作成しました") );
+        
+    }
+    
+    public void todoDeleteMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "todoを削除しました") );
+    }
+    
+    public void todoDeleteErrorMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "todoが選択されていません") );
+    }
+    
+    
     /* パスワード再設定処理 */
     public void findSecretQuestion(){
         //検索結果があるかを判定

@@ -71,6 +71,7 @@ public class Todo implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "todo")
     private Collection<TodoManage> todoManageCollection;
     @JoinColumn(name = "owner", referencedColumnName = "user_id")
+    @NotNull
     @ManyToOne(optional = false)
     private UserData owner;
 
@@ -155,6 +156,26 @@ public class Todo implements Serializable {
         }else{
             return "〇";
         }
+    }
+    
+    public String getConvPriority(){
+        String cp;
+        switch(priority){
+            case "low":
+                cp = "低い";
+                break;
+                
+            case "normal":
+                cp = "普通";
+                break;
+                
+            case "high":
+                cp = "高い";
+                
+            default:
+                cp = "Error";
+        }
+        return cp;
     }
 
     @XmlTransient

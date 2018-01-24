@@ -15,7 +15,7 @@
                 
                 <!--パンくず-->
                 <h:form>
-                    <p:breadCrumb style="font-size: 14px; margin-bottom: 10px;">
+                    <p:breadCrumb style="font-size: 14px; margin-bottom: 30px;">
                         <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
                         <p:menuitem value="Todo" style="text-decoration: none;"/>
                     </p:breadCrumb>
@@ -24,11 +24,28 @@
                 <!--パンくず end-->
                 <h:form>
                     
+                    <!--テーブル見出し-->
+                    <p:outputPanel>
+                        
+                        <h:outputText value="進行中のTodo" style="font-size: 20px; font-weight: bold"/>
+                        
+                    </p:outputPanel>
+                    <!--見出し end-->
+                    
+                    <!--ボタンエリア-->
                     <p:outputPanel binding="#{todo_list}" id="going_button">
                         <p:outputPanel id="button_area" style="width: 70%; text-align: right;">
-                            <p:commandButton value="完了" icon="ui-icon-check" style="font-size: 14px;"/>
+                            <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedTodo()}" update="going_data" process="@this"
+                                             style="font-size: 14px; float: left;"/>
+                            
+                            <p:commandButton value="完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
+                                             actionListener="#{todoBean.finishTodo()}" action="#{todoBean.resetSelectedTodo()}"
+                                             update="going_panel #{finishing_panel.clientId}" process="going_data @this"/>
 
-                            <p:commandButton value="削除" icon="ui-icon-trash" style="font-size: 14px; margin-left: 5px;"/>
+                            <p:commandButton value="削除" icon="ui-icon-trash" update="going_data" actionListener="#{todoBean.deleteTodo()}" process="going_data @this"
+                                             style="font-size: 14px; margin-left: 5px;">
+                                <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                            </p:commandButton>
 
                             <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
                                              actionListener="#{todoBean.replica()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId}" process="going_data @this"/>
@@ -38,19 +55,14 @@
 
                         </p:outputPanel>
                     </p:outputPanel>
+                    <!--ボタンエリア end-->
 
-                    <p:outputPanel style="float: left;">
+                    <p:outputPanel id="going_panel" binding="#{going_panel}" style="float: left;">
                         <p:dataTable value="#{todoBean.goingTodo}" var="t" id="going_data" selection="#{todoBean.selectedTodo}" rowKey="#{t.todoId}" style="text-align: center; width: 70%; font-size: 15px;"
                                      rows="10" styleClass="datatable"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,20,30">
-
-                            <f:facet name="header">
-                                
-                                
-                                
-                            </f:facet>
                             
                             <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;">
                             </p:column>
@@ -59,51 +71,90 @@
                                 <h:outputText value="#{t.label}"/>
                             </p:column>
 
-                            <p:column headerText="状態" style="width: 8%;">
+                            <p:column headerText="完了" style="width: 8%;">
                                 <h:outputText value="#{t.judge}"/>
+                            </p:column>
+                            
+                            <p:column headerText="作成者" style="width: 13%; font-size: 14px">
+                                <h:outputText value="#{t.owner.name}"/>
                             </p:column>
 
                             <p:column headerText="期限" style="width: 15%">
                                 <h:outputText value="#{t.convTerm}"/>
                             </p:column>
 
-                            <p:column headerText="重要度" style="width: 23%;">
-                                <h:outputText value="#{t.priority}"/>
+                            <p:column headerText="重要度" style="width: 10%;">
+                                <h:outputText value="#{t.convPriority}"/>
                             </p:column>
+                            
                         </p:dataTable>
                     </p:outputPanel>
                 </h:form>
                 
                 
-                <p:outputPanel style="float: left;">
-                    <p:dataTable value="#{todoBean.finishingTodo}" var="f" selection="#{todoBean.selectedFinishing}" rowKey="#{f.todoId}" style="text-align: center; width: 30%; font-size: 15px; float: left"
-                                 rows="10" styleClass="datatable"
-                             paginator="true"
-                             paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                             rowsPerPageTemplate="10,20,30">
-                        <f:facet name="header">
-                            <h:outputText value="完了したTodo"/>
-                        </f:facet>
+                <!--テーブル見出し-->
+                <h:form>
+                    <p:outputPanel>
                         
-                        <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;"/>
-
-                        <p:column headerText="ラベル">
-                            <h:outputText value="#{t.label}"/>
-                        </p:column>
+                        <h:outputText value="完了したTodo" style="font-size: 20px; font-weight: bold"/>
                         
-                        <p:column headerText="状態" style="width: 8%;">
-                            <h:outputText value="#{t.judge}"/>
-                        </p:column>
+                    </p:outputPanel>
+                    <!--見出し end-->
+                    
+                    <!--ボタンエリア-->
+                    <p:outputPanel id="finishing_button">
+                        <p:outputPanel id="finishing_button_area" style="width: 70%; text-align: right;">
+                            <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedFinishing()}" update="finishing_data" process="@this"
+                                             style="font-size: 14px; float: left;"/>
+                            
+                            <p:commandButton value="未完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
+                                             actionListener="#{todoBean.unFinishTodo()}" action="#{todoBean.resetSelectedTodo()}"
+                                             update="#{going_panel.clientId} #{finishing_panel.clientId}" process="finishing_data @this"/>
+                            
+                            <p:commandButton value="削除" icon="ui-icon-trash" update="finishing_data" actionListener="#{todoBean.deleteFinishingTodo()}" process="finishing_data @this"
+                                             style="font-size: 14px; margin-left: 5px;">
+                                <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                            </p:commandButton>
+                            
+                            <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
+                                             actionListener="#{todoBean.replicaFinishing()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId}" process="finishing_data @this"/>
 
-                        <p:column headerText="期間" style="width: 15%">
-                            <h:outputText value="#{t.convTerm}"/>
-                        </p:column>
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <!--ボタンエリア end-->
+                
+                    <p:outputPanel id="finishing_panel" binding="#{finishing_panel}" style="float: left;">
+                        <p:dataTable id="finishing_data" value="#{todoBean.finishingTodo}" binding="#{finishing_data}" var="f" selection="#{todoBean.selectedFinishing}" rowKey="#{f.todoId}" style="text-align: center; width: 70%; font-size: 15px; float: left"
+                                     rows="10" styleClass="datatable"
+                                 paginator="true"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,20,30">
 
-                        <p:column headerText="重要度" style="width: 23%;">
-                            <h:outputText value="#{t.priority}"/>
-                        </p:column>
-                    </p:dataTable>
-                </p:outputPanel>
+                            <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;"/>
+
+                            <p:column headerText="ラベル">
+                                <h:outputText value="#{f.label}"/>
+                            </p:column>
+
+                            <p:column headerText="完了" style="width: 8%;">
+                                <h:outputText value="#{f.judge}"/>
+                            </p:column>
+                            
+                            <p:column headerText="作成者" style="width: 13%; font-size: 14px">
+                                <h:outputText value="#{t.owner.name}"/>
+                            </p:column>
+
+                            <p:column headerText="期間" style="width: 15%">
+                                <h:outputText value="#{f.convTerm}"/>
+                            </p:column>
+
+                            <p:column headerText="重要度" style="width: 10%;">
+                                <h:outputText value="#{f.convPriority}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+                    
+                </h:form>
                 
                 <p:outputPanel style="clear: both;">
                     
@@ -113,7 +164,7 @@
                 <p:dialog widgetVar="todo_edit_dlg" header="todo編集" modal="true" resizable="false" showEffect="clip" hideEffect="drop"
                           width="500" height="410">
                     <h:form>
-                        <p:outputPanel id="todo_create_dlg_pop" binding="#{todo_create_dlg_pop}" style="text-align: right;">
+                        <p:outputPanel id="todo_edit_dlg_pop" binding="#{todo_edit_dlg_pop}" style="text-align: right;">
                             
                             <p:panelGrid>
                                 
@@ -146,9 +197,10 @@
                                     </p:column>
                                     
                                     <p:column colspan="2">
-                                        <p:selectOneMenu id="edit_dlg_priority">
-                                            <f:selectItem itemValue="low" itemLabel="low"/>
-                                            <f:selectItem itemValue="high" itemLabel="high"/>
+                                        <p:selectOneMenu id="edit_dlg_priority" value="#{todoBean.todo.priority}">
+                                            <f:selectItem itemValue="normal" itemLabel="普通"/>
+                                            <f:selectItem itemValue="low" itemLabel="低い"/>
+                                            <f:selectItem itemValue="high" itemLabel="高い"/>
                                         </p:selectOneMenu>
                                     </p:column>
                                 </p:row>
@@ -173,7 +225,7 @@
                                             <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
 
                                             <p:commandButton value="変更" oncomplete="PF('todo_edit_dlg').hide();" actionListener="#{todoBean.editTodo()}" action="#{todoBean.resetTodo()}" process="@form"
-                                                             style="font-size: 14px;" update="#{info_message.clientId}"/>
+                                                             style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}"/>
                                         </p:outputPanel>
                                     </p:column>
                                 </p:row>
@@ -224,9 +276,10 @@
                                     </p:column>
                                     
                                     <p:column colspan="2">
-                                        <p:selectOneMenu id="create_dlg_priority">
-                                            <f:selectItem itemValue="low" itemLabel="low"/>
-                                            <f:selectItem itemValue="high" itemLabel="high"/>
+                                        <p:selectOneMenu id="create_dlg_priority" value="#{todoBean.todo.priority}">
+                                            <f:selectItem itemValue="normal" itemLabel="普通"/>
+                                            <f:selectItem itemValue="low" itemLabel="低い"/>
+                                            <f:selectItem itemValue="high" itemLabel="高い"/>
                                         </p:selectOneMenu>
                                     </p:column>
                                 </p:row>
@@ -250,8 +303,8 @@
 
                                             <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
 
-                                            <p:commandButton value="作成" oncomplete="PF('todo_create_dlg').hide();" actionListener="#{todoBean.createTodo()}" action="#{todoBean.resetTodo()}" process="@form"
-                                                             style="font-size: 14px;" update="#{info_message.clientId}"/>
+                                            <p:commandButton value="作成" oncomplete="PF('todo_create_dlg').hide();" actionListener="#{todoBean.createTodo()}" action="#{todoBean.resetSelectedTodo()}" process="@form"
+                                                             style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}"/>
                                         </p:outputPanel>
                                     </p:column>
                                 </p:row>

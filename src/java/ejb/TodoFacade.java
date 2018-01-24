@@ -28,7 +28,7 @@ public class TodoFacade extends AbstractFacade<Todo> {
         query.setParameter("nowtime", new Date());
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
-        System.out.println("進行中のtodoデータ件数 : "+query.getResultList().size());
+        //System.out.println("進行中のtodoデータ件数 : "+query.getResultList().size());
         return query.getResultList();
     }
     
@@ -36,7 +36,7 @@ public class TodoFacade extends AbstractFacade<Todo> {
         TypedQuery<Todo> query = em.createNamedQuery("Todo.findByFinishingTodo",Todo.class);
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
-        System.out.println("完了したtodoデータ件数 : "+query.getResultList().size());
+        //System.out.println("完了したtodoデータ件数 : "+query.getResultList().size());
         return query.getResultList();
     }
     
