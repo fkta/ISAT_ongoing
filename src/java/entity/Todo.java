@@ -22,23 +22,21 @@ import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-/**
- *
- * @author glowo
- */
 @Entity
 @Table(name = "todo")
 @XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "Todo.findAll", query = "SELECT t FROM Todo t")
     , @NamedQuery(name = "Todo.findByTodoId", query = "SELECT t FROM Todo t WHERE t.todoId = :todoId")
+    , @NamedQuery(name = "Todo.findByShare", query = "SELECT t FROM Todo t WHERE t.todoId = :todoId and t.term >= :nowtime")
     , @NamedQuery(name = "Todo.findByLabel", query = "SELECT t FROM Todo t WHERE t.label = :label")
     , @NamedQuery(name = "Todo.findByDetail", query = "SELECT t FROM Todo t WHERE t.detail = :detail")
     , @NamedQuery(name = "Todo.findByTerm", query = "SELECT t FROM Todo t WHERE t.term = :term")
     , @NamedQuery(name = "Todo.findByPriority", query = "SELECT t FROM Todo t WHERE t.priority = :priority")
     , @NamedQuery(name = "Todo.findByFinishing", query = "SELECT t FROM Todo t WHERE t.finishing = :finishing")
-    , @NamedQuery(name = "Todo.findByGoingTodo", query = "SELECT t FROM Todo t WHERE t.finishing = false and t.term >= :nowtime")
-    , @NamedQuery(name = "Todo.findByFinishingTodo", query = "SELECT t FROM Todo t WHERE t.finishing = true")})
+    , @NamedQuery(name = "Todo.findByGoingTodo", query = "SELECT t FROM Todo t WHERE t.owner = :owner and t.finishing = false and t.term >= :nowtime")
+    , @NamedQuery(name = "Todo.findByFinishingTodo", query = "SELECT t FROM Todo t WHERE t.finishing = true")
+    , @NamedQuery(name = "Todo.findByExpiredTodo", query = "SELECT t FROM Todo t WHERE t.term < :nowtime")})
 public class Todo implements Serializable {
 
     private static final long serialVersionUID = 1L;

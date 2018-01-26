@@ -122,12 +122,28 @@ public class ManagedBean {
         
     }
     
+    public void todoShareMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "共有設定を行いました") );
+    }
+    
     public void todoDeleteMessage(){
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "todoを削除しました") );
     }
     
     public void todoDeleteErrorMessage(){
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "todoが選択されていません") );
+    }
+    
+    public void todoFinishingMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "選択されたTodoを完了しました") );
+    }
+    
+    public void todoShareUpdateMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "共有者を変更しました") );
+    }
+    
+    public void secretNotMatchMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "答えが一致しません") );
     }
     
     
@@ -154,6 +170,18 @@ public class ManagedBean {
         }else{
             output = false;
             context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Error", "ユーザが存在しません") );
+        }
+    }
+    
+    public String checkAnswer(){
+        System.out.println("sAns : "+secretAnswer);
+        System.out.println("iAns : "+inputAnswer);
+        if(secretAnswer.equals(inputAnswer)){
+            
+            return "resetpass.xhtml?faces-redirect=true";
+        }else{
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "答えが一致しません") );
+            return null;
         }
     }
     

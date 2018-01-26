@@ -155,7 +155,7 @@ public class ScheduleBean2 implements Serializable{
         
         /* 共有リストのデータを取得する */
         // 学生の一覧を取得する
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
+        /*SimpleDateFormat sdf = new SimpleDateFormat("yyyyMM");
         for(UserData ud : udf.findByUserType("student")){
             
             String nendo = sdf.format(new Date());
@@ -173,7 +173,7 @@ public class ScheduleBean2 implements Serializable{
             // 学年を算出して代入
             int gakunen = now - year;
             
-        }
+        }*/
         /* ここまで */
         
         /* PickListの初期化 */

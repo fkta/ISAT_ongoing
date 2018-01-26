@@ -24,13 +24,9 @@
                 <!--パンくず end-->
                 <h:form>
                     
-                    <!--テーブル見出し-->
-                    <p:outputPanel>
-                        
-                        <h:outputText value="進行中のTodo" style="font-size: 20px; font-weight: bold"/>
-                        
+                    <p:outputPanel style="margin-bottom: 10px;">
+                        <h:outputText value="進行中のTodo" style="font-size: 18px; font-weight: bold;"/>
                     </p:outputPanel>
-                    <!--見出し end-->
                     
                     <!--ボタンエリア-->
                     <p:outputPanel binding="#{todo_list}" id="going_button">
@@ -40,29 +36,33 @@
                             
                             <p:commandButton value="完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
                                              actionListener="#{todoBean.finishTodo()}" action="#{todoBean.resetSelectedTodo()}"
-                                             update="going_panel #{finishing_panel.clientId}" process="going_data @this"/>
+                                             update="going_panel #{finishing_panel.clientId} #{info_message.clientId} #{finishing_data.clientId}" process="going_data @this" oncomplete="#{managedBean.todoFinishingMessage()}">
+                                <p:confirm header="Confirmation" message="選択したTodoを完了してよろしいですか？" icon="ui-icon-alert"/>
+                            
+                            </p:commandButton>
 
-                            <p:commandButton value="削除" icon="ui-icon-trash" update="going_data" actionListener="#{todoBean.deleteTodo()}" process="going_data @this"
+                            <p:commandButton value="削除" icon="ui-icon-trash" update="going_data #{info_message.clientId}" actionListener="#{todoBean.deleteTodo()}" process="going_data @this"
                                              style="font-size: 14px; margin-left: 5px;">
                                 <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
                             </p:commandButton>
 
                             <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
-                                             actionListener="#{todoBean.replica()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId}" process="going_data @this"/>
+                                             actionListener="#{todoBean.replica()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_pickdept.clientId}" process="going_data @this"/>
 
-                            <p:commandButton value="作成" icon="ui-icon-plus" action="#{todoBean.resetTodo()}" style="font-size: 14px; margin-left: 5px;" oncomplete="PF('todo_create_dlg').show();" process="@this"
-                                             update="#{todo_create_dlg_pop.clientId}"/>
+                            <p:commandButton value="作成" icon="ui-icon-plus" actionListener="#{todoBean.resetPickList()}" action="#{todoBean.resetTodo()}" style="font-size: 14px; margin-left: 5px;" oncomplete="PF('todo_create_dlg').show();" process="@this"
+                                             update="#{todo_create_dlg_pop.clientId} #{pickarea.clientId} #{create_pickdepartment.clientId}"/>
 
                         </p:outputPanel>
                     </p:outputPanel>
                     <!--ボタンエリア end-->
 
-                    <p:outputPanel id="going_panel" binding="#{going_panel}" style="float: left;">
+                    <p:outputPanel id="going_panel" binding="#{going_panel}" style="float: left; margin-bottom: 20px;">
                         <p:dataTable value="#{todoBean.goingTodo}" var="t" id="going_data" selection="#{todoBean.selectedTodo}" rowKey="#{t.todoId}" style="text-align: center; width: 70%; font-size: 15px;"
                                      rows="10" styleClass="datatable"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10,20,30">
+                                 rowsPerPageTemplate="10,20,30"
+                                 emptyMessage="進行中のTodoはありません">
                             
                             <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;">
                             </p:column>
@@ -94,12 +94,10 @@
                 
                 <!--テーブル見出し-->
                 <h:form>
-                    <p:outputPanel>
-                        
-                        <h:outputText value="完了したTodo" style="font-size: 20px; font-weight: bold"/>
-                        
+                    
+                    <p:outputPanel style="margin-bottom: 10px;">
+                        <h:outputText value="完了したTodo" style="font-size: 18px; font-weight: bold;"/>
                     </p:outputPanel>
-                    <!--見出し end-->
                     
                     <!--ボタンエリア-->
                     <p:outputPanel id="finishing_button">
@@ -109,7 +107,9 @@
                             
                             <p:commandButton value="未完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
                                              actionListener="#{todoBean.unFinishTodo()}" action="#{todoBean.resetSelectedTodo()}"
-                                             update="#{going_panel.clientId} #{finishing_panel.clientId}" process="finishing_data @this"/>
+                                             update="#{going_panel.clientId} #{finishing_panel.clientId}" process="finishing_data @this">
+                                <p:confirm header="Confirmation" message="選択したTodoを未完了に変更してよろしいですか？" icon="ui-icon-alert"/>
+                            </p:commandButton>
                             
                             <p:commandButton value="削除" icon="ui-icon-trash" update="finishing_data" actionListener="#{todoBean.deleteFinishingTodo()}" process="finishing_data @this"
                                              style="font-size: 14px; margin-left: 5px;">
@@ -117,19 +117,20 @@
                             </p:commandButton>
                             
                             <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
-                                             actionListener="#{todoBean.replicaFinishing()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId}" process="finishing_data @this"/>
+                                             actionListener="#{todoBean.replicaFinishing()}" oncomplete="PF('todo_edit_dlg').show();"
+                                             update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_pickarea.clientId} #{edit_boolean_check.clientId}" process="finishing_data @this"/>
 
                         </p:outputPanel>
                     </p:outputPanel>
                     <!--ボタンエリア end-->
                 
-                    <p:outputPanel id="finishing_panel" binding="#{finishing_panel}" style="float: left;">
-                        <p:dataTable id="finishing_data" value="#{todoBean.finishingTodo}" binding="#{finishing_data}" var="f" selection="#{todoBean.selectedFinishing}" rowKey="#{f.todoId}" style="text-align: center; width: 70%; font-size: 15px; float: left"
+                    <p:outputPanel id="finishing_panel" binding="#{finishing_panel}" style="margin-bottom: 20px;">
+                        <p:dataTable id="finishing_data" value="#{todoBean.finishingTodo}" binding="#{finishing_data}" var="f" selection="#{todoBean.selectedFinishing}" rowKey="#{f.todoId}" style="text-align: center; width: 70%; font-size: 15px;"
                                      rows="10" styleClass="datatable"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                 rowsPerPageTemplate="10,20,30">
-
+                                 rowsPerPageTemplate="10,20,30" emptyMessage="完了したTodoはありません">
+                            
                             <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;"/>
 
                             <p:column headerText="ラベル">
@@ -141,7 +142,7 @@
                             </p:column>
                             
                             <p:column headerText="作成者" style="width: 13%; font-size: 14px">
-                                <h:outputText value="#{t.owner.name}"/>
+                                <h:outputText value="#{f.owner.name}"/>
                             </p:column>
 
                             <p:column headerText="期間" style="width: 15%">
@@ -160,11 +161,77 @@
                     
                 </p:outputPanel>
                 
+                
+                <!--期限切れ-->
+                <h:form>
+                    
+                    <p:outputPanel style="margin-bottom: 10px;">
+                        <h:outputText value="期限切れのTodo" style="font-size: 18px; font-weight: bold;"/>
+                    </p:outputPanel>
+                    
+                    
+                    <!--ボタンエリア-->
+                    <p:outputPanel id="exipired_button">
+                        <p:outputPanel id="expired_button_area" style="width: 70%; text-align: right;">
+                            <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedExpired()}" update="expired_data" process="@this"
+                                             style="font-size: 14px; float: left;"/>
+                            
+                            <p:commandButton value="削除" icon="ui-icon-trash" update="expired_data #{info_message.clientId}" actionListener="#{todoBean.deleteExpiredTodo()}" process="expired_data @this"
+                                             style="font-size: 14px; margin-left: 5px;">
+                                <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                            </p:commandButton>
+
+                        </p:outputPanel>
+                    </p:outputPanel>
+                    <!--ボタンエリア end-->
+                    
+
+
+                    <p:outputPanel id="expired_panel" binding="#{expired_panel}" style="margin-bottom: 20px;">
+                        <p:dataTable id="expired_data" value="#{todoBean.expiredTodo}" binding="#{expired_data}" var="e" selection="#{todoBean.selectedExpired}" rowKey="#{e.todoId}" style="text-align: center; width: 70%; font-size: 15px;"
+                                         rows="10" styleClass="datatable"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,20,30" emptyMessage="完了したTodoはありません">
+
+                            <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;"/>
+
+                                <p:column headerText="ラベル">
+                                    <h:outputText value="#{e.label}"/>
+                                </p:column>
+
+                                <p:column headerText="完了" style="width: 8%;">
+                                    <h:outputText value="#{e.judge}"/>
+                                </p:column>
+
+                                <p:column headerText="作成者" style="width: 13%; font-size: 14px">
+                                    <h:outputText value="#{e.owner.name}"/>
+                                </p:column>
+
+                                <p:column headerText="期間" style="width: 15%">
+                                    <h:outputText value="#{e.convTerm}"/>
+                                </p:column>
+
+                                <p:column headerText="重要度" style="width: 10%;">
+                                    <h:outputText value="#{e.convPriority}"/>
+                                </p:column>
+
+
+                        </p:dataTable>
+                    </p:outputPanel>
+                </h:form>
+                <!--期限切れ end-->
+                
+                
+                
+                
+                
+                
                 <!--ダイアログ-->
                 <p:dialog widgetVar="todo_edit_dlg" header="todo編集" modal="true" resizable="false" showEffect="clip" hideEffect="drop"
-                          width="500" height="410">
+                          width="935px" height="480px">
                     <h:form>
-                        <p:outputPanel id="todo_edit_dlg_pop" binding="#{todo_edit_dlg_pop}" style="text-align: right;">
+                        <p:outputPanel id="todo_edit_dlg_pop" binding="#{todo_edit_dlg_pop}" style="text-align: right; float: left; font-size: 14px;">
                             
                             <p:panelGrid>
                                 
@@ -174,7 +241,7 @@
                                     </p:column>
                                     
                                     <p:column colspan="2">
-                                        <p:inputText id="edit_dlg_label" value="#{todoBean.todo.label}" required="true"/>
+                                        <p:inputText id="edit_dlg_label" value="#{todoBean.todo.label}" required="true" size="40"/>
                                     </p:column>
                                     
                                 </p:row>
@@ -186,7 +253,7 @@
                                     </p:column>
                                     
                                     <p:column colspan="2">
-                                        <p:calendar id="edit_dlg_term" value="#{todoBean.todo.term}" pattern="yyyy/MM/dd" required="true"/>
+                                        <p:calendar id="edit_dlg_term" value="#{todoBean.todo.term}" pattern="yyyy/MM/dd" locale="ja" required="true"/>
                                     </p:column>
                                 </p:row>
                                 
@@ -212,109 +279,175 @@
                                     </p:column>
                                     
                                     <p:column colspan="2">
-                                        <p:inputTextarea id="edit_dlg_detail" value="#{todoBean.todo.detail}" autoResize="false" rows="10" cols="30"/>
+                                        <p:inputTextarea id="edit_dlg_detail" value="#{todoBean.todo.detail}" autoResize="false" rows="20" cols="40"/>
                                     </p:column>
                                 </p:row>
-                                
-                                <p:row>
-                                    <p:column colspan="3">
-                                        <p:outputPanel>
-                                            <p:commandButton value="閉じる" oncomplete="PF('todo_edit_dlg').hide();" actionListener="#{todoBean.resetTodo()}" process="@this"
-                                                         style="font-size: 14px;"/>
-
-                                            <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
-
-                                            <p:commandButton value="変更" oncomplete="PF('todo_edit_dlg').hide();" actionListener="#{todoBean.editTodo()}" action="#{todoBean.resetTodo()}" process="@form"
-                                                             style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}"/>
-                                        </p:outputPanel>
-                                    </p:column>
-                                </p:row>
-                                
                                 
                             </p:panelGrid>
                             
                         </p:outputPanel>
+                        
+                        <p:outputPanel style="width: 320px; float: left; font-size: 14px;">
+
+                                <!--共有設定-->
+                                <p:outputPanel id="pickdepartment" binding="#{edit_pickdept}">
+
+                                    <p:selectBooleanCheckbox binding="#{edit_boolean_check}" value="#{todoBean.share}" itemLabel="共有設定を行う" style="margin-bottom: 10px;">
+                                        <p:ajax process="@this" update="classItem #{edit_pickarea.clientId}" event="change"/>
+                                    </p:selectBooleanCheckbox><br/>
+
+                                    <p:selectOneMenu id="classItem" value="#{todoBean.pickItem}" disabled="#{!todoBean.share}">
+                                        <f:selectItem itemLabel="クラスを選択" itemValue="none"/>
+                                        <f:selectItems value="#{todoBean.classList}"/>
+                                        <p:ajax process="@this" event="change" update="edit_pickarea" listener="#{todoBean.updatePickList()}"/>
+                                    </p:selectOneMenu>
+
+                                </p:outputPanel>
+                                <!--共有設定 end-->
+
+                                <!--ピックリスト-->
+                                <p:outputPanel id="edit_pickarea" binding="#{edit_pickarea}">
+                                    <p:pickList id="pickList" converter="entityConverter" value="#{todoBean.users}" var="users" itemLabel="#{users.name}" itemValue="#{users}"
+                                                effectSpeed="fast" showCheckbox="true" converterMessage="コンバート失敗" disabled="#{!todoBean.share}">
+                                        <f:facet name="sourceCaption"><h:outputText value="ユーザ" style="font-size: 16px; font-weight: bold;"/></f:facet>
+                                        <f:facet name="targetCaption"><h:outputText value="共有者" style="font-size: 16px; font-weight: bold;"/></f:facet>
+
+                                        <p:ajax process="@this" event="transfer" listener="#{scheduleBean2.outputTest()}"/>
+                                    </p:pickList>
+                                    
+                                    
+                                </p:outputPanel>
+                                <!--ピックリスト end-->
+
+                                <!--ボタン-->
+                                <p:outputPanel style="float: right">
+                                    <p:commandButton value="閉じる" oncomplete="PF('todo_edit_dlg').hide();" actionListener="#{todoBean.resetTodo()}" process="@this"
+                                                 style="font-size: 14px;"/>
+
+                                    <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
+
+                                    <p:commandButton value="変更" oncomplete="PF('todo_edit_dlg').hide();" actionListener="#{todoBean.editTodo()}" action="#{todoBean.resetTodo()}" process="@form"
+                                                     style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}"/>
+                                </p:outputPanel>
+                                <!--ボタン end-->
+
+                            </p:outputPanel>
                     </h:form>
                 </p:dialog>
                 <!--end-->
                 
                 <!--新規作成ダイアログ-->
-                
-                <p:dialog widgetVar="todo_create_dlg" header="todo作成" modal="true" resizable="false" showEffect="clip" hideEffect="drop"
-                          width="500" height="410">
-                    <h:form>
-                        <p:outputPanel id="todo_create_dlg_pop" binding="#{todo_create_dlg_pop}" style="text-align: right;">
+                <h:form>
+                    <p:dialog widgetVar="todo_create_dlg" header="todo作成" modal="true" resizable="false" showEffect="clip" hideEffect="drop"
+                              width="935px" height="480px">
+                            <!--はりつけ-->
+                            <p:outputPanel id="todo_create_dlg_pop" binding="#{todo_create_dlg_pop}" style="text-align: right; float: left; font-size: 14px;">
+
+                                <p:panelGrid>
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="edit_dlg_label" value="ラベル:"/>
+                                        </p:column>
+
+                                        <p:column colspan="2">
+                                            <p:inputText id="edit_dlg_label" value="#{todoBean.todo.label}" required="true" size="40"/>
+                                        </p:column>
+
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="edit_dlg_term" value="期限:"/>
+                                        </p:column>
+
+                                        <p:column colspan="2">
+                                            <p:calendar id="edit_dlg_term" value="#{todoBean.todo.term}" pattern="yyyy/MM/dd" locale="ja" required="true"/>
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="edit_dlg_priority" value="重要度:"/>
+                                        </p:column>
+
+                                        <p:column colspan="2">
+                                            <p:selectOneMenu id="edit_dlg_priority" value="#{todoBean.todo.priority}">
+                                                <f:selectItem itemValue="normal" itemLabel="普通"/>
+                                                <f:selectItem itemValue="low" itemLabel="低い"/>
+                                                <f:selectItem itemValue="high" itemLabel="高い"/>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+
+
+                                    <p:row>
+                                        <p:column>
+                                            <p:outputLabel for="edit_dlg_detail" value="備考:"/>
+                                        </p:column>
+
+                                        <p:column colspan="2">
+                                            <p:inputTextarea id="edit_dlg_detail" value="#{todoBean.todo.detail}" autoResize="false" rows="20" cols="40"/>
+                                        </p:column>
+                                    </p:row>
+
+                                </p:panelGrid>
+
+                            </p:outputPanel>
+                            <!--はりつけ-->
+                        
+
+                            <p:outputPanel style="width: 320px; float: left; font-size: 14px;">
+
+                                <!--共有設定-->
+                                <p:outputPanel id="pickdepartment" binding="#{create_pickdepartment}">
+
+                                    <p:selectBooleanCheckbox value="#{todoBean.share}" itemLabel="共有設定を行う" style="margin-bottom: 10px;">
+                                        <p:ajax process="@this" update="classItem #{pickarea.clientId}" event="change"/>
+                                    </p:selectBooleanCheckbox><br/>
+
+                                    <p:selectOneMenu id="classItem" value="#{todoBean.pickItem}" disabled="#{!todoBean.share}">
+                                        <f:selectItem itemLabel="クラスを選択" itemValue="none"/>
+                                        <f:selectItems value="#{todoBean.classList}"/>
+                                        <p:ajax process="@this" event="change" update="pickarea" listener="#{todoBean.updatePickList()}"/>
+                                    </p:selectOneMenu>
+
+                                </p:outputPanel>
+                                <!--共有設定 end-->
+
+                                <!--ピックリスト-->
+                                <p:outputPanel id="pickarea" binding="#{pickarea}">
+                                    <p:pickList id="pickList" converter="entityConverter" value="#{todoBean.users}" var="users" itemLabel="#{users.name}" itemValue="#{users}"
+                                                effectSpeed="fast" showCheckbox="true" converterMessage="コンバート失敗" disabled="#{!todoBean.share}">
+                                        <f:facet name="sourceCaption"><h:outputText value="ユーザ" style="font-size: 16px; font-weight: bold;"/></f:facet>
+                                        <f:facet name="targetCaption"><h:outputText value="共有者" style="font-size: 16px; font-weight: bold;"/></f:facet>
+
+                                        <p:ajax process="@this" event="transfer" listener="#{scheduleBean2.outputTest()}"/>
+                                    </p:pickList>
+                                    
+                                    
+                                </p:outputPanel>
+                                <!--ピックリスト end-->
+
+                                <!--ボタン-->
+                                <p:outputPanel style="text-align: right; float: right;">
+                                        <p:commandButton value="閉じる" oncomplete="PF('todo_create_dlg').hide();" actionListener="#{todoBean.resetTodo()}" process="@this"
+                                                     style="font-size: 14px;"/>
+
+                                        <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
+
+                                        <p:commandButton value="作成" oncomplete="PF('todo_create_dlg').hide();" actionListener="#{todoBean.createTodo()}" action="#{todoBean.resetSelectedTodo()}" process="@form"
+                                                         style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}"/>
+                                </p:outputPanel>
+                                <!--ボタン end-->
+
+                            </p:outputPanel>
                             
-                            <p:panelGrid>
-                                
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="create_dlg_label" value="ラベル:"/>
-                                    </p:column>
-                                    
-                                    <p:column colspan="2">
-                                        <p:inputText id="create_dlg_label" value="#{todoBean.todo.label}" required="true"/>
-                                    </p:column>
-                                    
-                                </p:row>
-                                
-
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="create_dlg_term" value="期限:"/>
-                                    </p:column>
-                                    
-                                    <p:column colspan="2">
-                                        <p:calendar id="create_dlg_term" value="#{todoBean.todo.term}" pattern="yyyy/MM/dd" required="true"/>
-                                    </p:column>
-                                </p:row>
-                                
-                                
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="create_dlg_priority" value="重要度:"/>
-                                    </p:column>
-                                    
-                                    <p:column colspan="2">
-                                        <p:selectOneMenu id="create_dlg_priority" value="#{todoBean.todo.priority}">
-                                            <f:selectItem itemValue="normal" itemLabel="普通"/>
-                                            <f:selectItem itemValue="low" itemLabel="低い"/>
-                                            <f:selectItem itemValue="high" itemLabel="高い"/>
-                                        </p:selectOneMenu>
-                                    </p:column>
-                                </p:row>
-                                
-                                
-                                <p:row>
-                                    <p:column>
-                                        <p:outputLabel for="create_dlg_detail" value="備考:"/>
-                                    </p:column>
-                                    
-                                    <p:column colspan="2">
-                                        <p:inputTextarea id="create_dlg_detail" value="#{todoBean.todo.detail}" autoResize="false" rows="10" cols="30"/>
-                                    </p:column>
-                                </p:row>
-                                
-                                <p:row>
-                                    <p:column colspan="3">
-                                        <p:outputPanel>
-                                            <p:commandButton value="閉じる" oncomplete="PF('todo_create_dlg').hide();" actionListener="#{todoBean.resetTodo()}" process="@this"
-                                                         style="font-size: 14px;"/>
-
-                                            <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
-
-                                            <p:commandButton value="作成" oncomplete="PF('todo_create_dlg').hide();" actionListener="#{todoBean.createTodo()}" action="#{todoBean.resetSelectedTodo()}" process="@form"
-                                                             style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}"/>
-                                        </p:outputPanel>
-                                    </p:column>
-                                </p:row>
-                                
-                                
-                            </p:panelGrid>
-                            
-                        </p:outputPanel>
-                    </h:form>
-                </p:dialog>
+                    
+                    </p:dialog>
+                </h:form>
                 
                 <!--新規作成ダイアログ end-->
                 

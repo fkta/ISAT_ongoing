@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -14,12 +15,9 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
 import javax.xml.bind.annotation.XmlRootElement;
 
-/**
- *
- * @author glowo
- */
 @Entity
 @Table(name = "todo_manage")
 @XmlRootElement
@@ -27,14 +25,22 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TodoManage.findAll", query = "SELECT t FROM TodoManage t")
     , @NamedQuery(name = "TodoManage.findByTodoId", query = "SELECT t FROM TodoManage t WHERE t.todoManagePK.todoId = :todoId")
     , @NamedQuery(name = "TodoManage.findByUserId", query = "SELECT t FROM TodoManage t WHERE t.todoManagePK.userId = :userId")
-    , @NamedQuery(name = "TodoManage.findByState", query = "SELECT t FROM TodoManage t WHERE t.state = :state")})
+    , @NamedQuery(name = "TodoManage.findByState", query = "SELECT t FROM TodoManage t WHERE t.finishing = :finishing")})
 public class TodoManage implements Serializable {
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "finishing")
+    private boolean finishing;
+
+    @Basic(optional = false)
+    @NotNull
+    @Column(name = "display")
+    private boolean display;
 
     private static final long serialVersionUID = 1L;
     @EmbeddedId
     protected TodoManagePK todoManagePK;
-    @Column(name = "state")
-    private Boolean state;
     @JoinColumn(name = "todo_id", referencedColumnName = "todo_id", insertable = false, updatable = false)
     @ManyToOne(optional = false)
     private Todo todo;
@@ -58,13 +64,6 @@ public class TodoManage implements Serializable {
         this.todoManagePK = todoManagePK;
     }
 
-    public Boolean getState() {
-        return state;
-    }
-
-    public void setState(Boolean state) {
-        this.state = state;
-    }
 
     public Todo getTodo() {
         return todo;
@@ -97,6 +96,22 @@ public class TodoManage implements Serializable {
     @Override
     public String toString() {
         return "entity.TodoManage[ todoManagePK=" + todoManagePK + " ]";
+    }
+
+    public boolean getDisplay() {
+        return display;
+    }
+
+    public void setDisplay(boolean display) {
+        this.display = display;
+    }
+
+    public boolean getFinishing() {
+        return finishing;
+    }
+
+    public void setFinishing(boolean finishing) {
+        this.finishing = finishing;
     }
     
 }

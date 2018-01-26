@@ -1,6 +1,7 @@
 html{
+    background-image: url("#{resource['image/backimg.jpg']}");
     height: 100%;
-    width: 100%;
+    background-size: cover;
 }
 
 body{

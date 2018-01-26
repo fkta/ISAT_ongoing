@@ -1,12 +1,12 @@
 html{
-    background-image: url("../image/backimg.png");
+    height: 100%;
+    background-image: url("#{resource['image/backimg.jpg']}");
 }
 
 body{
     width: 999px;
     height: 100%;
     margin:0px auto;
-    background-color: ivory;
 }
 
 .head{
