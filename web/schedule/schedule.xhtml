@@ -123,7 +123,7 @@
                         <p:outputPanel style="text-align: right; margin-top: 20px;">
                             <p:commandButton oncomplete="PF('eventDialog').hide();" 
                                              value="閉じる" style="font-size: 14px;">
-                                <p:ajax process="@this" listener="#{scheduleBean2.clear()}"/>
+                                <p:ajax process="@this" listener="#{scheduleBean2.resetEvent()}"/>
                             </p:commandButton>
 
                             <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>    

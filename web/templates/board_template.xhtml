@@ -9,6 +9,12 @@
         <h:outputStylesheet library="css" name="template.css"/>
         <h:outputStylesheet library="css" name="footer.css"/>
         <h:outputStylesheet library="css" name="board.css"/>
+        
+        <style>
+            .ui-dialog-buttonpane{
+                margin: 0;
+            }
+        </style>
     </h:head>
     <h:body>
         <div id="header">
@@ -26,8 +32,10 @@
             <!--確認ダイアログ-->
                 <h:form>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="font-size: 14px"/>
-                        <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="font-size: 14px"/>
+                        <p:outputPanel style="text-align: right; padding-right: 0;">
+                            <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="font-size: 14px"/>
+                            <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="font-size: 14px"/>
+                        </p:outputPanel>
                     </p:confirmDialog>
                 </h:form>
             <!--confirm dialog end-->

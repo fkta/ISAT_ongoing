@@ -118,7 +118,7 @@
                             
                             <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
                                              actionListener="#{todoBean.replicaFinishing()}" oncomplete="PF('todo_edit_dlg').show();"
-                                             update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_pickarea.clientId} #{edit_boolean_check.clientId}" process="finishing_data @this"/>
+                                             update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_selectone.clientId} #{edit_boolean_check.clientId}" process="finishing_data @this"/>
 
                         </p:outputPanel>
                     </p:outputPanel>
@@ -296,7 +296,7 @@
                                         <p:ajax process="@this" update="classItem #{edit_pickarea.clientId}" event="change"/>
                                     </p:selectBooleanCheckbox><br/>
 
-                                    <p:selectOneMenu id="classItem" value="#{todoBean.pickItem}" disabled="#{!todoBean.share}">
+                                    <p:selectOneMenu id="classItem" value="#{todoBean.pickItem}" binding="#{edit_selectone}" disabled="#{!todoBean.share}">
                                         <f:selectItem itemLabel="クラスを選択" itemValue="none"/>
                                         <f:selectItems value="#{todoBean.classList}"/>
                                         <p:ajax process="@this" event="change" update="edit_pickarea" listener="#{todoBean.updatePickList()}"/>
@@ -439,7 +439,7 @@
                                         <p:commandButton type="reset" value="リセット" style="font-size: 14px;"/>
 
                                         <p:commandButton value="作成" oncomplete="PF('todo_create_dlg').hide();" actionListener="#{todoBean.createTodo()}" action="#{todoBean.resetSelectedTodo()}" process="@form"
-                                                         style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}"/>
+                                                         style="font-size: 14px;" update="#{info_message.clientId} #{going_panel.clientId}  #{expired_data.clientId}"/>
                                 </p:outputPanel>
                                 <!--ボタン end-->
 

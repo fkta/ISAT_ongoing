@@ -36,7 +36,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     , @NamedQuery(name = "Schedule.findBySDate", query = "SELECT s FROM Schedule s WHERE s.sDate = :sDate")
     , @NamedQuery(name = "Schedule.findByEDate", query = "SELECT s FROM Schedule s WHERE s.eDate = :eDate")
     , @NamedQuery(name = "Schedule.findByOwner", query = "SELECT s FROM Schedule s WHERE s.owner = :owner")
-    , @NamedQuery(name = "Schedule.findByContent", query = "SELECT s FROM Schedule s WHERE s.content = :content")})
+    , @NamedQuery(name = "Schedule.findByContent", query = "SELECT s FROM Schedule s WHERE s.content = :content")
+    , @NamedQuery(name = "Schedule.findByWeekSchedule", query = "SELECT s FROM Schedule s WHERE s.owner = :owner and cast(:date as date) between cast(s.sDate as date) and cast(s.eDate as date)")})
 public class Schedule implements Serializable {
 
     @Column(name = "allday")

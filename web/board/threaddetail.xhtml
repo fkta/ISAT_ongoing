@@ -82,8 +82,11 @@
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,20,30">
                             <p:column headerText="投稿" width="90%">
-                                <h:outputText value="#{r.convertedPostDate}" style="font-size: 12px" escape="true"/>&nbsp;&nbsp;
-                                <h:outputText value="#{r.userId.name}" style="font-size: 12px; font-weight: bold;"/><br/>
+                                <p:outputPanel style="margin-bottom: 8px;">
+                                    <h:outputText value="#{r.convertedPostDate}" style="font-size: 12px" escape="true"/>&nbsp;&nbsp;
+                                    <h:outputText value="#{r.userId.name}" style="font-size: 12px; font-weight: bold;"/><br/>
+                                </p:outputPanel>
+                                
 
                                 <h:outputText value="#{r.comment}" escape=""/>
                             </p:column>

@@ -71,12 +71,18 @@ public class ScheduleBean2 implements Serializable{
     ManagedBean mb;
  
     
-    public void clear(){
+    public void resetEvent(){
+        event = null;
+        System.out.println("resetEvent is running");
+    }
+    
+    public void resetPickList(){
         /* PickListの初期化 */
         List<UserData> source = new ArrayList<UserData>();
         List<UserData> target = new ArrayList<UserData>();
         
         users = new DualListModel<UserData>(source,target);
+        
     }
     
     @PostConstruct
@@ -357,6 +363,7 @@ public class ScheduleBean2 implements Serializable{
             ev.setEndDate(schedule.getEDate());
             ev.setDescription(event.getDescription());
             ev.setStyleClass(schedule.getScheduleId());
+            ev.setData(schedule.getOwner());
             ev.setAllDay(event.isAllDay());
             ScheduleEvent master = ev;
             event = master;
@@ -372,6 +379,7 @@ public class ScheduleBean2 implements Serializable{
             ev.setEndDate(event.getEndDate());
             ev.setDescription(event.getDescription());
             ev.setStyleClass(schedule.getScheduleId());
+            ev.setData(schedule.getOwner());
             ev.setAllDay(event.isAllDay());
             ScheduleEvent master = ev;
             event = master;
@@ -537,6 +545,7 @@ public class ScheduleBean2 implements Serializable{
         event = (ScheduleEvent) selectEvent.getObject();
         //共有者がいる予定なら共有者を表示する
         System.out.println(event.getStyleClass());
+        System.out.println("description : "+event.getDescription());
         
         if(udm.getUser().getUserId().equals(event.getData().toString())){
             System.out.println("あなたが予定の作成者です");
@@ -564,7 +573,7 @@ public class ScheduleBean2 implements Serializable{
             users.setTarget(target);
             share = true;
         }else{
-            clear();
+            resetPickList();
             oldTarget = new ArrayList<UserData>();
             share = false;
         }
@@ -573,7 +582,7 @@ public class ScheduleBean2 implements Serializable{
      
     public void onDateSelect(SelectEvent selectEvent) {
         event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
-        clear();
+        resetPickList();
         disable = false;
         share = false;
         System.out.println("日付を選択しました");

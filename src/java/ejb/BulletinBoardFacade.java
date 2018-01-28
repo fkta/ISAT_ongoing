@@ -38,4 +38,11 @@ public class BulletinBoardFacade extends AbstractFacade<BulletinBoard> {
         return query.getResultList();
     }
     
+    public List<BulletinBoard> orderByPostDateLimit3(){
+        TypedQuery<BulletinBoard> query = em.createNamedQuery("BulletinBoard.orderByPostDate",BulletinBoard.class);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(3);
+        return query.getResultList();
+    }
+    
 }

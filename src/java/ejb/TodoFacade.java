@@ -58,4 +58,5 @@ public class TodoFacade extends AbstractFacade<Todo> {
         query.setMaxResults(query.getMaxResults());
         return query.getResultList();
     }
+    
 }

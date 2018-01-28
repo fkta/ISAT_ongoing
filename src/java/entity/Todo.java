@@ -169,6 +169,7 @@ public class Todo implements Serializable {
                 
             case "high":
                 cp = "高い";
+                break;
                 
             default:
                 cp = "Error";

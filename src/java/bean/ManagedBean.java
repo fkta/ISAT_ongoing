@@ -197,6 +197,7 @@ public class ManagedBean {
             }else if(udm.getUser().getUsertype().equals("student")){
                 return "/toppage/top.xhtml?faces-redirect=true";
             }else{
+                context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "ユーザIDもしくはパスワードが間違っています") );
                 errorMessage = "ユーザIDもしくはパスワードが間違っています2";
                 System.out.println("input data user id :"+userId + "password : "+password);
                 System.out.println("errorMessage : " + errorMessage);
@@ -204,6 +205,7 @@ public class ManagedBean {
             }
             
         }else{
+            context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "ユーザIDもしくはパスワードが間違っています") );
             errorMessage = "ユーザIDもしくはパスワードが間違っています";
             System.out.println("input data user id :"+userId + "password : "+password);
             System.out.println("errorMessage : " + errorMessage);

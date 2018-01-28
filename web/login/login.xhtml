@@ -9,6 +9,8 @@
         <h:outputStylesheet library="css" name="login.css"/>
     </h:head>
     <h:body>
+        <p:growl binding="#{info_message}" showDetail="true"/>
+        
         <div class="left-box-1">
             <h1>ISAT</h1>
             <h:graphicImage url="/resources/image/wintosh_logo.png" styleClass="example1"/>
@@ -31,7 +33,7 @@
                             パスワードを忘れた方はこちら
                         </p:link>
                         
-                        <p:commandButton action="#{managedBean.userAuth()}" value="Login" 
+                        <p:commandButton action="#{managedBean.userAuth()}" value="Login" update="#{info_message.clientId}"
                                          style="width:100px; height:30px; font-size:15px; margin-right: 20px;
                                          margin-top: 10px">
                             <f:ajax execute="@all" render=":form:error_mes"/>

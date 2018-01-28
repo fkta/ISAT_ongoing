@@ -11,6 +11,7 @@ import entity.UserData;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -67,7 +68,6 @@ public class todoBean implements Serializable{
     @PostConstruct
     public void init() {
         share = false;
-        
         
         //セレクトメニューの中身を作る
         classList = new ArrayList<SelectItem>();
@@ -273,7 +273,7 @@ public class todoBean implements Serializable{
     }
     
     public void replicaFinishing(){
-        if(selectedTodo.size() > 0){
+        if(selectedFinishing.size() > 0){
             todo = selectedFinishing.get(0);
             
             /* 共有されているかどうかの確認 */
@@ -399,6 +399,14 @@ public class todoBean implements Serializable{
             resetPickList();
             
             mb.todoShareMessage();
+        }else if(share == false && users.getTarget().size() > 0){
+            for(UserData ud : users.getTarget()){
+                TodoManage tm = new TodoManage(todo.getTodoId(), ud.getUserId());
+                tmf.remove(tm);
+                System.out.println("次の共有者を削除しました : "+ud.getName());
+            }
+            System.out.println("共有者の変更を完了しました");
+            mb.todoShareUpdateMessage();
         }
         /* 共有処理終了 */
     }

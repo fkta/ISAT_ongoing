@@ -40,4 +40,5 @@ public class TodoManageFacade extends AbstractFacade<TodoManage> {
         return query.getResultList();
     }
     
+    
 }

@@ -20,140 +20,179 @@
                 </h:form>
                 <!--パンくず end-->
                 
+                
+                
+                <!--週間スケジュール-->
+                
                 <h:form>
-                <p:panelGrid style="width: 100%" id="weekschedule">
+                <p:panelGrid style="width: 100%; font-size: 18px; margin-bottom: 10px;" id="weekschedule">
                     <f:facet name="header">
                         <p:row>
-                            <p:column colspan="7">2018年1月第4週</p:column>
+                            <p:column colspan="7"><h:outputText value="#{topBean.currentWeek}"/></p:column>
                         </p:row>
                     </f:facet>
-                        <p:row>
-                            <p:column>日曜</p:column>
+                       <p:row style="text-align: center;">
+                            <p:column style="background-color: #ff6666">日曜</p:column>
                             <p:column>月曜</p:column>
                             <p:column>火曜</p:column>
                             <p:column>水曜</p:column>
                             <p:column>木曜</p:column>
                             <p:column>金曜</p:column>
-                            <p:column>土曜</p:column>
+                            <p:column style="background-color: #3366ff">土曜</p:column>
                         </p:row>
-                        <p:row>
-                            <p:column >21</p:column>
-                            <p:column>22</p:column>
-                            <p:column>23</p:column>
-                            <p:column>24</p:column>
-                            <p:column>25</p:column>
-                            <p:column>26</p:column>
-                            <p:column>27</p:column>
+                    
+                        <!--日付-->
+                        <p:row style="text-align: center;">
+                            <ui:repeat value="#{topBean.weekdate}" var="wd">
+                                <p:column><h:outputText value="#{wd}"/></p:column>
+                            </ui:repeat>
                         </p:row>
+                        <!--日付-->
+                    
+                        <!--予定表示エリア-->
+                        <p:outputPanel>
+                            <p:row>
+                                <!--日曜-->
+                                <p:column style="width: 14.2%;">
+                                    <ui:repeat value="#{topBean.sunSchedule}" var="sun">
+                                        <h:outputText value="#{sun.title}"/>
+                                    </ui:repeat>
+                                </p:column>
 
-                </p:panelGrid>
-            </h:form>
+                                <!--月曜-->
+                                <p:column style="width: 14.2%">
+                                    <ui:repeat value="#{topBean.monSchedule}" var="mon">
+                                        <h:outputText value="#{mon.title}"/>
+                                    </ui:repeat>
+                                </p:column>
+
+                                <!--火曜-->
+                                <p:column style="width: 14.2%">
+                                    <ui:repeat value="#{topBean.tueSchedule}" var="tue">
+                                        <h:outputText value="#{tue.title}"/>
+                                    </ui:repeat>
+                                </p:column>
+
+                                <!--水曜-->
+                                <p:column style="width: 14.2%">
+                                    <ui:repeat value="#{topBean.wedSchedule}" var="wed">
+                                        <h:outputText value="#{wed.title}"/>
+                                    </ui:repeat>
+                                </p:column>
+
+                                <!--木曜-->
+                                <p:column style="width: 14.2%">
+                                    <ui:repeat value="#{topBean.thuSchedule}" var="thu">
+                                        <h:outputText value="#{thu.title}"/>
+                                    </ui:repeat>
+                                </p:column>
+
+                                <!--金曜-->
+                                <p:column style="width: 14.2%">
+                                    <ui:repeat value="#{topBean.friSchedule}" var="fri">
+                                        <h:outputText value="#{fri.title}"/>
+                                    </ui:repeat>
+                                </p:column>
+
+                                <!--土曜-->
+                                <p:column style="width: 14.2%">
+                                    <ui:repeat value="#{topBean.satSchedule}" var="sat">
+                                        <h:outputText value="#{sat.title}"/>
+                                    </ui:repeat>
+                                </p:column>
+                            </p:row>
+                        </p:outputPanel>
+                        <!--予定表示エリア end-->
+                        
+                        
+                    </p:panelGrid>
+                </h:form>
+                
+                <!--週間スケジュール end-->
+                
+                
+                
+                <!--時間割-->
+                <h:form>  
+                    <p:outputPanel style="font-size: 14px; float: left; width: 50%; height: 400px;">
+                        <p:dataTable value="#{topBean.curriculumList}" var="c">
+                            <f:facet name="header">
+                                <h:outputText value="時間割"/>
+                            </f:facet>
+                            <p:column headerText="時限" style="width: 10%"><h:outputText value="#{c.curriculumPK.period}"/></p:column>
+                            
+                            <p:column headerText="授業名"><h:outputText value="#{c.subject}"/></p:column>
+                            
+                            <p:column headerText="教室" style="width: 20%;"><h:outputText value="#{c.classroom}"/></p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </h:form>
+                <!--時間割 end-->
+                
+                
+                
+            
+
 
 
 
             <h:form>
-                <p:outputPanel>
-                    <p:panelGrid>
+                <p:outputPanel style="width: 50%; font-size: 14px; float: left; margin-bottom: 10px;">
+                    
+                    <p:dataTable value="#{topBean.threadMessage}" var="t" emptyMessage="お知らせはありません">
+                        
+                        <p:column headerText="掲示板">
+                            <h:outputText value="#{t.title}" style="font-weight: bold;"/>
+                            <h:outputText value="が作成されました"/>
+                        </p:column>
+                        
+                        
+                    </p:dataTable>
+                    
+                </p:outputPanel>
+            </h:form>
+
+
+
+            
+
+
+
+            <h:form>
+                <p:outputPanel style="width: 50%; font-size: 14px; float: left; margin-bottom: 10px;">
+                    
+                    <p:dataTable value="#{topBean.infoMessage}" var="i" emptyMessage="お知らせはありません">
+                        
+                        <p:column headerText="インフォメーション">
+                            <h:outputText value="#{i}" style="font-weight: bold;"/>
+                            <h:outputText value="が作成されました"/>
+                        </p:column>
+                    
+                    </p:dataTable>
+                    
+                </p:outputPanel>
+            </h:form>
+
+            <h:form>
+                <p:outputPanel style="float: left; width: 50%;">
+                    <p:panelGrid columns="1" style="width: 100%">
                         <f:facet name="header">
-                            <p:row>
-                                <p:column colspan="2">お知らせ</p:column>
-                            </p:row>
+                            <h:outputText value="Todo"/>
                         </f:facet>
+
                             <p:row>
-                                <p:column headerText="タイトル">タイトル</p:column>
-                                <p:column headerText="日付">日付</p:column>
+                                <p:column headerText="Todo"><h:outputText value="#{topBean.todoInfoMessage}" /></p:column>
                             </p:row>
+
 
                     </p:panelGrid>
                 </p:outputPanel>
                 
             </h:form>
-
-            <h:form>
-                <p:panelGrid>
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="2">掲示板</p:column>
-                        </p:row>
-                    </f:facet>
-                        <p:row>
-                            <p:column headerText="タイトル">タイトル</p:column>
-                            <p:column headerText="日付">日付</p:column>
-                        </p:row>
-                </p:panelGrid>
-            </h:form>
-
-
-
-                    <h:form>  
-            <p:panelGrid>
-                <f:facet name="header">
-                    <p:row>
-                        <p:column colspan="7">時間割</p:column>
-                    </p:row>
-                </f:facet>
-                    <p:row>
-                        <p:column colspan="2">限</p:column>
-                        <p:column colspan="2">授業名</p:column>
-                        <p:column colspan="2">教室</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="2">1</p:column>
-                        <p:column colspan="2">卒業研究</p:column>
-                        <p:column colspan="2">202</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="2">2</p:column>
-                        <p:column colspan="2">卒業研究</p:column>
-                        <p:column colspan="2">202</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="2">3</p:column>
-                        <p:column colspan="2">卒業研究</p:column>
-                        <p:column colspan="2">202</p:column>
-                    </p:row>
-                    <p:row>
-                        <p:column colspan="2">4</p:column>
-                        <p:column colspan="2">卒業研究</p:column>
-                        <p:column colspan="2">202</p:column>
-                    </p:row>
-
-            </p:panelGrid>
-            </h:form>
-
-
-
-            <h:form>
-                <p:panelGrid>
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="3">インフォ</p:column>
-                        </p:row>
-                    </f:facet>
-                        <p:row>
-                            <p:column headerText="タイトル">タイトル</p:column>
-                            <p:column headerText="カテゴリ">カテゴリ</p:column>
-                            <p:column headerText="日付">日付</p:column>
-                        </p:row>
-
-                </p:panelGrid>
-            </h:form>
-
-            <h:form>
-                <p:panelGrid>
-                    <f:facet name="header">
-                        <p:row>
-                            <p:column colspan="3">ToDo</p:column>
-                        </p:row>
-                    </f:facet>
-                        <p:row>
-                            <p:column headerText="タイトル">タイトル</p:column>
-                            <p:column headerText="日付">日付</p:column>
-                            <p:column headerText="重要度">重要度</p:column>
-                        </p:row>
-
-                </p:panelGrid>
-            </h:form>
+                
+                <p:outputPanel style="clear: both;">
+                    
+                </p:outputPanel>
 
             </ui:define>
         </ui:composition>
