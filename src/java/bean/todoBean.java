@@ -11,7 +11,6 @@ import entity.UserData;
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import javax.annotation.PostConstruct;
@@ -32,6 +31,9 @@ public class todoBean implements Serializable{
     
     // 選んだ進行中のtodoが入る
     private List<Todo> selectedTodo;
+    
+    //選んだ進行中の共有されたTodoが格納される
+    private List<Todo> selectedSharedTodo;
     
     // 選んだ完了したtodoが入る
     private List<Todo> selectedFinishing;
@@ -503,6 +505,13 @@ public class todoBean implements Serializable{
         return tf.findByGoindTodo(udm.getUser());
     }
     
+    // 進行中のTodo情報と共有されたTodo情報を取得する
+    public List<Todo> getGoingTodoEx(){
+        tf.findByGoingTodo2();
+        System.out.println("aaa");
+        return tf.findByGoingTodoEx(udm.getUser().getUserId());
+    }
+    
     // 完了したTodo情報を取得する
     public List<Todo> getFinishingTodo(){
         //System.out.println("FinishingTodo is running");
@@ -590,5 +599,14 @@ public class todoBean implements Serializable{
     public void setGoingTodoList(List<Todo> goingTodoList) {
         this.goingTodoList = goingTodoList;
     }
+
+    public List<Todo> getSelectedSharedTodo() {
+        return selectedSharedTodo;
+    }
+
+    public void setSelectedSharedTodo(List<Todo> selectedSharedTodo) {
+        this.selectedSharedTodo = selectedSharedTodo;
+    }
+    
     
 }

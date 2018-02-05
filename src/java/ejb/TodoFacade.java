@@ -1,6 +1,7 @@
 package ejb;
 
 import entity.Todo;
+import entity.TodoManage;
 import entity.UserData;
 import java.util.Date;
 import java.util.List;
@@ -57,6 +58,25 @@ public class TodoFacade extends AbstractFacade<Todo> {
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
         return query.getResultList();
+    }
+    
+    public void findByGoingTodo2(){
+        TypedQuery<Todo> query = em.createNamedQuery("Todo.findByGoingTodo2",Todo.class);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        for(Todo t : query.getResultList()){
+            System.out.println("Label : "+t.getLabel() + " finishing : "+t.getTodoManageCollection().get(0).getFinishing());
+        }
+        System.out.println("list size : "+ query.getResultList().size());
+    }
+    
+    public List<Todo> findByGoingTodoEx(String userId){
+        List<Todo> list = em.createNativeQuery(
+                "select t.todo_id,t.label,t.detail,t.term,t.owner,t.priority,tm.finishing from todo_manage tm right join todo t on tm.todo_id = t.todo_id where tm.user_id = '"+userId+"'"
+                        + " union " + "select * from todo where owner = '"+userId+"'" + " order by term"
+                ,Todo.class
+                ).getResultList();
+        return list;
     }
     
 }

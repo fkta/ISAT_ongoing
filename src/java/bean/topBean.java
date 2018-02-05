@@ -4,12 +4,14 @@ import ejb.BulletinBoardFacade;
 import ejb.CurriculumFacade;
 import ejb.InfoFacade;
 import ejb.ScheduleFacade;
+import ejb.ScheduleManageFacade;
 import ejb.TodoFacade;
 import ejb.TodoManageFacade;
 import entity.BulletinBoard;
 import entity.Curriculum;
 import entity.Info;
 import entity.Schedule;
+import entity.ScheduleManage;
 import javax.inject.Named;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -40,6 +42,8 @@ public class topBean {
     BulletinBoardFacade bbf;
     @EJB
     ScheduleFacade sf;
+    @EJB
+    ScheduleManageFacade smf;
     
     @Inject
     UserDataManager udm;
@@ -110,30 +114,87 @@ public class topBean {
             switch(startDate.get(Calendar.DAY_OF_WEEK)){
                 case 1:
                     sunSchedule = sf.findByWeekSchedule(udm.getUser(), startDate.getTime());
+                    //共有された予定の取得
+                    if(smf.findUserId(udm.getUser().getUserId()).size() > 0){
+                        for(ScheduleManage sm : smf.findUserId(udm.getUser().getUserId())){
+                            if(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).size() > 0){
+                                sunSchedule.add(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).get(0));
+                            }
+                            
+                        }
+                    }
                     break;
                     
                 case 2:
                     monSchedule = sf.findByWeekSchedule(udm.getUser(), startDate.getTime());
+                    //共有された予定の取得
+                    if(smf.findUserId(udm.getUser().getUserId()).size() > 0){
+                        for(ScheduleManage sm : smf.findUserId(udm.getUser().getUserId())){
+                            if(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).size() > 0){
+                                monSchedule.add(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).get(0));
+                            }
+                        }
+                    }
                     break;
                     
                 case 3:
                     tueSchedule = sf.findByWeekSchedule(udm.getUser(), startDate.getTime());
+                    //共有された予定の取得
+                    if(smf.findUserId(udm.getUser().getUserId()).size() > 0){
+                        for(ScheduleManage sm : smf.findUserId(udm.getUser().getUserId())){
+                            if(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).size() > 0){
+                                tueSchedule.add(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).get(0));
+                            }
+                        }
+                    }
                     break;
                     
                 case 4:
                     wedSchedule = sf.findByWeekSchedule(udm.getUser(), startDate.getTime());
+                    //共有された予定の取得
+                    if(smf.findUserId(udm.getUser().getUserId()).size() > 0){
+                        for(ScheduleManage sm : smf.findUserId(udm.getUser().getUserId())){
+                            if(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).size() > 0){
+                                wedSchedule.add(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).get(0));
+                            }
+                        }
+                    }
                     break;
                     
                 case 5:
                     thuSchedule = sf.findByWeekSchedule(udm.getUser(), startDate.getTime());
+                    //共有された予定の取得
+                    if(smf.findUserId(udm.getUser().getUserId()).size() > 0){
+                        for(ScheduleManage sm : smf.findUserId(udm.getUser().getUserId())){
+                            if(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).size() > 0){
+                                thuSchedule.add(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).get(0));
+                            }
+                        }
+                    }
                     break;
                     
                 case 6:
                     friSchedule = sf.findByWeekSchedule(udm.getUser(), startDate.getTime());
+                    //共有された予定の取得
+                    if(smf.findUserId(udm.getUser().getUserId()).size() > 0){
+                        for(ScheduleManage sm : smf.findUserId(udm.getUser().getUserId())){
+                            if(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).size() > 0){
+                                friSchedule.add(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).get(0));
+                            }
+                        }
+                    }
                     break;
                     
                 case 7:
                     satSchedule = sf.findByWeekSchedule(udm.getUser(), startDate.getTime());
+                    //共有された予定の取得
+                    if(smf.findUserId(udm.getUser().getUserId()).size() > 0){
+                        for(ScheduleManage sm : smf.findUserId(udm.getUser().getUserId())){
+                            if(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).size() > 0){
+                                satSchedule.add(sf.findByShareSchedule(sm.getScheduleManagePK().getScheduleId(),startDate.getTime()).get(0));
+                            }
+                        }
+                    }
                     break;
                     
                 default:
@@ -150,10 +211,13 @@ public class topBean {
         
         /* 時間割の取得 */
         curriculumList = new ArrayList<Curriculum>();
-        for(int i = 1; i < 5; i++){
-            curriculumList.add(cf.findByDayCurriculum(udm.getUser().getDepartmentId().getDepartmentId(),String.valueOf(i).charAt(0)).get(0));
-            System.out.println("時限 : " + curriculumList.get(i-1).getCurriculumPK().getPeriod() + "科目 : "+curriculumList.get(i-1).getSubject() + " 教室: " + curriculumList.get(i-1).getClassroom());
+        if(cf.findByDayCurriculum(udm.getUser().getDepartmentId().getDepartmentId(),String.valueOf(1).charAt(0)).size() > 0){
+            for(int i = 1; i < 5; i++){
+                curriculumList.add(cf.findByDayCurriculum(udm.getUser().getDepartmentId().getDepartmentId(),String.valueOf(i).charAt(0)).get(0));
+                System.out.println("時限 : " + curriculumList.get(i-1).getCurriculumPK().getPeriod() + "科目 : "+curriculumList.get(i-1).getSubject() + " 教室: " + curriculumList.get(i-1).getClassroom());
+            }
         }
+        
         
         /* 掲示板のお知らせを作成 */
         threadMessage = bbf.orderByPostDateLimit3();

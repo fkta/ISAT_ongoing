@@ -1,0 +1,43 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="template.css"/>
+        <h:outputStylesheet library="css" name="footer.css"/>
+        <h:outputStylesheet library="css" name="top.css"/>
+    </h:head>
+    <h:body>
+        <div id="header">
+            <ui:insert name="top">
+                <ui:include src="/templates/header.xhtml"/>
+                
+            </ui:insert>
+        </div>
+        
+        <div id="content">
+            <p:growl binding="#{info_message}" showDetail="true"/>
+            
+            <ui:insert name="content"/>
+            
+            <!--確認ダイアログ-->
+                <h:form>
+                    <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                        <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="font-size: 14px"/>
+                        <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="font-size: 14px"/>
+                    </p:confirmDialog>
+                </h:form>
+            <!--confirm dialog end-->
+            
+        </div>
+        
+        <div id="footer">
+            <ui:include src="/templates/footer.xhtml"/>
+        </div>
+        
+    </h:body>
+</html>
+

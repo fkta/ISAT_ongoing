@@ -1,0 +1,82 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="/templates/transmit_template.xhtml">
+            <ui:define name="title">ISAT - transmit</ui:define>
+            <ui:define name="content">
+                <h:form>
+                    <p:breadCrumb style="font-size: 14px;">
+                        <p:menuitem value="top" url="/faces/toppage/top.xhtml?faces-redirect=true"/>
+                        <p:menuitem value="伝達" style="text-decoration: none;"/>
+                    </p:breadCrumb>
+                </h:form>
+                
+                
+                
+            <div>
+                <p:commandButton value="送信画面" type="button" onclick="PF('transDialog').show();" />
+            </div>
+            <p:dialog header="送信画面" widgetVar="transDialog">
+                <h:form>
+                    <h:panelGrid columns="2">
+                        件名
+                        <p:inputText value="#{transBean.transmit_.title}"/>
+                        カテゴリ
+                        <p:selectOneMenu value="#{transBean.cat_}">
+                            <f:selectItem itemLabel="選択してください" noSelectionOption="true"/>
+                            <f:selectItems value="#{transBean.categoryAll}" var="c" itemLabel="#{c.categoryName}" itemValue="#{c.categoryId}"/>
+                        </p:selectOneMenu>
+                        宛先
+                        <p:selectOneMenu value="#{transBean.des_}">
+                            <f:selectItem itemLabel="選択してください" noSelectionOption="true"/>
+                            <f:selectItems value="#{transBean.userDataAll}" var="u" itemLabel="#{u.name}" itemValue="#{u.userId}"/>
+                        </p:selectOneMenu>
+                    </h:panelGrid>
+                    <h:inputTextarea cols="60" rows="10" value="#{transBean.transmit_.content}"/><br/>
+                    <h:commandButton value="送信" action="#{transBean.agein()}"/>
+                    <!--<h:commandButton value="送信" action="@{transBean.agein()}"/>
+                        <p:ajax event="click" process="" update=""/>
+                    </h:commandButton>-->
+                </h:form>
+                
+                
+                
+            </p:dialog>
+            
+                
+            
+            
+            <p:dataTable value="#{transBean.transmitAll}" var="trans" emptyMessage="受信箱が空です">
+                <p:column headerText="タイトル">
+                    <h:form>
+                        <p:commandLink value="#{trans.title}" action="#{transBean.showDetail()}" onclick="PF('detailDialog').show();"/>
+                    </h:form>
+                </p:column>
+                <p:column headerText="送信者">
+                    <h:outputText value="#{trans.destination.name}"/>
+                </p:column>
+                <p:column headerText="カテゴリ">
+                    <h:outputText value="#{trans.categoryId.categoryName}"/>
+                </p:column>
+                <p:column headerText="送信日">
+                    <h:outputText value="#{trans.senddate}"/>
+                </p:column>
+            </p:dataTable>
+            
+            <p:dialog header="詳細" widgetVar="detailDialog">
+                <h:outputText value="" />
+            </p:dialog>
+                
+                </ui:define>
+        </ui:composition>
+    </h:body>
+</html>
+

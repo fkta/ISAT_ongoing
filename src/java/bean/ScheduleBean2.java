@@ -93,6 +93,7 @@ public class ScheduleBean2 implements Serializable{
         //セレクトメニューの中身を作る
         classList = new ArrayList<SelectItem>();
         for(Department d : df.findAll()){
+            System.out.println("department : "+ d.getDepartmentName());
             if(d.getDepartmentCode().toString().equals("T")){
                 SelectItem item = new SelectItem("teacher","先生");
                 classList.add(item);

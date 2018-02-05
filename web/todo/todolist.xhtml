@@ -22,48 +22,111 @@
                 </h:form>
                 
                 <!--パンくず end-->
+                
                 <h:form>
-                    
                     <p:outputPanel style="margin-bottom: 10px;">
                         <h:outputText value="進行中のTodo" style="font-size: 18px; font-weight: bold;"/>
                     </p:outputPanel>
+                </h:form>
                     
+                
+                    
+                <!-- 進行中 自作 -->
+                <h:form>
+
+                        <!--ボタンエリア-->
+                        <p:outputPanel binding="#{todo_list}" id="going_button">
+                            <p:outputPanel id="button_area" style="width: 45%; text-align: right;">
+                                <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedTodo()}" update="going_data" process="@this"
+                                                 style="font-size: 14px; float: left;"/>
+
+                                <p:commandButton value="完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
+                                                 actionListener="#{todoBean.finishTodo()}" action="#{todoBean.resetSelectedTodo()}"
+                                                 update="going_panel #{finishing_panel.clientId} #{info_message.clientId} #{finishing_data.clientId}" process="going_data @this" oncomplete="#{managedBean.todoFinishingMessage()}">
+                                    <p:confirm header="Confirmation" message="選択したTodoを完了してよろしいですか？" icon="ui-icon-alert"/>
+
+                                </p:commandButton>
+
+                                <p:commandButton value="削除" icon="ui-icon-trash" update="going_data #{info_message.clientId}" actionListener="#{todoBean.deleteTodo()}" process="going_data @this"
+                                                 style="font-size: 14px; margin-left: 5px;">
+                                    <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                                </p:commandButton>
+
+                                <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
+                                                 actionListener="#{todoBean.replica()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_pickdept.clientId}" process="going_data @this"/>
+
+                                <p:commandButton value="作成" icon="ui-icon-plus" actionListener="#{todoBean.resetPickList()}" action="#{todoBean.resetTodo()}" style="font-size: 14px; margin-left: 5px;" oncomplete="PF('todo_create_dlg').show();" process="@this"
+                                                 update="#{todo_create_dlg_pop.clientId} #{pickarea.clientId} #{create_pickdepartment.clientId}"/>
+
+                            </p:outputPanel>
+                        </p:outputPanel>
+                        <!--ボタンエリア end-->
+
+                        <p:outputPanel id="going_panel" binding="#{going_panel}" style="float: left; margin-bottom: 20px;">
+                            <p:dataTable value="#{todoBean.goingTodoEx}" var="t" id="going_data" selection="#{todoBean.selectedTodo}" rowKey="#{t.todoId}" style="text-align: center; width: 45%; font-size: 13px;"
+                                         rows="10" styleClass="datatable"
+                                     paginator="true"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,20,30"
+                                     emptyMessage="進行中のTodoはありません">
+
+                                <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;">
+                                </p:column>
+
+                                <p:column headerText="ラベル">
+                                    <h:outputText value="#{t.label}"/>
+                                </p:column>
+
+                                <p:column headerText="完" style="width: 8%;">
+                                    <h:outputText value="#{t.judge}"/>
+                                </p:column>
+
+                                <p:column headerText="期限" style="width: 22%">
+                                    <h:outputText value="#{t.convTerm}"/>
+                                </p:column>
+
+                                <p:column headerText="重" style="width: 10%;">
+                                    <h:outputText value="#{t.convPriority}"/>
+                                </p:column>
+
+                            </p:dataTable>
+                        </p:outputPanel>
+                </h:form>
+                
+                
+                <!--進行中 共有されたもの-->
+                <h:form>
+                        
                     <!--ボタンエリア-->
-                    <p:outputPanel binding="#{todo_list}" id="going_button">
-                        <p:outputPanel id="button_area" style="width: 70%; text-align: right;">
-                            <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedTodo()}" update="going_data" process="@this"
+                    <p:outputPanel binding="#{share_todo_list}" id="share_going_button">
+                        <p:outputPanel id="share_button_area" style="width: 55%; text-align: right;">
+                            <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedTodo()}" update="share_going_data" process="@this"
                                              style="font-size: 14px; float: left;"/>
-                            
+
                             <p:commandButton value="完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
                                              actionListener="#{todoBean.finishTodo()}" action="#{todoBean.resetSelectedTodo()}"
-                                             update="going_panel #{finishing_panel.clientId} #{info_message.clientId} #{finishing_data.clientId}" process="going_data @this" oncomplete="#{managedBean.todoFinishingMessage()}">
+                                             update="share_going_panel #{finishing_panel.clientId} #{info_message.clientId} #{finishing_data.clientId}" process="share_going_data @this" oncomplete="#{managedBean.todoFinishingMessage()}">
                                 <p:confirm header="Confirmation" message="選択したTodoを完了してよろしいですか？" icon="ui-icon-alert"/>
-                            
+
                             </p:commandButton>
 
-                            <p:commandButton value="削除" icon="ui-icon-trash" update="going_data #{info_message.clientId}" actionListener="#{todoBean.deleteTodo()}" process="going_data @this"
+                            <p:commandButton value="削除" icon="ui-icon-trash" update="share_going_data #{info_message.clientId}" actionListener="#{todoBean.deleteTodo()}" process="share_going_data @this"
                                              style="font-size: 14px; margin-left: 5px;">
                                 <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
                             </p:commandButton>
-
-                            <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
-                                             actionListener="#{todoBean.replica()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_pickdept.clientId}" process="going_data @this"/>
-
-                            <p:commandButton value="作成" icon="ui-icon-plus" actionListener="#{todoBean.resetPickList()}" action="#{todoBean.resetTodo()}" style="font-size: 14px; margin-left: 5px;" oncomplete="PF('todo_create_dlg').show();" process="@this"
-                                             update="#{todo_create_dlg_pop.clientId} #{pickarea.clientId} #{create_pickdepartment.clientId}"/>
 
                         </p:outputPanel>
                     </p:outputPanel>
                     <!--ボタンエリア end-->
 
-                    <p:outputPanel id="going_panel" binding="#{going_panel}" style="float: left; margin-bottom: 20px;">
-                        <p:dataTable value="#{todoBean.goingTodo}" var="t" id="going_data" selection="#{todoBean.selectedTodo}" rowKey="#{t.todoId}" style="text-align: center; width: 70%; font-size: 15px;"
+                    <p:outputPanel id="share_going_panel" binding="#{share_going_panel}" style="float: left; margin-bottom: 20px;">
+                        <p:dataTable value="#{todoBean.goingTodoEx}" var="t" id="share_going_data" selection="#{todoBean.selectedSharedTodo}" rowKey="#{t.todoId}" style="text-align: center; width: 55%; font-size: 13px;"
                                      rows="10" styleClass="datatable"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                  rowsPerPageTemplate="10,20,30"
                                  emptyMessage="進行中のTodoはありません">
-                            
+
                             <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;">
                             </p:column>
 
@@ -75,7 +138,7 @@
                                 <h:outputText value="#{t.judge}"/>
                             </p:column>
                             
-                            <p:column headerText="作成者" style="width: 13%; font-size: 14px">
+                            <p:column headerText="作成者" style="width: 15%">
                                 <h:outputText value="#{t.owner.name}"/>
                             </p:column>
 
@@ -86,11 +149,11 @@
                             <p:column headerText="重要度" style="width: 10%;">
                                 <h:outputText value="#{t.convPriority}"/>
                             </p:column>
-                            
+
                         </p:dataTable>
                     </p:outputPanel>
                 </h:form>
-                
+
                 
                 <!--テーブル見出し-->
                 <h:form>
@@ -101,9 +164,9 @@
                     
                     <!--ボタンエリア-->
                     <p:outputPanel id="finishing_button">
-                        <p:outputPanel id="finishing_button_area" style="width: 70%; text-align: right;">
+                        <p:outputPanel id="finishing_button_area" style="width: 100%; text-align: right;">
                             <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedFinishing()}" update="finishing_data" process="@this"
-                                             style="font-size: 14px; float: left;"/>
+                                             style="font-size: 14px; float: left"/>
                             
                             <p:commandButton value="未完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
                                              actionListener="#{todoBean.unFinishTodo()}" action="#{todoBean.resetSelectedTodo()}"
@@ -125,7 +188,7 @@
                     <!--ボタンエリア end-->
                 
                     <p:outputPanel id="finishing_panel" binding="#{finishing_panel}" style="margin-bottom: 20px;">
-                        <p:dataTable id="finishing_data" value="#{todoBean.finishingTodo}" binding="#{finishing_data}" var="f" selection="#{todoBean.selectedFinishing}" rowKey="#{f.todoId}" style="text-align: center; width: 70%; font-size: 15px;"
+                        <p:dataTable id="finishing_data" value="#{todoBean.finishingTodo}" binding="#{finishing_data}" var="f" selection="#{todoBean.selectedFinishing}" rowKey="#{f.todoId}" style="text-align: center; width: 100%; font-size: 15px;"
                                      rows="10" styleClass="datatable"
                                  paginator="true"
                                  paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
@@ -172,7 +235,7 @@
                     
                     <!--ボタンエリア-->
                     <p:outputPanel id="exipired_button">
-                        <p:outputPanel id="expired_button_area" style="width: 70%; text-align: right;">
+                        <p:outputPanel id="expired_button_area" style="width: 100%; text-align: right;">
                             <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedExpired()}" update="expired_data" process="@this"
                                              style="font-size: 14px; float: left;"/>
                             
@@ -188,7 +251,7 @@
 
 
                     <p:outputPanel id="expired_panel" binding="#{expired_panel}" style="margin-bottom: 20px;">
-                        <p:dataTable id="expired_data" value="#{todoBean.expiredTodo}" binding="#{expired_data}" var="e" selection="#{todoBean.selectedExpired}" rowKey="#{e.todoId}" style="text-align: center; width: 70%; font-size: 15px;"
+                        <p:dataTable id="expired_data" value="#{todoBean.expiredTodo}" binding="#{expired_data}" var="e" selection="#{todoBean.selectedExpired}" rowKey="#{e.todoId}" style="text-align: center; width: 100%; font-size: 15px;"
                                          rows="10" styleClass="datatable"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"

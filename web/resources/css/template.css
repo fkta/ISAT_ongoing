@@ -1,12 +1,16 @@
 html{
     height: 100%;
-    background-image: url("#{resource['image/backimg.jpg']}");
+    background-image: url("#{resource['image/paper2.jpg']}");
 }
 
 body{
     width: 999px;
     height: 100%;
     margin:0px auto;
+}
+#content{
+    background-color:rgba(255,255,255,0.5);
+    padding-bottom: 50px;
 }
 
 .head{

@@ -6,9 +6,11 @@
 package ejb;
 
 import entity.Category;
+import java.util.List;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 
 /**
  *
@@ -27,6 +29,14 @@ public class CategoryFacade extends AbstractFacade<Category> {
 
     public CategoryFacade() {
         super(Category.class);
+    }
+    
+    public List<Category> findByCategoryId(Integer categoryId) {
+        TypedQuery query = em.createNamedQuery("Category.findByCategoryId", Category.class);
+        query.setParameter("categoryId", categoryId);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
     }
     
 }

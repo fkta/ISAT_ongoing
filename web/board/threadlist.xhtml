@@ -38,7 +38,7 @@
                             <p:dataTable value="#{boardBean.allThread}" var="t" style="text-align: center;" rows="10" styleClass="datatable"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
-                                     rowsPerPageTemplate="10,20,30">
+                                     rowsPerPageTemplate="10,20,30" emptyMessage="投稿がありません">
                                 <f:facet name="header">
                                     <h:outputText value="掲示板"/>
                                 </f:facet>

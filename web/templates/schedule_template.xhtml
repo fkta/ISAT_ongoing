@@ -66,8 +66,11 @@
                 <!--確認ダイアログ-->
                 <h:form>
                     <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-                        <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="font-size: 14px"/>
-                        <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="font-size: 14px"/>
+                        <p:outputPanel style="float: right;">
+                            <p:commandButton value="はい" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" style="font-size: 14px"/>
+                            <p:commandButton value="いいえ" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" style="font-size: 14px"/>
+                        </p:outputPanel>
+                        
                     </p:confirmDialog>
                 </h:form>
                 <!--confirm dialog end-->

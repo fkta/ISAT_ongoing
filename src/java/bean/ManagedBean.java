@@ -76,6 +76,12 @@ public class ManagedBean {
         }
     }
     
+    public void clearToPass(){
+        this.newpass = null;
+        this.oldpass = null;
+        this.confpass = null;
+    }
+    
     /* ajaxTest */
     public void updateAjax(){
         test = String.valueOf(sqItem);
@@ -431,6 +437,11 @@ public class ManagedBean {
     public void setSqAnswer(String sqAnswer) {
         System.out.println("setSqAnswer : "+sqAnswer);
         this.sqAnswer = sqAnswer;
+    }
+    
+    public void clearToSqAnswer(){
+        System.out.println("sqAnswer clear complete");
+        this.sqAnswer = null;
     }
 
     public String getTest() {

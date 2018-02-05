@@ -142,6 +142,9 @@
                             </p:outputPanel>
                                 
                             <p:outputPanel style="text-align: right; font-size: 14px">
+                                <p:commandButton value="閉じる">
+                                    <p:ajax process="@this" update="secret_area" listener="#{managedBean.clearToSqAnswer()}" oncomplete="PF('sq_edit_dlg').hide();"/>
+                                </p:commandButton>
                                 <p:commandButton value="リセット" update="secret_area">
                                     <p:resetInput target="secret_area" />
                                 </p:commandButton>
@@ -239,6 +242,9 @@
                             </p:outputPanel>
                             
                             <p:outputPanel style="text-align: right; font-size: 14px;">
+                                <p:commandButton value="閉じる">
+                                    <p:ajax process="@this" listener="#{managedBean.clearToPass()}" oncomplete="PF('pass_edit_dlg').hide();" update="pass_area"/>
+                                </p:commandButton>
                                 <p:commandButton value="変更" action="#{managedBean.changePassword()}" oncomplete="PF('pass_edit_dlg').hide();" update=":#{profile_grid.clientId} #{info_message.clientId}">
                                 </p:commandButton>
                             </p:outputPanel>

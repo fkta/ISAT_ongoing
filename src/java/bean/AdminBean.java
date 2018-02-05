@@ -1,5 +1,4 @@
 package bean;
-
 import ejb.CategoryFacade;
 import ejb.DepartmentFacade;
 import ejb.SecretQuestionFacade;

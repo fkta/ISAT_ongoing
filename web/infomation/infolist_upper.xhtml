@@ -94,7 +94,7 @@
                                 <p:outputLabel for="info_title" value="タイトル : "/>
                                 <p:inputText id="info_title" value="#{infomationBean.title}" style="margin-bottom: 20px" required="true"/><br/>
                                 <h:outputLabel for="info_term" value="掲載期間 : "/>
-                                <p:calendar id="info_term" value="#{infomationBean.selectedTerm}" pattern="yyyy/MM/dd HH:mm:ss" required="true"/>
+                                <p:calendar id="info_term" value="#{infomationBean.selectedTerm}" pattern="yyyy/MM/dd HH:mm:ss" required="true" locale="ja"/>
                                 <h:outputLabel for="info_enddate" value="終日"/>
                                 <p:selectBooleanCheckbox id="info_enddate" value="#{infomationBean.endDate}"/>
                             </div>

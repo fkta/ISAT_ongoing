@@ -36,6 +36,13 @@ public class UserDataFacade extends AbstractFacade<UserData> {
         return query.getSingleResult();
     }
     
+    public List<UserData> findByUserId(String userId){
+        TypedQuery<UserData> query = em.createNamedQuery("UserData.findByUserId",UserData.class).setParameter("userId", userId);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        return query.getResultList();
+    }
+    
     
     public List<UserData> findByUserType(String usertype){
             TypedQuery<UserData> query = em.createNamedQuery("UserData.findByUsertype",UserData.class);

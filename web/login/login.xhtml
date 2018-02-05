@@ -23,11 +23,12 @@
                         <h:outputText id="error_mes" value="#{managedBean.errorMessage}" rendered="true"/>
                         
                         <p:outputLabel for="number" value="ID:"/>
-                        <p:inputText id="number" value="#{managedBean.userId}" placeholder="10桁" style="margin-right: 20px;"/><br />
+                        <p:inputText id="number" value="#{managedBean.userId}" placeholder="st20xxxxxx"
+                                     style="margin-right: 20px;" required="true" requiredMessage="ID入力必須"/><br />
 
                         <p:outputLabel for="pwd" value="Pass:"/>
                         <p:password id="pwd" value="#{managedBean.password}" style="margin-top: 10px;
-                                                                            margin-right: 20px;"/><br />
+                                    margin-right: 20px;" placeholder="idと同じ" required="true" requiredMessage="Pass入力必須"/><br />
                         
                         <p:link outcome="/faces/login/secretquestion.xhtml?faces-redirect=true">
                             パスワードを忘れた方はこちら

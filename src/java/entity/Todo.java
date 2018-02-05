@@ -2,8 +2,10 @@ package entity;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -35,6 +37,7 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Todo.findByPriority", query = "SELECT t FROM Todo t WHERE t.priority = :priority")
     , @NamedQuery(name = "Todo.findByFinishing", query = "SELECT t FROM Todo t WHERE t.finishing = :finishing")
     , @NamedQuery(name = "Todo.findByGoingTodo", query = "SELECT t FROM Todo t WHERE t.owner = :owner and t.finishing = false and t.term >= :nowtime")
+    , @NamedQuery(name = "Todo.findByGoingTodo2", query = "SELECT t FROM Todo t INNER JOIN FETCH t.todoManageCollection")
     , @NamedQuery(name = "Todo.findByFinishingTodo", query = "SELECT t FROM Todo t WHERE t.finishing = true")
     , @NamedQuery(name = "Todo.findByExpiredTodo", query = "SELECT t FROM Todo t WHERE t.term < :nowtime")})
 public class Todo implements Serializable {
@@ -67,24 +70,24 @@ public class Todo implements Serializable {
     @Column(name = "finishing")
     private Boolean finishing;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "todo")
-    private Collection<TodoManage> todoManageCollection;
+    private List<TodoManage> todoManageCollection = new ArrayList<>();
     @JoinColumn(name = "owner", referencedColumnName = "user_id")
     @NotNull
     @ManyToOne(optional = false)
     private UserData owner;
-
-    public Todo() {
+    
+    public Todo(){
+        
     }
 
-    public Todo(String todoId) {
-        this.todoId = todoId;
-    }
-
-    public Todo(String todoId, String label, Date term, String priority) {
+    public Todo(String todoId, String label, String detail, Date term, String priority, Boolean finishing, UserData owner) {
         this.todoId = todoId;
         this.label = label;
+        this.detail = detail;
         this.term = term;
         this.priority = priority;
+        this.finishing = finishing;
+        this.owner = owner;
     }
 
     public String getTodoId() {
@@ -160,15 +163,15 @@ public class Todo implements Serializable {
         String cp;
         switch(priority){
             case "low":
-                cp = "低い";
+                cp = "低";
                 break;
                 
             case "normal":
-                cp = "普通";
+                cp = "普";
                 break;
                 
             case "high":
-                cp = "高い";
+                cp = "高";
                 break;
                 
             default:
@@ -176,13 +179,15 @@ public class Todo implements Serializable {
         }
         return cp;
     }
+    
+    
 
     @XmlTransient
-    public Collection<TodoManage> getTodoManageCollection() {
+    public List<TodoManage> getTodoManageCollection() {
         return todoManageCollection;
     }
 
-    public void setTodoManageCollection(Collection<TodoManage> todoManageCollection) {
+    public void setTodoManageCollection(List<TodoManage> todoManageCollection) {
         this.todoManageCollection = todoManageCollection;
     }
 

@@ -17,10 +17,11 @@ td{
 }
 
 .crmcon{
-    font-size: 28px;
+    font-size: 20px;
 }
 
 tr{
+    padding: 5px 2px 5px 2px;
     border: 1px #f5f5f5 solid;
     background-color: #d3d3d3;
     border-color: #d3d3d3;

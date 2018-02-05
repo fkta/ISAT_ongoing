@@ -41,26 +41,28 @@
                             <li>
                                 <h:commandLink action="#{managedBean.transToBoard()}" styleClass="link">
                                     <h:graphicImage url="/resources/image/bulletinboard.png"/><br/>
-                                    <h:outputText value="掲示板"/>
+                                    <h:outputText value="掲示板" style="color: white;"/>
                                 </h:commandLink>
                             </li>
                             
                             <li style="margin-left: 20px;">
                                 <h:commandLink action="#{managedBean.transToSchedule()}" styleClass="link">
                                     <h:graphicImage url="/resources/image/schedule.png"/><br/>
-                                    <h:outputText value="スケジュール"/>
+                                    <h:outputText value="スケジュール" style="color: white;"/>
                                 </h:commandLink>
                             </li>
                             
-                            <li style="margin-left: 20px;">
-                                <h:graphicImage url="/resources/image/transmit.png"/><br/>
-                                <h:outputText value="伝達"/>
+                            <li style="margin-left: 20px; text-decoration: none;">
+                                <h:link outcome="/transmit/transtop.xhtml?faces-redirect=true" styleClass="link">
+                                    <h:graphicImage url="/resources/image/transmit.png"/><br/>
+                                    <h:outputText value="伝達" style="color: white;"/>
+                                </h:link>
                             </li>
                             
                             <li style="margin-left: 20px;">
                                 <h:link outcome="/todo/todolist.xhtml?faces-redirect=true" styleClass="link">
-                                    <h:graphicImage url="/resources/image/todo.jpg"/><br/>
-                                    <h:outputText value="ToDo"/>
+                                    <h:graphicImage url="/resources/image/todo.png"/><br/>
+                                    <h:outputText value="ToDo" style="color: white;"/>
                                 </h:link>
                             
                                 
@@ -69,14 +71,14 @@
                             <li style="margin-left: 20px;">
                                 <h:commandLink action="#{managedBean.transToInfoList()}" styleClass="link">
                                     <h:graphicImage url="/resources/image/info.png"/><br/>
-                                    <h:outputText value="インフォ"/>
+                                    <h:outputText value="インフォ" style="color: white;"/>
                                 </h:commandLink>
                             </li>
                             
                             <li style="margin-left: 20px;">
                                 <h:link outcome="/curriculum/curriculum.xhtml?faces-redirect=true" styleClass="link">
                                     <h:graphicImage url="/resources/image/curriculum.png"/><br/>
-                                    <h:outputText value="時間割"/>
+                                    <h:outputText value="時間割" style="color: white;"/>
                                 </h:link>
                             </li>
                             
@@ -84,7 +86,7 @@
                             
                             <li style="margin-left: 20px;">
                                 <h:link outcome="/adminmenu/adminmenu.xhtml?faces-redirect=true" styleClass="link">
-                                    <h:outputText value="管理画面"/>
+                                    <h:outputText value="管理画面" style="color: white;"/>
                                 </h:link>
                             </li>
                         </ul>
