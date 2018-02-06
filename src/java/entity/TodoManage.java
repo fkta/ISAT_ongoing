@@ -72,6 +72,15 @@ public class TodoManage implements Serializable {
     public void setTodo(Todo todo) {
         this.todo = todo;
     }
+    
+    public String Judge(){
+        if(finishing == true){
+            return "〇";
+        }else{
+            return "×";
+        }
+            
+    }
 
     @Override
     public int hashCode() {
@@ -95,8 +104,16 @@ public class TodoManage implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.TodoManage[ todoManagePK=" + todoManagePK + " ]";
+        if(finishing == true){
+            return "〇,"+todoManagePK.getUserId();
+        }else{
+            return "×,"+todoManagePK.getUserId();
+        }
     }
+    
+    /*public String toString() {
+        return "entity.TodoManage[ todoManagePK=" + todoManagePK + " ]";
+    }*/
 
     public boolean getDisplay() {
         return display;

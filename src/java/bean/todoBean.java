@@ -315,6 +315,7 @@ public class todoBean implements Serializable{
         todo.setTodoId("tod"+sdf.format(new Date()));
         todo.setOwner(udm.getUser());
         todo.setFinishing(false);
+        System.out.println("todo : "+todo.getTodoId());
         tf.create(todo);
         mb.todoCreateMessage();
         System.out.println("todo userId : "+todo.getOwner()+" udm userId : "+udm.getUser().getUserId());
@@ -507,8 +508,6 @@ public class todoBean implements Serializable{
     
     // 進行中のTodo情報と共有されたTodo情報を取得する
     public List<Todo> getGoingTodoEx(){
-        tf.findByGoingTodo2();
-        System.out.println("aaa");
         return tf.findByGoingTodoEx(udm.getUser().getUserId());
     }
     

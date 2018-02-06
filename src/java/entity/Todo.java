@@ -2,10 +2,8 @@ package entity;
 
 import java.io.Serializable;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -70,7 +68,7 @@ public class Todo implements Serializable {
     @Column(name = "finishing")
     private Boolean finishing;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "todo")
-    private List<TodoManage> todoManageCollection = new ArrayList<>();
+    private Collection<TodoManage> todoManageCollection;
     @JoinColumn(name = "owner", referencedColumnName = "user_id")
     @NotNull
     @ManyToOne(optional = false)
@@ -180,16 +178,16 @@ public class Todo implements Serializable {
         return cp;
     }
     
-    
-
     @XmlTransient
-    public List<TodoManage> getTodoManageCollection() {
+    public Collection<TodoManage> getTodoManageCollection() {
         return todoManageCollection;
     }
 
-    public void setTodoManageCollection(List<TodoManage> todoManageCollection) {
+    public void setTodoManageCollection(Collection<TodoManage> todoManageCollection) {
         this.todoManageCollection = todoManageCollection;
     }
+
+    
 
     @Override
     public int hashCode() {

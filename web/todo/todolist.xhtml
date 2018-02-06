@@ -36,39 +36,47 @@
 
                         <!--ボタンエリア-->
                         <p:outputPanel binding="#{todo_list}" id="going_button">
-                            <p:outputPanel id="button_area" style="width: 45%; text-align: right;">
-                                <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedTodo()}" update="going_data" process="@this"
-                                                 style="font-size: 14px; float: left;"/>
+                                <p:outputPanel id="button_area" style="width: 45%; text-align: right;">
+                                    <p:commandButton value="選択解除" icon="ui-icon-cancel" actionListener="#{todoBean.resetSelectedTodo()}" update="going_data" process="@this"
+                                                     style="font-size: 14px; float: left;"/>
 
-                                <p:commandButton value="完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
-                                                 actionListener="#{todoBean.finishTodo()}" action="#{todoBean.resetSelectedTodo()}"
-                                                 update="going_panel #{finishing_panel.clientId} #{info_message.clientId} #{finishing_data.clientId}" process="going_data @this" oncomplete="#{managedBean.todoFinishingMessage()}">
-                                    <p:confirm header="Confirmation" message="選択したTodoを完了してよろしいですか？" icon="ui-icon-alert"/>
+                                    <p:commandButton value="完了" icon="ui-icon-check" style="font-size: 14px; clear: both"
+                                                     actionListener="#{todoBean.finishTodo()}" action="#{todoBean.resetSelectedTodo()}"
+                                                     update="going_panel #{finishing_panel.clientId} #{info_message.clientId} #{finishing_data.clientId}" process="going_data @this" oncomplete="#{managedBean.todoFinishingMessage()}">
+                                        <p:confirm header="Confirmation" message="選択したTodoを完了してよろしいですか？" icon="ui-icon-alert"/>
 
-                                </p:commandButton>
+                                    </p:commandButton>
 
-                                <p:commandButton value="削除" icon="ui-icon-trash" update="going_data #{info_message.clientId}" actionListener="#{todoBean.deleteTodo()}" process="going_data @this"
-                                                 style="font-size: 14px; margin-left: 5px;">
-                                    <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
-                                </p:commandButton>
+                                    <p:commandButton value="削除" icon="ui-icon-trash" update="going_data #{info_message.clientId}" actionListener="#{todoBean.deleteTodo()}" process="going_data @this"
+                                                     style="font-size: 14px; margin-left: 5px;">
+                                        <p:confirm header="Confirmation" message="削除してもよろしいですか？" icon="ui-icon-alert"/>
+                                    </p:commandButton>
 
-                                <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
-                                                 actionListener="#{todoBean.replica()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_pickdept.clientId}" process="going_data @this"/>
+                                    <p:commandButton value="編集" icon="ui-icon-pencil" style="font-size: 14px; margin-left: 5px;"
+                                                     actionListener="#{todoBean.replica()}" oncomplete="PF('todo_edit_dlg').show();" update="#{todo_edit_dlg_pop.clientId} #{edit_pickarea.clientId} #{edit_pickdept.clientId}" process="going_data @this"/>
 
-                                <p:commandButton value="作成" icon="ui-icon-plus" actionListener="#{todoBean.resetPickList()}" action="#{todoBean.resetTodo()}" style="font-size: 14px; margin-left: 5px;" oncomplete="PF('todo_create_dlg').show();" process="@this"
-                                                 update="#{todo_create_dlg_pop.clientId} #{pickarea.clientId} #{create_pickdepartment.clientId}"/>
+                                    <p:commandButton value="作成" icon="ui-icon-plus" actionListener="#{todoBean.resetPickList()}" action="#{todoBean.resetTodo()}" style="font-size: 14px; margin-left: 5px;" oncomplete="PF('todo_create_dlg').show();" process="@this"
+                                                     update="#{todo_create_dlg_pop.clientId} #{pickarea.clientId} #{create_pickdepartment.clientId}"/>
 
-                            </p:outputPanel>
+                                </p:outputPanel>
                         </p:outputPanel>
                         <!--ボタンエリア end-->
 
                         <p:outputPanel id="going_panel" binding="#{going_panel}" style="float: left; margin-bottom: 20px;">
-                            <p:dataTable value="#{todoBean.goingTodoEx}" var="t" id="going_data" selection="#{todoBean.selectedTodo}" rowKey="#{t.todoId}" style="text-align: center; width: 45%; font-size: 13px;"
+                            
+                            
+                            
+                            <p:dataTable value="#{todoBean.goingTodo}" var="t" id="going_data" selection="#{todoBean.selectedTodo}" rowKey="#{t.todoId}" style="text-align: center; width: 45%; font-size: 13px;"
                                          rows="10" styleClass="datatable"
                                      paginator="true"
                                      paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
                                      rowsPerPageTemplate="10,20,30"
                                      emptyMessage="進行中のTodoはありません">
+                                
+                                <!--<f:facet name="header">
+                                    <p:row>
+                                    </p:row>
+                                </f:facet>-->
 
                                 <p:column selectionMode="multiple" style="width: 7%; padding: 3px 0 0 2px;">
                                 </p:column>

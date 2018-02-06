@@ -3,6 +3,7 @@ package ejb;
 import entity.Todo;
 import entity.TodoManage;
 import entity.UserData;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.ejb.Stateless;
@@ -60,23 +61,48 @@ public class TodoFacade extends AbstractFacade<Todo> {
         return query.getResultList();
     }
     
-    public void findByGoingTodo2(){
+    public List<Todo> findByGoingTodo2(){
         TypedQuery<Todo> query = em.createNamedQuery("Todo.findByGoingTodo2",Todo.class);
         query.setFirstResult(query.getFirstResult());
         query.setMaxResults(query.getMaxResults());
         for(Todo t : query.getResultList()){
-            System.out.println("Label : "+t.getLabel() + " finishing : "+t.getTodoManageCollection().get(0).getFinishing());
+            String str = t.getTodoManageCollection().toString();
+            str = str.substring(2, 3);
+            System.out.println("Nazo : " + str);
         }
-        System.out.println("list size : "+ query.getResultList().size());
+        
+        return query.getResultList();
     }
     
+    //
     public List<Todo> findByGoingTodoEx(String userId){
-        List<Todo> list = em.createNativeQuery(
-                "select t.todo_id,t.label,t.detail,t.term,t.owner,t.priority,tm.finishing from todo_manage tm right join todo t on tm.todo_id = t.todo_id where tm.user_id = '"+userId+"'"
-                        + " union " + "select * from todo where owner = '"+userId+"'" + " order by term"
-                ,Todo.class
-                ).getResultList();
-        return list;
+        TypedQuery<Todo> query = em.createNamedQuery("Todo.findByGoingTodo2",Todo.class);
+        query.setFirstResult(query.getFirstResult());
+        query.setMaxResults(query.getMaxResults());
+        
+        List<Todo> todoList = new ArrayList<>();
+        
+        for(Todo t : query.getResultList()){
+            //System.out.println("tomane : " + t.getTodoManageCollection().toString());
+            if(userId.equals(t.getTodoManageCollection().toString().substring(4,14))){
+                String str = t.getTodoManageCollection().toString();
+                str = str.substring(2, 3);
+                switch(str){
+                    case "〇":
+                        t.setFinishing(Boolean.TRUE);
+                        todoList.add(t);
+                        break;
+                        
+                    default:
+                        t.setFinishing(Boolean.FALSE);
+                        break;
+                }
+                //System.out.println("label : " + t.getLabel() + " manage judge : " + str);
+            }
+            
+        }
+        
+        return todoList;
     }
     
 }
