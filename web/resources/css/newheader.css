@@ -1,0 +1,31 @@
+.main_content{
+    width: 999px;
+    margin: 0 auto;
+    background-color: pink;
+}
+
+.graphics{
+    height: 40px;
+}
+
+.common_panel{
+    border-left: 5px solid;
+    border-color: rgb(105,105,105);
+    float: left;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.link :active{
+    background-color: rgb(47,79,79);
+}
+
+.menu_fonts{
+    font-size: 16px;
+    text-decoration: none;
+    color: black;
+}
+
+.menu_fonts :visited{
+    color: black;
+}

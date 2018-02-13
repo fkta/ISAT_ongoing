@@ -1,0 +1,58 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="newlogin.css"/>
+    </h:head>
+    <h:body>
+        <p:growl binding="#{info_message}" showDetail="true"/>
+        
+        <p:outputPanel styleClass="inputbox">
+            <p:graphicImage url="#{resource['image/logomasi.png']}" styleClass="logo"/>
+            <p:outputPanel style="padding: 0 25% 0 15%; margin-top: 20px;">
+                <h:form>
+                    <p:outputPanel style="text-align: left;">
+                        <p:outputLabel for="id_form" value="ID"/><br/>
+                    </p:outputPanel>
+                    
+                    <p:outputPanel style="text-align: center; margin-bottom: 20px">
+                        <p:inputText id="id_form" value="#{managedBean.userId}" placeholder="st20170001" required="true" requiredMessage="入力必須"/><br/>
+                    </p:outputPanel>
+                    
+                    <p:outputPanel>
+                        <p:message for="id_form"/>
+                    </p:outputPanel>
+                    
+                    <p:outputPanel style="text-align: left;">
+                        <p:outputLabel for="pass_form" value="Password"/><br/>
+                    </p:outputPanel>
+                    
+                    <p:outputPanel style="text-align: center;">
+                        <p:password id="pass_form" value="#{managedBean.password}" placeholder="st20170001" required="true" requiredMessage="入力必須"/><br/>
+                    </p:outputPanel>
+                    
+                    <p:outputPanel>
+                        <p:message for="pass_form"/>
+                    </p:outputPanel>
+                    
+                    <p:outputPanel style="text-align: left; margin-top: 5px;">
+                        <p:link outcome="/faces/login/secretquestion.xhtml?faces-redirect=true" style="text-decoration: none;">
+                            <h:outputText value="パスワードを忘れた場合" styleClass="links"/>
+                        </p:link>
+                    </p:outputPanel>
+                    
+                    <p:outputPanel style="text-align: right; margin-top: 20px">
+                        <p:commandButton action="#{managedBean.userAuth()}" update="#{info_message.clientId}" value="Login" style="text-align: right;"/>
+                    </p:outputPanel>
+                    
+                </h:form>
+            </p:outputPanel>
+            
+        </p:outputPanel>
+        
+    </h:body>
+</html>
+

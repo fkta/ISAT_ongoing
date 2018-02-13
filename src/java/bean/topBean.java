@@ -68,6 +68,7 @@ public class topBean {
     
     @PostConstruct
     public void init(){
+        
         /* カレンダー生成処理 */
         
         //カレンダーの見出しを生成

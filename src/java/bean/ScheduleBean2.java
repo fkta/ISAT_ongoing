@@ -148,6 +148,7 @@ public class ScheduleBean2 implements Serializable{
                 ev.setDescription(s.get(0).getContent());
                 ev.setData(s.get(0).getOwner());
                 
+                
                 // StyleClassにScheduleIdを格納する
                 ev.setStyleClass(s.get(0).getScheduleId());
                 ev.setAllDay(s.get(0).getAllday());
@@ -582,7 +583,9 @@ public class ScheduleBean2 implements Serializable{
     }
      
     public void onDateSelect(SelectEvent selectEvent) {
-        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject());
+        UserData ud = new UserData();
+        ud.setName("-");
+        event = new DefaultScheduleEvent("", (Date) selectEvent.getObject(), (Date) selectEvent.getObject(),ud);
         resetPickList();
         disable = false;
         share = false;

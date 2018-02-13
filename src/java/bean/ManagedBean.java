@@ -148,6 +148,10 @@ public class ManagedBean {
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO ,"Success", "共有者を変更しました") );
     }
     
+    public void todoNoSelectErrorMessage(){
+        context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "予定を選択してください") );
+    }
+    
     public void secretNotMatchMessage(){
         context.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR ,"Error", "答えが一致しません") );
     }
@@ -228,7 +232,7 @@ public class ManagedBean {
     /* ログアウト処理 */
     public String logout(){
         invalidate();
-        return "/login/login.xhtml?faces-redirect=true";
+        return "/login/newlogin.xhtml?faces-redirect=true";
     }
     
     // セッション破棄

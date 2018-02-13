@@ -34,9 +34,9 @@ import javax.xml.bind.annotation.XmlTransient;
     , @NamedQuery(name = "Todo.findByTerm", query = "SELECT t FROM Todo t WHERE t.term = :term")
     , @NamedQuery(name = "Todo.findByPriority", query = "SELECT t FROM Todo t WHERE t.priority = :priority")
     , @NamedQuery(name = "Todo.findByFinishing", query = "SELECT t FROM Todo t WHERE t.finishing = :finishing")
-    , @NamedQuery(name = "Todo.findByGoingTodo", query = "SELECT t FROM Todo t WHERE t.owner = :owner and t.finishing = false and t.term >= :nowtime")
+    , @NamedQuery(name = "Todo.findByGoingTodo", query = "SELECT t FROM Todo t WHERE t.owner = :owner and t.finishing = false and t.term >= :nowtime order by t.term asc")
     , @NamedQuery(name = "Todo.findByGoingTodo2", query = "SELECT t FROM Todo t INNER JOIN FETCH t.todoManageCollection")
-    , @NamedQuery(name = "Todo.findByFinishingTodo", query = "SELECT t FROM Todo t WHERE t.finishing = true")
+    , @NamedQuery(name = "Todo.findByFinishingTodo", query = "SELECT t FROM Todo t WHERE t.finishing = true and t.owner = :userId")
     , @NamedQuery(name = "Todo.findByExpiredTodo", query = "SELECT t FROM Todo t WHERE t.term < :nowtime")})
 public class Todo implements Serializable {
 

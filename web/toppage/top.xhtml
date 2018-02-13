@@ -110,6 +110,95 @@
                 
                 <!--週間スケジュール end-->
                 
+                <!--期限の近いTodo-->
+                
+
+
+                <p:dataTable value="#{todoBean.goingTodo}" var="t" id="going_data" style="text-align: center; width: 45%; font-size: 13px; float: left;"
+                                         rows="5" styleClass="datatable"
+                                     paginator="false"
+                                     paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                     rowsPerPageTemplate="10,20,30"
+                                     emptyMessage="進行中のTodoはありません">
+
+
+                                <!--ヘッダー ボタン-->
+                                <f:facet name="header">
+                                    <p:row>
+                                        <!--<p:graphicImage url="#{resource['image/enogu-mini.png']}" style="width: 15%; float: left; padding-top: 0.1em;"/>-->
+                                        <p:outputPanel style="width: 100%; float: left;">
+                                            <h:outputText value="期限が近いTodo" style="font-size: 16px; margin-bottom: 30px;"/>
+                                        </p:outputPanel>
+
+                                        <p:outputPanel style="clear: both"></p:outputPanel>
+
+                                    </p:row>
+                                </f:facet>
+                                <!--ヘッダー ボタン end-->
+
+                                <p:column headerText="ラベル">
+                                    <h:outputText value="#{t.label}"/>
+                                </p:column>
+
+                                <p:column headerText="完" style="width: 8%;">
+                                    <h:outputText value="#{t.judge}"/>
+                                </p:column>
+
+                                <p:column headerText="期限" style="width: 22%">
+                                    <h:outputText value="#{t.convTerm}"/>
+                                </p:column>
+
+                                <p:column headerText="重" style="width: 10%;">
+                                    <h:outputText value="#{t.convPriority}"/>
+                                </p:column>
+
+                            </p:dataTable>
+
+
+
+                            <p:dataTable value="#{todoBean.sharedTodo}" var="t" id="share_going_data" style="text-align: center; width: 52%; font-size: 13px; float: right; margin-bottom: 30px;"
+                                     rows="10" styleClass="datatable"
+                                 paginator="false"
+                                 paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                 rowsPerPageTemplate="10,20,30"
+                                 emptyMessage="進行中のTodoはありません">
+
+                            <f:facet name="header">
+                                <p:row>
+                                    <!--<p:graphicImage url="#{resource['image/enogu-pink.png']}" style="width: 15%; float: left; padding-bottom: 0.1em;"/>-->
+                                    <p:outputPanel style="width: 100%; float: left;">
+                                        <h:outputText value="共有されたTodo" style="font-size: 16px;"/>
+                                    </p:outputPanel>
+
+                                    <p:outputPanel style="clear: both"></p:outputPanel>
+                                </p:row>
+                            </f:facet>
+
+                            <p:column headerText="ラベル">
+                                <h:outputText value="#{t.label}"/>
+                            </p:column>
+
+                            <p:column headerText="完" style="width: 8%;">
+                                <h:outputText value="#{t.judge}"/>
+                            </p:column>
+
+                            <p:column headerText="作成者" style="width: 17%">
+                                <h:outputText value="#{t.owner.name}"/>
+                            </p:column>
+
+                            <p:column headerText="期限" style="width: 22%">
+                                <h:outputText value="#{t.convTerm}"/>
+                            </p:column>
+
+                            <p:column headerText="重" style="width: 10%;">
+                                <h:outputText value="#{t.convPriority}"/>
+                            </p:column>
+
+                        </p:dataTable>
+
+                <p:outputPanel style="clear: both"></p:outputPanel>
+                <!--Todo end-->
+                
                 
                 
                 <!--時間割-->
@@ -140,8 +229,14 @@
                 <p:outputPanel style="width: 50%; font-size: 14px; float: left; margin-bottom: 10px;">
                     
                     <p:dataTable value="#{topBean.threadMessage}" var="t" emptyMessage="お知らせはありません">
+                        <f:facet name="header">
+                            <p:column>
+                                <h:outputText value="掲示板"/>
+                            </p:column>
+                            
+                        </f:facet>
                         
-                        <p:column headerText="掲示板">
+                        <p:column>
                             <h:outputText value="#{t.title}" style="font-weight: bold;"/>
                             <h:outputText value="が作成されました"/>
                         </p:column>
@@ -159,11 +254,15 @@
 
 
             <h:form>
-                <p:outputPanel style="width: 50%; font-size: 14px; float: left; margin-bottom: 10px;">
+                <p:outputPanel style="width: 50%; font-size: 14px; float: right; margin-bottom: 10px;">
                     
                     <p:dataTable value="#{topBean.infoMessage}" var="i" emptyMessage="お知らせはありません">
                         
-                        <p:column headerText="インフォメーション">
+                        <f:facet name="header">
+                            <h:outputText value="インフォメーション"/>
+                        </f:facet>
+                        
+                        <p:column>
                             <h:outputText value="#{i}" style="font-weight: bold;"/>
                             <h:outputText value="が作成されました"/>
                         </p:column>
@@ -173,22 +272,7 @@
                 </p:outputPanel>
             </h:form>
 
-            <h:form>
-                <p:outputPanel style="float: left; width: 50%;">
-                    <p:panelGrid columns="1" style="width: 100%">
-                        <f:facet name="header">
-                            <h:outputText value="Todo"/>
-                        </f:facet>
-
-                            <p:row>
-                                <p:column headerText="Todo"><h:outputText value="#{topBean.todoInfoMessage}" /></p:column>
-                            </p:row>
-
-
-                    </p:panelGrid>
-                </p:outputPanel>
-                
-            </h:form>
+            
                 
                 <p:outputPanel style="clear: both;">
                     

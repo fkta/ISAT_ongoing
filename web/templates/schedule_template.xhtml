@@ -9,6 +9,8 @@
         <h:outputStylesheet library="css" name="template.css"/>
         <h:outputStylesheet library="css" name="footer.css"/>
         <h:outputStylesheet library="css" name="schedule.css"/>
+        <h:outputStylesheet library="css" name="newheader.css"/>
+
         
         <style>
             .ui-picklist .ui-picklist-list{
@@ -32,7 +34,7 @@
             dayNamesShort : [ '日', '月', '火', '水', '木', '金', '土' ],
             dayNamesMin : [ '日', '月', '火', '水', '木', '金', '土' ],
             weekHeader : '週',
-            firstDay : 1,
+            firstDay : 0,
             isRTL : false,
             showMonthAfterYear : false,
             yearSuffix : '',
@@ -54,7 +56,7 @@
     <h:body>
         <div id="header">
             <ui:insert name="top">
-                <ui:include src="/templates/header.xhtml"/>
+                <ui:include src="/templates/newheader.xhtml"/>
                 
             </ui:insert>
         </div>

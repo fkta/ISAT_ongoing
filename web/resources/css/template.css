@@ -1,6 +1,7 @@
 html{
     height: 100%;
-    background-image: url("#{resource['image/paper2.jpg']}");
+    /*background-color: #ffdab9;*/
+    /*background-image: url("#{resource['image/noise-grit-color-7.png']}");*/
 }
 
 body{
@@ -9,7 +10,7 @@ body{
     margin:0px auto;
 }
 #content{
-    background-color:rgba(255,255,255,0.5);
+    background-color:rgba(176,196,222,0.2);
     padding-bottom: 50px;
 }
 

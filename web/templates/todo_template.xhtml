@@ -9,12 +9,19 @@
         <h:outputStylesheet library="css" name="template.css"/>
         <h:outputStylesheet library="css" name="footer.css"/>
         <h:outputStylesheet library="css" name="todo.css"/>
+        <h:outputStylesheet library="css" name="newheader.css"/>
+
         
         <style>
+            .ui-datatable .ui-datatable-header .ui-datatable .ui-datatable-footer{
+                margin: 0;
+            }
+            
             .ui-datatable-header{
-                background-color: whitesmoke;
+                background-color: rgba(0,0,0,0);
                 background-image: none;
                 border: 0;
+                
                 color: black;
             }
             
@@ -51,7 +58,7 @@
             dayNamesShort : [ '日', '月', '火', '水', '木', '金', '土' ],
             dayNamesMin : [ '日', '月', '火', '水', '木', '金', '土' ],
             weekHeader : '週',
-            firstDay : 1,
+            firstDay : 0,
             isRTL : false,
             showMonthAfterYear : false,
             yearSuffix : '',
@@ -74,7 +81,7 @@
     <h:body>
         <div id="header">
             <ui:insert name="top">
-                <ui:include src="/templates/header.xhtml"/>
+                <ui:include src="/templates/newheader.xhtml"/>
             </ui:insert>
         </div>
         

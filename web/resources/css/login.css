@@ -1,5 +1,5 @@
 html{
-    background-image: url("#{resource['image/paper2.jpg']}");
+    background-image: url("#{resource['image/bluesky.jpg']}");
     height: 100%;
     background-size: cover;
 }
@@ -16,8 +16,8 @@ body{
       float : left;
       width : 90%;
       height : 90%;
-      border : 1px solid #000;
-      background-color: #c0c0c0;
+      /*border : 1px solid #000;*/
+      background-color: rgba(173,216,230,0.5);
       margin-top: 30px;
       }
       
@@ -36,9 +36,9 @@ body{
       float : right ;
       width : 45% ;
       height : 90% ;
-      border : 1px solid #000 ;
+      /*border : 1px solid #000 ;*/
       margin: 30px 30px 30px 30px;
-      background-color: #808080;
+      background-color: rgba(176,196,222,0.8);
       }
       
       h2{

@@ -35,15 +35,20 @@ public class todoBean implements Serializable{
     //選んだ進行中の共有されたTodoが格納される
     private List<Todo> selectedSharedTodo;
     
+    //選んだ共有された完了しているTodoが格納される
+    private List<Todo> selectedSharedFinishing;
+    
     // 選んだ完了したtodoが入る
     private List<Todo> selectedFinishing;
     
     // 選んだ期限切れのtodoが入る
     private List<Todo> selectedExpired;
     
+    
     // 共有チェック
     private boolean share;
     protected List<UserData> oldTarget;
+    private List<TodoManage> finishingState;
     
     // セレクトボックスの中身
     private List<SelectItem> classList;
@@ -69,6 +74,8 @@ public class todoBean implements Serializable{
     
     @PostConstruct
     public void init() {
+        selectedTodo = new ArrayList<>();
+        
         share = false;
         
         //セレクトメニューの中身を作る
@@ -100,6 +107,25 @@ public class todoBean implements Serializable{
         System.out.println("users : "+users.getTarget().toString());
         
         System.out.println("init");
+    }
+    
+    // todoを選択しているかどうかのチェック
+    public void selectCheck(){
+        System.out.println("check in");
+        if(selectedTodo.size() < 1){
+            System.out.println("length is : "+selectedTodo.size());
+            mb.todoNoSelectErrorMessage();
+        }
+    }
+    
+    /* 共有者の完了状況を調べる */
+    public void copyingFinishingState(){
+        if(selectedTodo.size() > 0){
+            finishingState = tmf.endCheck(selectedTodo.get(0).getTodoId());
+        }else{
+            finishingState = new ArrayList<>();
+        }
+        
     }
     
     /* 進行中のtodoリストを更新する */
@@ -225,6 +251,14 @@ public class todoBean implements Serializable{
         selectedTodo = new ArrayList<Todo>();
     }
     
+    public void resetSelectedSharedTodo(){
+        selectedSharedTodo = new ArrayList<Todo>();
+    }
+    
+    public void resetSelectedSharedFinishing(){
+        selectedSharedFinishing = new ArrayList<Todo>();
+    }
+    
     public void resetSelectedFinishing(){
         selectedFinishing = new ArrayList<Todo>();
     }
@@ -304,7 +338,7 @@ public class todoBean implements Serializable{
             
             System.out.println("replicaFinishing is running");
         }
-        System.out.println("replica size : "+ selectedTodo.size());
+        System.out.println("replica size : "+ selectedFinishing.size());
         
     }
     
@@ -430,6 +464,26 @@ public class todoBean implements Serializable{
         
     }
     
+    public void deleteSharedTodo(){
+        if(selectedSharedTodo.size() > 0){
+            for(Todo t : selectedSharedTodo){
+                if(tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).size() > 0){
+                    TodoManage tm;
+                    tm = tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).get(0);
+                    tmf.remove(tm);
+                    System.out.println("次のtodoを削除しました : "+t.getLabel());
+                }
+                
+            }
+            //メッセージの表示
+            mb.todoDeleteMessage();
+            
+        }else{
+            mb.todoDeleteErrorMessage();
+        }
+        
+    }
+    
     public void deleteFinishingTodo(){
         if(selectedFinishing.size() > 0){
             for(Todo t : selectedFinishing){
@@ -442,6 +496,26 @@ public class todoBean implements Serializable{
         }else{
             mb.todoDeleteErrorMessage();
             System.out.println("削除対象がありません");
+        }
+        
+    }
+    
+    public void deleteSharedFinishingTodo(){
+        if(selectedSharedFinishing.size() > 0){
+            for(Todo t : selectedSharedFinishing){
+                if(tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).size() > 0){
+                    TodoManage tm;
+                    tm = tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).get(0);
+                    tmf.remove(tm);
+                    System.out.println("次のtodoを削除しました : "+t.getLabel());
+                }
+                
+            }
+            //メッセージの表示
+            mb.todoDeleteMessage();
+            
+        }else{
+            mb.todoDeleteErrorMessage();
         }
         
     }
@@ -479,6 +553,27 @@ public class todoBean implements Serializable{
         
     }
     
+    public void finishSharedTodo(){
+        if(selectedSharedTodo.size() > 0){
+            for(Todo t : selectedSharedTodo){
+                if(tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).size() > 0){
+                    TodoManage tm;
+                    tm = tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).get(0);
+                    tm.setFinishing(Boolean.TRUE);
+                    tmf.edit(tm);
+                    System.out.println("次のtodoを完了済に変更しました : "+t.getLabel() + "todoId : " + tm.getTodoManagePK().getTodoId());
+                }
+                
+            }
+            
+            mb.todoUpdateMessage();
+            
+        }else{
+            mb.todoDeleteErrorMessage();
+        }
+        
+    }
+    
     public void unFinishTodo(){
         if(selectedFinishing.size() > 0){
             for(Todo t : selectedFinishing){
@@ -495,7 +590,26 @@ public class todoBean implements Serializable{
         
     }
     
-    
+    public void unFinishSharedTodo(){
+        if(selectedSharedFinishing.size() > 0){
+            for(Todo t : selectedSharedFinishing){
+                if(tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).size() > 0){
+                    TodoManage tm;
+                    tm = tmf.findOne(t.getTodoId(), udm.getUser().getUserId()).get(0);
+                    tm.setFinishing(Boolean.FALSE);
+                    tmf.edit(tm);
+                    System.out.println("次のtodoを未完了に変更しました : "+t.getLabel()+" todoId : "+tm.getTodoManagePK().getTodoId());
+                }
+                
+            }
+            
+            mb.todoUpdateMessage();
+            
+        }else{
+            mb.todoDeleteErrorMessage();
+        }
+        
+    }
     
     
     
@@ -506,7 +620,17 @@ public class todoBean implements Serializable{
         return tf.findByGoindTodo(udm.getUser());
     }
     
-    // 進行中のTodo情報と共有されたTodo情報を取得する
+    // 共有されているかつ進行中のtodo
+    public List<Todo> getSharedTodo(){
+        return tmf.findBySharedGoingTodo(udm.getUser().getUserId());
+    }
+    
+    //共有されているかつ完了したtodo
+    public List<Todo> getSharedFinishingTodo(){
+        return tmf.findBySharedFinishingTodo(udm.getUser().getUserId());
+    }
+    
+    // 進行中の共有されたTodo情報を取得する
     public List<Todo> getGoingTodoEx(){
         return tf.findByGoingTodoEx(udm.getUser().getUserId());
     }
@@ -514,7 +638,12 @@ public class todoBean implements Serializable{
     // 完了したTodo情報を取得する
     public List<Todo> getFinishingTodo(){
         //System.out.println("FinishingTodo is running");
-        return tf.findByFinishingTodo();
+        return tf.findByFinishingTodo(udm.getUser());
+    }
+    
+    // 進行中のTodo情報と共有されたTodo情報を取得する
+    public List<Todo> getFinishingTodoEx(){
+        return tf.findByFinishingTodoEx(udm.getUser().getUserId());
     }
 
     // 期限切れのTodo情報を取得する
@@ -605,6 +734,22 @@ public class todoBean implements Serializable{
 
     public void setSelectedSharedTodo(List<Todo> selectedSharedTodo) {
         this.selectedSharedTodo = selectedSharedTodo;
+    }
+
+    public List<Todo> getSelectedSharedFinishing() {
+        return selectedSharedFinishing;
+    }
+
+    public void setSelectedSharedFinishing(List<Todo> selectedSharedFinishing) {
+        this.selectedSharedFinishing = selectedSharedFinishing;
+    }
+
+    public List<TodoManage> getFinishingState() {
+        return finishingState;
+    }
+
+    public void setFinishingState(List<TodoManage> finishingState) {
+        this.finishingState = finishingState;
     }
     
     

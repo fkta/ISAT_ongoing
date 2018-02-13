@@ -25,7 +25,8 @@ import javax.xml.bind.annotation.XmlRootElement;
     @NamedQuery(name = "TodoManage.findAll", query = "SELECT t FROM TodoManage t")
     , @NamedQuery(name = "TodoManage.findByTodoId", query = "SELECT t FROM TodoManage t WHERE t.todoManagePK.todoId = :todoId")
     , @NamedQuery(name = "TodoManage.findByUserId", query = "SELECT t FROM TodoManage t WHERE t.todoManagePK.userId = :userId")
-    , @NamedQuery(name = "TodoManage.findByState", query = "SELECT t FROM TodoManage t WHERE t.finishing = :finishing")})
+    , @NamedQuery(name = "TodoManage.findByState", query = "SELECT t FROM TodoManage t WHERE t.finishing = :finishing")
+    , @NamedQuery(name = "TodoManage.findOne", query = "SELECT t FROM TodoManage t WHERE t.todoManagePK.todoId = :todoId and t.todoManagePK.userId = :userId")})
 public class TodoManage implements Serializable {
 
     @Basic(optional = false)
@@ -73,7 +74,7 @@ public class TodoManage implements Serializable {
         this.todo = todo;
     }
     
-    public String Judge(){
+    public String getJudge(){
         if(finishing == true){
             return "〇";
         }else{

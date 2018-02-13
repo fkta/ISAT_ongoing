@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.Basic;
 import javax.persistence.Column;
@@ -99,6 +100,11 @@ public class Transmit implements Serializable {
 
     public Date getSenddate() {
         return senddate;
+    }
+    
+    public String getConvertedSendDate(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        return sdf.format(senddate);
     }
 
     public void setSenddate(Date senddate) {

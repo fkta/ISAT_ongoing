@@ -1,0 +1,106 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+    <h:head>
+        <title>Facelet Title</title>
+        <h:outputStylesheet library="css" name="newheader.css"/>
+    </h:head>
+    <h:body>
+        <ui:composition>
+            <p:outputPanel styleClass="main_content">
+                <!--ロゴ-->
+                    <h:link outcome="/faces/toppage/top.xhtml?faces-redirect=true" style="float: left; width: 300px;">
+                        <h:graphicImage url="#{resource['image/logomasi.png']}" style="height: 100px;"/>
+                    </h:link>
+                
+                <!--ロゴ end-->
+                
+                <!--ログアウトボタン-->
+                <p:outputPanel style="float: left; width: 699px; height: 40px; text-align: right;">
+                    <h:form>
+                        <p:menuButton value="#{userDataManager.user.name}">
+                            <p:menuitem value="Profile" outcome="#{managedBean.transProfilePage()}"/>
+                            <p:menuitem value="Logout" action="#{managedBean.logout()}"/>
+                        </p:menuButton>
+                    </h:form>
+                </p:outputPanel>
+                <!--ログアウトボタン end-->
+                
+                <p:outputPanel style="height: 60px; float: left; width: 699px; margin-top: 13px;">
+                    <h:form>
+                        
+                        <h:commandLink action="#{managedBean.transToBoard()}" styleClass="link">
+                            <p:outputPanel styleClass="common_panel">
+                                <h:graphicImage url="#{resource['image/bulletinboard.png']}" styleClass="graphics"/>
+                                <h:outputText value="掲示板" styleClass="menu_fonts"/>
+                            </p:outputPanel>
+                        </h:commandLink>
+                            
+                        <h:commandLink action="#{managedBean.transToSchedule()}" styleClass="link">
+                            <p:outputPanel styleClass="common_panel">
+                                <h:graphicImage url="#{resource['image/schedule.png']}" styleClass="graphics"/>
+                                <h:outputText value="スケジュール" styleClass="menu_fonts"/>
+                            </p:outputPanel>
+                        </h:commandLink>
+                            
+                        
+                        <h:link outcome="/transmit/transtop.xhtml?faces-redirect=true" styleClass="link">
+                            <p:outputPanel styleClass="common_panel">
+                                <h:graphicImage url="#{resource['image/transmit.png']}" styleClass="graphics"/>
+                                <h:outputText value="伝達" styleClass="menu_fonts"/>
+                            </p:outputPanel>
+                        </h:link>
+                        
+                        
+                          
+                        <h:link outcome="/todo/todolist.xhtml?faces-redirect=true" styleClass="link">
+                            <p:outputPanel styleClass="common_panel">  
+                                <h:graphicImage url="#{resource['image/todo.png']}" styleClass="graphics"/>
+                                <h:outputText value="ToDo" styleClass="menu_fonts"/>
+                            </p:outputPanel>
+                        </h:link>
+                            
+                        
+                        <h:commandLink action="#{managedBean.transToInfoList()}" styleClass="link">
+                            <p:outputPanel styleClass="common_panel">
+                                <h:graphicImage url="#{resource['image/info.png']}" styleClass="graphics"/>
+                                <h:outputText value="インフォ" styleClass="menu_fonts"/>
+                            </p:outputPanel>
+                        </h:commandLink>
+                        
+                            
+                        
+                        <h:link outcome="/curriculum/curriculum.xhtml?faces-redirect=true" styleClass="link">
+                            <p:outputPanel styleClass="common_panel">
+                                <h:graphicImage url="#{resource['image/curriculum.png']}" styleClass="graphics"/>
+                                <h:outputText value="時間割" styleClass="menu_fonts"/>
+                            </p:outputPanel>
+                        </h:link>
+                        
+                        
+                        
+                        <!--<h:link outcome="/adminmenu/adminmenu.xhtml?faces-redirect=true" styleClass="link">
+                            <p:outputPanel styleClass="common_panel">    
+                                <h:graphicImage url="#{resource['image/adminicon.png']}" styleClass="graphics"/>
+                                <h:outputText value="管理画面" styleClass="menu_fonts"/>
+                            </p:outputPanel>
+                        </h:link>-->
+                       
+                        
+                        <p:outputPanel style="clear: both"></p:outputPanel>
+                    
+                    </h:form>
+                    
+                </p:outputPanel>
+                
+                
+                
+            </p:outputPanel>
+            <p:outputPanel style="clear: both"></p:outputPanel>
+        </ui:composition>
+    </h:body>
+</html>
+

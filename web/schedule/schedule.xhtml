@@ -21,7 +21,7 @@
  
     <h:panelGrid columnClasses="value" style="margin-top: 10px;">
         <p:schedule id="schedule" value="#{scheduleBean2.eventModel}" widgetVar="myschedule" timeZone="Asia/Tokyo" locale="ja"
-                    timeFormat="HH:mm">
+                    timeFormat="HH:mm" nextDayThreshold="00:00:00">
  
             <p:ajax event="dateSelect" listener="#{scheduleBean2.onDateSelect}" update="eventDetails pickarea pickdepartment" oncomplete="PF('eventDialog').show();" />
             <p:ajax event="eventSelect" listener="#{scheduleBean2.onEventSelect}" update="eventDetails pickarea pickdepartment" oncomplete="PF('eventDialog').show();" />
@@ -104,6 +104,8 @@
                             <f:selectItems value="#{scheduleBean2.classList}"/>
                             <p:ajax process="@this" event="change" update="pickarea" listener="#{scheduleBean2.updatePickList()}"/>
                         </p:selectOneMenu>
+                        
+                        <h:outputText value="作成者 : #{scheduleBean2.event.data.name}" style="margin-left: 30px;"/>
                         
                     </p:outputPanel>
                     
